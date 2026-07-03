@@ -59,3 +59,35 @@ def find_cheapest_flight(data, trip_type="1"):
     if cheapest_flight.price == float('inf'):
         return FlightData("N/A", "N/A", "N/A", "N/A", "N/A", "N/A", [])
     return cheapest_flight
+
+def _build_flight_data(flight, trip_type="1"):
+    """Helper: turns one raw SerpApi flight dict into a FlightData object."""
+    legs = flight["flights"]
+    first_leg = legs[0]
+
+    return FlightData(
+        price=flight["price"],
+        origin_airport=legs[0]["departure_airport"]["id"],
+        destination_airport=legs[-1]["arrival_airport"]["id"],
+        out_date=legs[0]["departure_airport"].get("time", "N/A"),
+        return_date=legs[-1]["arrival_airport"].get("time", "N/A"),
+        stops=len(legs) - 1,
+        stop_airports=[leg['arrival_airport']['id'] for leg in legs[:-1]],
+        airline=first_leg.get("airline"),
+        airline_logo=first_leg.get("airline_logo"),
+        flight_number=first_leg.get("flight_number"),
+        aircraft=first_leg.get("airplane"),
+    )
+
+
+def find_all_flights_sorted(data, trip_type="1"):
+    """Returns every flight found, sorted cheapest-first, as a list of FlightData."""
+    if data is None or ('best_flights' not in data and 'other_flights' not in data):
+        return []
+
+    all_flights = data.get('best_flights', []) + data.get('other_flights', [])
+    valid_flights = [f for f in all_flights if "price" in f]
+
+    valid_flights.sort(key=lambda f: f["price"])
+
+    return [_build_flight_data(f, trip_type) for f in valid_flights]
