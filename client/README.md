@@ -118,7 +118,7 @@ client/
   - Departure date ranges
   - Passenger count
   - Cabin class (economy, business, first)
-- Real-time price updates from backend API
+- Real-time price updates from backend API (powered by SerpAPI & AviationStack)
 - Sort and filter results
 
 ### Destination Management
@@ -365,6 +365,7 @@ npm run build
 - Verify backend is running on `http://localhost:5000`
 - Check browser console for CORS errors
 - Confirm `.env` variables are set correctly
+- Ensure SerpAPI and AviationStack credentials are configured in backend
 
 ## Further Resources
 
@@ -372,6 +373,8 @@ npm run build
 - [Vite Guide](https://vitejs.dev/guide/)
 - [Shadcn UI Components](https://ui.shadcn.com/)
 - [ESLint Rules](https://eslint.org/docs/latest/rules/)
+- [SerpAPI Documentation](https://serpapi.com/docs)
+- [AviationStack Documentation](https://aviationstack.com/documentation)
 
 ## License
 
