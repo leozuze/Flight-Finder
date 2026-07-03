@@ -27,7 +27,6 @@ const searchTypes = [
   { key: "all", label: "All" },
   { key: "route", label: "Route" },
   { key: "airline", label: "Airline flight" },
-  { key: "tail", label: "Private flight (tail #)" },
   { key: "airport", label: "Airport" },
 ]
 
@@ -41,7 +40,6 @@ const searchFieldsConfig = {
     { id: "airline", placeholder: "Airline" },
     { id: "flightNum", placeholder: "Flight #" },
   ],
-  tail: [{ id: "tail", placeholder: "Tail Number (e.g. N12345)" }],
   airport: [
     { id: "code", placeholder: "Airport Code (e.g. KJFK)" },
     { id: "city", placeholder: "Airport City (e.g. New York)" },
@@ -86,7 +84,7 @@ function Marquee({ items }) {
   )
 }
 
-export default function Navbar() {
+export default function Navbar({ onSearch }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
@@ -128,6 +126,34 @@ export default function Navbar() {
   }
 
   const activeFields = searchFieldsConfig[selectedSearchType.key]
+
+  const handleSubmitSearch = () => {
+    let originVal, destinationVal
+
+    if (selectedSearchType.key === "route") {
+      originVal = searchValues.from
+      destinationVal = searchValues.to
+    } else if (selectedSearchType.key === "all") {
+      const raw = (searchValues.q || "").trim()
+      const parts = raw.split(/\s+to\s+/i)
+      if (parts.length === 2) {
+        originVal = parts[0].trim()
+        destinationVal = parts[1].trim()
+      }
+    } else {
+      alert("This search type isn't available yet — try 'Route' or type e.g. 'Pune to Harare' in All.")
+      return
+    }
+
+    if (!originVal || !destinationVal) {
+      alert("Please enter both an origin and destination, e.g. 'Pune to Harare'.")
+      return
+    }
+
+    onSearch?.({ origin: originVal, destination: destinationVal })
+    document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
+    setMobileOpen(false)
+  }
 
   return (
     <motion.header
@@ -236,7 +262,7 @@ export default function Navbar() {
             </a>
             {/* Search Bar: type dropdown + dynamic fields + submit */}
             <div
-              className="flex-1 max-w-2xl mx-auto hidden md:flex items-stretch h-10 rounded-lg border overflow-visible"
+              className="flex-1 hidden md:flex items-stretch h-10 rounded-lg border overflow-visible"
               style={{
                 background: "rgba(255,255,255,0.05)",
                 borderColor: "var(--color-border)",
@@ -309,6 +335,7 @@ export default function Navbar() {
 
               {/* Submit */}
               <button
+                onClick={handleSubmitSearch}
                 className="px-4 flex items-center justify-center shrink-0 rounded-r-lg transition-colors"
                 style={{ background: "var(--color-accent)" }}
                 onMouseEnter={(e) =>
@@ -322,22 +349,8 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* CTA + Hamburger */}
+            {/* Hamburger (mobile only) */}
             <div className="flex items-center gap-3 ml-auto">
-              <Button
-                size="sm"
-                className="hidden md:flex rounded-full text-sm font-medium text-white px-5"
-                style={{ background: "var(--color-accent)" }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "var(--color-accent-hover)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "var(--color-accent)")
-                }
-              >
-                Find Flights
-              </Button>
-
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className="md:hidden p-2"
@@ -411,6 +424,7 @@ export default function Navbar() {
             {/* Mobile CTA */}
             <div className="px-4 py-4">
               <Button
+                onClick={handleSubmitSearch}
                 className="w-full rounded-full text-white font-medium"
                 style={{ background: "var(--color-accent)" }}
               >

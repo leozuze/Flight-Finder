@@ -1,3 +1,4 @@
+import { useState } from "react"
 import Navbar from "@/components/Navbar"
 import FlightSearchSection from "@/components/FlightSearchSection"
 import Footer from "@/components/Footer"
@@ -5,9 +6,11 @@ import Footer from "@/components/Footer"
 const CONTAINER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
 
 export default function Home() {
+  const [navQuery, setNavQuery] = useState(null)
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <Navbar />
+      <Navbar onSearch={setNavQuery} />
 
       {/* Hero */}
       <div className={`pt-28 text-center ${CONTAINER}`}>
@@ -26,7 +29,7 @@ export default function Home() {
 
       {/* Flight Search + Results */}
       <div className={`mt-8 ${CONTAINER}`}>
-        <FlightSearchSection />
+        <FlightSearchSection externalQuery={navQuery} />
       </div>
 
       {/* Features (placeholder — add section here later) */}
