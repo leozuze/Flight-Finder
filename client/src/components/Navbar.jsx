@@ -26,7 +26,6 @@ const languages = [
 const searchTypes = [
   { key: "all", label: "All" },
   { key: "route", label: "Route" },
-  { key: "airline", label: "Airline flight" },
   { key: "airport", label: "Airport" },
 ]
 
@@ -35,10 +34,6 @@ const searchFieldsConfig = {
   route: [
     { id: "from", placeholder: "From (e.g. KJFK or New York)" },
     { id: "to", placeholder: "To (e.g. KLAX or Los Angeles)" },
-  ],
-  airline: [
-    { id: "airline", placeholder: "Airline" },
-    { id: "flightNum", placeholder: "Flight #" },
   ],
   airport: [
     { id: "code", placeholder: "Airport Code (e.g. KJFK)" },
@@ -127,33 +122,46 @@ export default function Navbar({ onSearch }) {
 
   const activeFields = searchFieldsConfig[selectedSearchType.key]
 
-  const handleSubmitSearch = () => {
-    let originVal, destinationVal
-
-    if (selectedSearchType.key === "route") {
-      originVal = searchValues.from
-      destinationVal = searchValues.to
-    } else if (selectedSearchType.key === "all") {
-      const raw = (searchValues.q || "").trim()
-      const parts = raw.split(/\s+to\s+/i)
-      if (parts.length === 2) {
-        originVal = parts[0].trim()
-        destinationVal = parts[1].trim()
-      }
-    } else {
-      alert("This search type isn't available yet — try 'Route' or type e.g. 'Pune to Harare' in All.")
-      return
-    }
-
+const handleSubmitSearch = () => {
+  if (selectedSearchType.key === "route") {
+    const originVal = searchValues.from
+    const destinationVal = searchValues.to
     if (!originVal || !destinationVal) {
       alert("Please enter both an origin and destination, e.g. 'Pune to Harare'.")
       return
     }
+    onSearch?.({ type: "route", origin: originVal, destination: destinationVal })
 
-    onSearch?.({ origin: originVal, destination: destinationVal })
-    document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
-    setMobileOpen(false)
+  } else if (selectedSearchType.key === "all") {
+    const raw = (searchValues.q || "").trim()
+    if (!raw) {
+      alert("Please enter a route, airport, or city, e.g. 'Pune to Harare' or 'KJFK'.")
+      return
+    }
+    const parts = raw.split(/\s+to\s+/i)
+    if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
+      onSearch?.({ type: "route", origin: parts[0].trim(), destination: parts[1].trim() })
+    } else {
+      onSearch?.({ type: "airport", query: raw })
+    }
+
+  } else if (selectedSearchType.key === "airport") {
+    const code = (searchValues.code || "").trim()
+    const city = (searchValues.city || "").trim()
+    if (!code && !city) {
+      alert("Please enter an airport code or city, e.g. 'KJFK' or 'New York'.")
+      return
+    }
+    onSearch?.({ type: "airport", query: code || city, code, city })
+
+  } else {
+    alert("This search type isn't available yet — try 'Route', 'All', or 'Airport'.")
+    return
   }
+
+  document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
+  setMobileOpen(false)
+}
 
   return (
     <motion.header
