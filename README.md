@@ -8,14 +8,14 @@ A full-stack flight deal tracker that searches for cheap flights and notifies us
 
 ## Features
 
-- 🔍 **Smart Flight Search**: Search for cheap flights from a fixed origin to multiple destinations
-- 🔄 **Fallback Options**: Try direct flights first, then fall back to indirect options
+- **Smart Flight Search**: Search for cheap flights from a fixed origin to multiple destinations
+- **Fallback Options**: Try direct flights first, then fall back to indirect options
 - 💰 **Price Comparison**: Compare the latest fare against the stored lowest price
 - 📊 **Data Management**: Update destination pricing in Google Sheets via Sheety
-- 📧 **Multi-Channel Alerts**: Send notifications via email and SMS (Twilio)
+- 📧 **Multi-Channel Alerts**: Send notifications via email 
 - ⚙️ **Environment Configuration**: Secure API keys and endpoints using `.env`
-- 🎨 **Modern UI**: React + Vite frontend for easy flight browsing
-- 🚀 **REST API**: Flask-based API for seamless integration
+- **Modern UI**: React + Vite frontend for easy flight browsing
+- **REST API**: Flask-based API for seamless integration
 
 ## Tech Stack
 
@@ -25,8 +25,7 @@ A full-stack flight deal tracker that searches for cheap flights and notifies us
 - **Requests & requests-cache** - HTTP client with caching
 - **python-dotenv** - Environment variable management
 - **Sheety** - Google Sheets integration
-- **Amadeus API** - Flight search data
-- **Twilio** - SMS notifications
+- **SerpAPI API** - Flight search data
 - **SMTP** - Email notifications
 
 ### Frontend
@@ -50,8 +49,8 @@ Flight-Finder/
 │   ├── src/                           # Source modules
 │   │   ├── data_manager.py            # Google Sheets management via Sheety
 │   │   ├── flight_data.py             # Flight data formatting & selection
-│   │   ├── flight_search.py           # Amadeus API integration
-│   │   └── notification_manager.py    # Email/SMS notification handler
+│   │   ├── flight_search.py           #SerpAPI integration
+│   │   └── notification_manager.py    # Email notification handler
 │   │
 │   └── venv/                          # Python virtual environment (ignored)
 │
@@ -114,20 +113,16 @@ Flight-Finder/
    
    Create a `.env` file in the `server` directory:
    ```env
-   # Amadeus API Configuration
-   AMADEUS_API_KEY=your_amadeus_api_key
-   AMADEUS_API_SECRET=your_amadeus_api_secret
-   AMADEUS_ENDPOINT=https://test.api.amadeus.com
+   # SerpAPI Configuration
+   SERPAPI_KEY=your_serpapi_api_key
+   SERPAPI_SECRET=your_serpapi_api_secret
+   SERPAPI_ENDPOINT=https://test.api.serpapi.com
 
    # Sheety Configuration
    SHEETY_TOKEN=your_sheety_basic_auth_token
    SHEETY_ENDPOINT=https://api.sheety.co/your-sheet-id/prices
    SHEETY_ENDPOINT_USERS=https://api.sheety.co/your-sheet-id/users
 
-   # Twilio Configuration
-   TWILIO_SID=your_twilio_sid
-   TWILIO_AUTH_TOKEN=your_twilio_auth_token
-   TWILIO_FROM_NUMBER=+1234567890
 
    # Email Configuration
    SMTP_EMAIL=your_email@gmail.com
@@ -190,7 +185,7 @@ Provides endpoints for:
 
 ### API Keys Required
 
-1. **Amadeus API** - Get from [amadeus.com](https://www.amadeus.com)
+1. ** SrpAPI** - Get from [serpapi.com](https://www.serpapi.com)
    - Provides flight search data
    - Free tier available for testing
 
@@ -198,11 +193,8 @@ Provides endpoints for:
    - Connects to your Google Sheet
    - Stores destinations and prices
 
-3. **Twilio** - Get from [twilio.com](https://www.twilio.com)
-   - Send SMS notifications
-   - Free trial with credits
 
-4. **Gmail** - Use your Gmail account
+3. **Gmail** - Use your Gmail account
    - Generate [App Password](https://myaccount.google.com/apppasswords) for SMTP
 
 ## Usage Examples
@@ -300,4 +292,4 @@ This project is for educational purposes. Flight prices and availability are sub
 
 ---
 
-Made with ❤️ by [jayzcreative](https://github.com/jayzcreative)
+Made with love by [jayzcreative](https://github.com/jayzcreative)
