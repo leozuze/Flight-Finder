@@ -7,6 +7,7 @@ from src.flight_search import FlightSearch
 from src.flight_data import find_cheapest_flight, find_all_flights_sorted
 from src.data_manager import DataManager
 from src.notification_manager import NotificationManager
+from src.airport_board import AirportBoard
 
 app = FastAPI()
 
@@ -20,6 +21,7 @@ app.add_middleware(
 flight_search = FlightSearch()
 data_manager = DataManager()
 notification_manager = NotificationManager()
+airport_board = AirportBoard()
 
 TRIP_TYPE_MAP = {"round": "1", "oneway": "2"}
 CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
@@ -228,4 +230,34 @@ def get_flights_only(req: FlightsOnlyRequest):
             }
             for f in all_sorted
         ],
+    }
+
+
+class AirportBoardRequest(BaseModel):
+    airport: str  # IATA code (e.g. "HRE") or city name (e.g. "Harare")
+
+
+@app.post("/api/airport-board")
+def get_airport_board(req: AirportBoardRequest):
+    airport_input = req.airport.strip()
+
+    # Treat a bare 3-letter input as an IATA code already; otherwise resolve
+    # the city/airport name the same way /api/search resolves origin/destination.
+    if len(airport_input) == 3 and airport_input.isalpha():
+        airport_code = airport_input.upper()
+    else:
+        airport_code = flight_search.get_iata_code(airport_input)
+
+    if airport_code == "N/A":
+        return {"error": "Could not find an IATA code for the given airport/city."}
+
+    board = airport_board.get_board(airport_code)
+
+    if not board["arrivals"] and not board["departures"]:
+        return {"error": "No flight data found for that airport."}
+
+    return {
+        "airportCode": airport_code,
+        "arrivals": board["arrivals"],
+        "departures": board["departures"],
     }
