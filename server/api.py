@@ -29,6 +29,20 @@ CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
 SEARCH_WINDOW_DAYS = 30  # always search the next month automatically — no longer user-configurable
 
 
+def resolve_iata(value: str) -> str:
+    """Resolve a city/airport name to an IATA code, or pass through
+    unchanged if the input is already a 3-letter IATA code.
+
+    Same pass-through check already used in /api/airport-board, shared
+    here so /api/search and /api/flights don't re-run an autocomplete
+    lookup on a value that's already a resolved code.
+    """
+    value = value.strip()
+    if len(value) == 3 and value.isalpha():
+        return value.upper()
+    return flight_search.get_iata_code(value)
+
+
 class StatusRequest(BaseModel):
     flightNumber: str
     date: str
@@ -59,8 +73,8 @@ def search_flights(req: SearchRequest):
     tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     end_date = (datetime.now() + timedelta(days=SEARCH_WINDOW_DAYS)).strftime("%Y-%m-%d")
 
-    origin_code = flight_search.get_iata_code(req.origin)
-    destination_code = flight_search.get_iata_code(req.destination)
+    origin_code = resolve_iata(req.origin)
+    destination_code = resolve_iata(req.destination)
 
     if origin_code == "N/A" or destination_code == "N/A":
         return {"error": "Could not find IATA codes for the given cities."}
@@ -94,7 +108,7 @@ def search_flights(req: SearchRequest):
 
     if cheapest.price == "N/A":
         return {"error": "No flights found within your criteria."}
-    
+
     # Build the full sorted list from whichever search (direct or indirect) succeeded
     all_sorted = find_all_flights_sorted(flights, trip_type=trip_type)
     other_flights = all_sorted[1:] if len(all_sorted) > 1 else []
@@ -158,6 +172,8 @@ def search_flights(req: SearchRequest):
             for f in other_flights
         ],
     }
+
+
 class FlightsOnlyRequest(BaseModel):
     origin: str
     destination: str
@@ -175,8 +191,8 @@ def get_flights_only(req: FlightsOnlyRequest):
     tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     end_date = (datetime.now() + timedelta(days=SEARCH_WINDOW_DAYS)).strftime("%Y-%m-%d")
 
-    origin_code = flight_search.get_iata_code(req.origin)
-    destination_code = flight_search.get_iata_code(req.destination)
+    origin_code = resolve_iata(req.origin)
+    destination_code = resolve_iata(req.destination)
 
     if origin_code == "N/A" or destination_code == "N/A":
         return {"error": "Could not find IATA codes for the given cities."}
@@ -261,3 +277,17 @@ def get_airport_board(req: AirportBoardRequest):
         "arrivals": board["arrivals"],
         "departures": board["departures"],
     }
+
+
+class FlightLookupRequest(BaseModel):
+    ident: str  # flight number, e.g. "AI2017"
+
+
+@app.post("/api/flight")
+def get_flight_detail(req: FlightLookupRequest):
+    result = airport_board.get_flight(req.ident.strip().upper())
+
+    if not result:
+        return {"error": "No flight found for that identifier."}
+
+    return result
