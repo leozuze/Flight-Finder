@@ -1,6 +1,6 @@
 # Flight Finder 🛫
 
-A full-stack flight deal tracker that searches for cheap flights and notifies users via SMS/email. Built with Python backend and React frontend, powered by Amadeus & Sheety APIs.
+A full-stack flight deal tracker that searches for cheap flights and notifies users via SMS/email. Built with Python backend and React frontend, powered by SerpAPI & AviationStack APIs.
 
 ![Python](https://img.shields.io/badge/Python-91.6%25-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-React-yellow)
@@ -25,7 +25,8 @@ A full-stack flight deal tracker that searches for cheap flights and notifies us
 - **Requests & requests-cache** - HTTP client with caching
 - **python-dotenv** - Environment variable management
 - **Sheety** - Google Sheets integration
-- **SerpAPI API** - Flight search data
+- **SerpAPI** - Flight search data
+- **AviationStack** - Flight data and airport information
 - **SMTP** - Email notifications
 
 ### Frontend
@@ -49,7 +50,7 @@ Flight-Finder/
 │   ├── src/                           # Source modules
 │   │   ├── data_manager.py            # Google Sheets management via Sheety
 │   │   ├── flight_data.py             # Flight data formatting & selection
-│   │   ├── flight_search.py           #SerpAPI integration
+│   │   ├── flight_search.py           # SerpAPI & AviationStack integration
 │   │   └── notification_manager.py    # Email notification handler
 │   │
 │   └── venv/                          # Python virtual environment (ignored)
@@ -115,14 +116,16 @@ Flight-Finder/
    ```env
    # SerpAPI Configuration
    SERPAPI_KEY=your_serpapi_api_key
-   SERPAPI_SECRET=your_serpapi_api_secret
-   SERPAPI_ENDPOINT=https://test.api.serpapi.com
+   SERPAPI_ENDPOINT=https://serpapi.com/search
+
+   # AviationStack Configuration
+   AVIATIONSTACK_KEY=your_aviationstack_api_key
+   AVIATIONSTACK_ENDPOINT=https://api.aviationstack.com/v1
 
    # Sheety Configuration
    SHEETY_TOKEN=your_sheety_basic_auth_token
    SHEETY_ENDPOINT=https://api.sheety.co/your-sheet-id/prices
    SHEETY_ENDPOINT_USERS=https://api.sheety.co/your-sheet-id/users
-
 
    # Email Configuration
    SMTP_EMAIL=your_email@gmail.com
@@ -185,16 +188,21 @@ Provides endpoints for:
 
 ### API Keys Required
 
-1. ** SrpAPI** - Get from [serpapi.com](https://www.serpapi.com)
+1. **SerpAPI** - Get from [serpapi.com](https://www.serpapi.com)
    - Provides flight search data
    - Free tier available for testing
+   - Supports Google Flights data scraping
 
-2. **Sheety** - Get from [sheety.co](https://sheety.co)
+2. **AviationStack** - Get from [aviationstack.com](https://aviationstack.com)
+   - Real-time flight data and airport information
+   - Comprehensive flight database
+   - Free tier available with limitations
+
+3. **Sheety** - Get from [sheety.co](https://sheety.co)
    - Connects to your Google Sheet
    - Stores destinations and prices
 
-
-3. **Gmail** - Use your Gmail account
+4. **Gmail** - Use your Gmail account
    - Generate [App Password](https://myaccount.google.com/apppasswords) for SMTP
 
 ## Usage Examples
