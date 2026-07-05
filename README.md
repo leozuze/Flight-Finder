@@ -2,8 +2,8 @@
 
 A full-stack flight deal tracker that searches for cheap flights and notifies users via SMS/email. Built with Python backend and React frontend, powered by SerpAPI & AviationStack APIs.
 
-![Python](https://img.shields.io/badge/Python-91.6%25-blue)
-![JavaScript](https://img.shields.io/badge/JavaScript-React-yellow)
+![Python](https://img.shields.io/badge/Python-91.5%25-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-8.5%25-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## Features
@@ -16,6 +16,7 @@ A full-stack flight deal tracker that searches for cheap flights and notifies us
 - ⚙️ **Environment Configuration**: Secure API keys and endpoints using `.env`
 - **Modern UI**: React + Vite frontend for easy flight browsing
 - **REST API**: Flask-based API for seamless integration
+- ✈️ **Airport Information**: Real-time airport data and flight details
 
 ## Tech Stack
 
@@ -42,12 +43,12 @@ Flight-Finder/
 ├── .gitignore                         # Git ignore rules
 │
 ├── server/                            # Python backend
-│   ├── main.py                        # Main flight search workflow
 │   ├── api.py                         # Flask REST API endpoints
 │   ├── requirements.txt               # Python dependencies
 │   ├── .env                           # Environment variables (⚠️ keep secret)
 │   │
 │   ├── src/                           # Source modules
+│   │   ├── airport_board.py           # Airport information & flight details
 │   │   ├── data_manager.py            # Google Sheets management via Sheety
 │   │   ├── flight_data.py             # Flight data formatting & selection
 │   │   ├── flight_search.py           # SerpAPI & AviationStack integration
@@ -70,12 +71,45 @@ Flight-Finder/
     │   └── [favicon, images, etc.]
     │
     └── src/                           # React components & logic
+        ├── api/                       # API client functions
+        │   ├── flights.js             # Flight API calls
+        │   ├── airports.js            # Airport API calls
+        │   └── [other API modules]
+        │
+        ├── assets/                    # Images and static resources
+        │   ├── images/                # Image files
+        │   └── [other assets]
+        │
         ├── components/                # Reusable UI components
-        ├── pages/                     # Page components
-        ├── hooks/                     # Custom React hooks
+        │   ├── FlightCard.jsx         # Display individual flights
+        │   ├── SearchBar.jsx          # Flight search input
+        │   ├── DestinationList.jsx    # Manage watched destinations
+        │   ├── NotificationSettings.jsx # User notification preferences
+        │   └── [other components]
+        │
+        ├── data/                      # Data files and constants
+        │   ├── airports.json          # Airport codes and data
+        │   └── [other data files]
+        │
+        ├── pages/                     # Page-level components
+        │   ├── SearchPage.jsx         # Main search interface
+        │   ├── DealsPage.jsx          # Featured deals view
+        │   ├── SettingsPage.jsx       # User settings
+        │   └── [other pages]
+        │
+        ├── lib/                       # Utility libraries
+        │   ├── hooks.js               # Custom React hooks
+        │   ├── formatters.js          # Data formatting helpers
+        │   └── [other libraries]
+        │
         ├── utils/                     # Utility functions
-        ├── App.jsx                    # Main App component
-        └── main.jsx                   # React entry point
+        │   ├── constants.js           # Application constants
+        │   ├── validators.js          # Input validation
+        │   └── [other utilities]
+        │
+        ├── App.jsx                    # Main App component & routing
+        ├── main.jsx                   # React entry point
+        └── index.css                  # Global styles
 ```
 
 ## Installation
@@ -137,10 +171,7 @@ Flight-Finder/
 
 5. **Run the application**
    ```bash
-   # Run the main flight search workflow
-   python main.py
-   
-   # Or start the Flask API server
+   # Start the Flask API server
    python api.py
    ```
 
@@ -169,17 +200,18 @@ Flight-Finder/
 
 ## How It Works
 
-### Flight Search Workflow (main.py)
-1. Reads destination and price threshold data from Sheety
-2. Searches for flights from your origin (e.g., LHR) to each destination
-3. Identifies the cheapest available option
-4. If fare is lower than the saved threshold:
-   - Updates the sheet with the new price
-   - Sends a notification to subscribed users
+### Flight Search Workflow
+The backend integrates with SerpAPI and AviationStack to:
+1. Fetch real-time flight availability and pricing via SerpAPI
+2. Retrieve comprehensive airport information via AviationStack
+3. Compare flight options and identify the cheapest fares
+4. Update Google Sheets with price changes via Sheety
+5. Send email notifications when prices drop below thresholds
 
 ### REST API (api.py)
 Provides endpoints for:
 - Fetching available flights
+- Retrieving airport information
 - Updating destination watches
 - Managing user preferences
 - Checking flight status
@@ -210,6 +242,11 @@ Provides endpoints for:
 ### Search Flights via API
 ```bash
 curl http://localhost:5000/api/flights?destination=CDG&days=30
+```
+
+### Get Airport Information
+```bash
+curl http://localhost:5000/api/airports?code=CDG
 ```
 
 ### Watch Flight Prices
@@ -253,6 +290,7 @@ pip install -r server/requirements.txt
 - Verify `.env` configuration is correct
 - Check API credentials and endpoints
 - Ensure internet connectivity
+- Verify SerpAPI and AviationStack credentials are valid
 
 ### Frontend not connecting to backend
 - Verify Flask API is running (`python server/api.py`)
@@ -283,6 +321,7 @@ Contributions are welcome! Please:
 - [ ] Mobile app (React Native)
 - [ ] Webhook integrations
 - [ ] Dark mode UI
+- [ ] User authentication system
 
 ## License
 
@@ -300,4 +339,4 @@ This project is for educational purposes. Flight prices and availability are sub
 
 ---
 
-Made with love by [jayzcreative](https://github.com/jayzcreative)
+Made with ✈️ by [jayzcreative](https://github.com/jayzcreative)
