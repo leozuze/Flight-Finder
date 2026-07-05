@@ -3,9 +3,18 @@ import { Range, getTrackBackground } from "react-range"
 export default function RangeFilterGroup({ label, min, max, value, onChange, formatLabel }) {
   if (min === max) return null
 
+  const step = Math.max(1, Math.round((max - min) / 200))
+
+  // Snap a value onto the min + n*step grid that react-range requires,
+  // then clamp it inside [min, max].
+  const snapToStep = (v) => {
+    const snapped = min + Math.round((v - min) / step) * step
+    return Math.min(Math.max(snapped, min), max)
+  }
+
   const clamped = [
-    Math.min(Math.max(value[0], min), max),
-    Math.min(Math.max(value[1], min), max),
+    snapToStep(Math.min(Math.max(value[0], min), max)),
+    snapToStep(Math.min(Math.max(value[1], min), max)),
   ]
   const safeValues = clamped[0] <= clamped[1] ? clamped : [min, max]
 
@@ -17,34 +26,42 @@ export default function RangeFilterGroup({ label, min, max, value, onChange, for
       </div>
       <div className="px-1">
         <Range
-          step={Math.max(1, Math.round((max - min) / 200))}
+          step={step}
           min={min}
           max={max}
           values={safeValues}
           onChange={(vals) => onChange(vals)}
-          renderTrack={({ props, children }) => (
-            <div
-              {...props}
-              className="h-1.5 w-full rounded-full"
-              style={{
-                ...props.style,
-                background: getTrackBackground({
-                  values: safeValues,
-                  colors: ["#e2e8f0", "#06b6d4", "#e2e8f0"],
-                  min,
-                  max,
-                }),
-              }}
-            >
-              {children}
-            </div>
-          )}
-          renderThumb={({ props }) => (
-            <div
-              {...props}
-              className="w-4 h-4 rounded-full bg-white border-2 border-cyan-500 shadow focus:outline-none focus:ring-2 focus:ring-cyan-300"
-            />
-          )}
+          renderTrack={({ props, children }) => {
+            const { key, ...trackProps } = props
+            return (
+              <div
+                key={key}
+                {...trackProps}
+                className="h-1.5 w-full rounded-full"
+                style={{
+                  ...trackProps.style,
+                  background: getTrackBackground({
+                    values: safeValues,
+                    colors: ["#e2e8f0", "#06b6d4", "#e2e8f0"],
+                    min,
+                    max,
+                  }),
+                }}
+              >
+                {children}
+              </div>
+            )
+          }}
+          renderThumb={({ props }) => {
+            const { key, ...thumbProps } = props
+            return (
+              <div
+                key={key}
+                {...thumbProps}
+                className="w-4 h-4 rounded-full bg-white border-2 border-cyan-500 shadow focus:outline-none focus:ring-2 focus:ring-cyan-300"
+              />
+            )
+          }}
         />
       </div>
     </div>

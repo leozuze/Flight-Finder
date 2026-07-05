@@ -1,7 +1,7 @@
 import { Play } from "lucide-react"
 import { formatDateTime } from "@/utils/flightFormatters"
 
-export default function FlightResultsTable({ flight, origin, destination, status, statusLoading, onCheckStatus }) {
+export default function FlightResultsTable({ flight, origin, destination, status, statusLoading, onCheckStatus, onSelectFlight }) {
   const originLabel = flight.originCode ? `(${flight.originCode}) ${origin}` : origin
   const destinationLabel = flight.destinationCode ? `(${flight.destinationCode}) ${destination}` : destination
 
@@ -36,7 +36,19 @@ export default function FlightResultsTable({ flight, origin, destination, status
                   <span>{flight.airline || ""}</span>
                 </div>
               </td>
-              <td className="px-4 py-3 text-cyan-600 underline">{flight.flightNumber || ""}</td>
+              <td className="px-4 py-3">
+                {flight.flightNumber ? (
+                  <button
+                    type="button"
+                    onClick={() => onSelectFlight?.(flight.flightNumber)}
+                    className="text-cyan-600 underline hover:text-cyan-700"
+                  >
+                    {flight.flightNumber}
+                  </button>
+                ) : (
+                  ""
+                )}
+              </td>
               <td className="px-4 py-3 text-slate-700">{flight.aircraft || ""}</td>
               <td className="px-4 py-3 text-slate-700">
                 {flight.stops === 0

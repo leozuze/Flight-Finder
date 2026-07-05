@@ -3,6 +3,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Search, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import logo from "@/assets/logo.png"
+import AirportAutocomplete from "@/components/AirportAutocomplete"
+
+
+
 
 const languages = [
   { code: "en-US", label: "English (US)" },
@@ -30,7 +34,7 @@ const searchTypes = [
 ]
 
 const searchFieldsConfig = {
-  all: [{ id: "q", placeholder: "Search for flight, tail, airport, or city" }],
+  all: [{ id: "q", placeholder: "Search for airport, or city" }],
   route: [
     { id: "from", placeholder: "From (e.g. KJFK or New York)" },
     { id: "to", placeholder: "To (e.g. KLAX or Los Angeles)" },
@@ -79,7 +83,7 @@ function Marquee({ items }) {
   )
 }
 
-export default function Navbar({ onSearch }) {
+export default function Navbar({ onSearch , onNavigate }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
@@ -122,10 +126,15 @@ export default function Navbar({ onSearch }) {
 
   const activeFields = searchFieldsConfig[selectedSearchType.key]
 
+const extractCode = (val) => {
+  const match = val.match(/\(([A-Z]{3})\)\s*$/)
+  return match ? match[1] : val.trim()
+}
+
 const handleSubmitSearch = () => {
   if (selectedSearchType.key === "route") {
-    const originVal = searchValues.from
-    const destinationVal = searchValues.to
+    const originVal = extractCode(searchValues.from || "")
+    const destinationVal = extractCode(searchValues.to || "")
     if (!originVal || !destinationVal) {
       alert("Please enter both an origin and destination, e.g. 'Pune to Harare'.")
       return
@@ -140,14 +149,18 @@ const handleSubmitSearch = () => {
     }
     const parts = raw.split(/\s+to\s+/i)
     if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
-      onSearch?.({ type: "route", origin: parts[0].trim(), destination: parts[1].trim() })
+      onSearch?.({
+        type: "route",
+        origin: extractCode(parts[0].trim()),
+        destination: extractCode(parts[1].trim()),
+      })
     } else {
-      onSearch?.({ type: "airport", query: raw })
+      onSearch?.({ type: "airport", query: extractCode(raw) })
     }
 
   } else if (selectedSearchType.key === "airport") {
-    const code = (searchValues.code || "").trim()
-    const city = (searchValues.city || "").trim()
+    const code = extractCode((searchValues.code || "").trim())
+    const city = extractCode((searchValues.city || "").trim())
     if (!code && !city) {
       alert("Please enter an airport code or city, e.g. 'KJFK' or 'New York'.")
       return
@@ -162,7 +175,6 @@ const handleSubmitSearch = () => {
   document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
   setMobileOpen(false)
 }
-
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -255,7 +267,11 @@ const handleSubmitSearch = () => {
           <div className="flex items-center gap-4 h-16">
 
             {/* Logo lockup: image overlaps the tail end of the wordmark */}
-           <a href="#home" className="flex items-center shrink-0 relative">
+            <button
+              type="button"
+              onClick={() => onNavigate?.("home")}
+              className="flex items-center shrink-0 relative"
+            >
               <span
                 className="font-bold text-xl tracking-tight relative z-10"
                 style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-display)" }}
@@ -267,7 +283,7 @@ const handleSubmitSearch = () => {
                 alt="SkyScout"
                 className="h-16 w-auto -ml-7 relative z-0 pointer-events-none"
               />
-            </a>
+            </button>
             {/* Search Bar: type dropdown + dynamic fields + submit */}
             <div
               className="flex-1 hidden md:flex items-stretch h-10 rounded-lg border overflow-visible"
@@ -328,12 +344,12 @@ const handleSubmitSearch = () => {
 
               {/* Dynamic input fields for the selected search type */}
               {activeFields.map((field, i) => (
-                <input
+                <AirportAutocomplete
                   key={field.id}
-                  type="text"
-                  placeholder={field.placeholder}
                   value={searchValues[field.id] || ""}
-                  onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                  onChange={(val) => handleFieldChange(field.id, val)}
+                  onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
+                  placeholder={field.placeholder}
                   className={`flex-1 min-w-0 bg-transparent text-sm outline-none px-3 ${
                     i > 0 ? "border-l" : ""
                   }`}
@@ -411,21 +427,21 @@ const handleSubmitSearch = () => {
                   ))}
                 </select>
 
-                {activeFields.map((field) => (
-                  <input
-                    key={field.id}
-                    type="text"
-                    placeholder={field.placeholder}
-                    value={searchValues[field.id] || ""}
-                    onChange={(e) => handleFieldChange(field.id, e.target.value)}
-                    className="w-full text-sm px-3 py-2.5 outline-none border-t"
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      color: "var(--color-text-primary)",
-                      borderColor: "var(--color-border)",
-                    }}
-                  />
-                ))}
+                  {activeFields.map((field) => (
+                    <AirportAutocomplete
+                      key={field.id}
+                      value={searchValues[field.id] || ""}
+                      onChange={(val) => handleFieldChange(field.id, val)}
+                      onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
+                      placeholder={field.placeholder}
+                      className="w-full text-sm px-3 py-2.5 outline-none border-t"
+                      style={{
+                        background: "rgba(255,255,255,0.05)",
+                        color: "var(--color-text-primary)",
+                        borderColor: "var(--color-border)",
+                      }}
+                    />
+                  ))}
               </div>
             </div>
 

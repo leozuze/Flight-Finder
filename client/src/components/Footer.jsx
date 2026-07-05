@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown } from "lucide-react"
+import logo from "@/assets/logo.png"
 
 const languages = [
   { code: "en-US", label: "English (US)" },
@@ -21,7 +22,7 @@ const languages = [
   { code: "tr", label: "Turkish" },
 ]
 
-export default function Footer() {
+export default function Footer({ onNavigate }) {
   const [langOpen, setLangOpen] = useState(false)
   const [selectedLang, setSelectedLang] = useState(languages[0])
   const langRef = useRef(null)
@@ -43,22 +44,34 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
 
-            {/* Brand blurb */}
-            <div>
+          {/* Brand blurb */}
+          <div>
+            {/* Logo lockup: image overlaps the tail end of the wordmark */}
+            <button
+              type="button"
+              onClick={() => onNavigate?.("home")}
+              className="flex items-center shrink-0 relative"
+            >
               <span
-                className="font-bold text-xl tracking-tight"
+                className="font-bold text-xl tracking-tight relative z-10"
                 style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-display)" }}
               >
                 Sky<span style={{ color: "var(--color-accent)" }}>Scout</span>
               </span>
-              <p
-                className="text-sm mt-3 leading-relaxed"
-                style={{ color: "var(--color-text-secondary)" }}
-              >
-                SkyScout tracks fares around the clock and surfaces the cheapest
-                flights on your route, so you don't have to keep checking.
-              </p>
-            </div>
+              <img
+                src={logo}
+                alt="SkyScout"
+                className="h-16 w-auto -ml-7 relative z-0 pointer-events-none"
+              />
+            </button>
+            <p
+              className="text-sm mt-3 leading-relaxed"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              SkyScout tracks fares around the clock and surfaces the cheapest
+              flights on your route, so you don't have to keep checking.
+            </p>
+          </div>
 
             {/* Quick links */}
             <div>
@@ -69,23 +82,31 @@ export default function Footer() {
                 QUICK LINKS
               </h4>
               <ul className="space-y-2.5 text-sm">
+                              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onNavigate?.("home")
+                    // wait a tick for Home to render before scrolling to #search
+                    requestAnimationFrame(() => {
+                      document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
+                    })
+                  }}
+                  className="transition-colors hover:text-white"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Search Flights
+                </button>
+              </li>
                 <li>
-                  <a
-                    href="#search"
-                    className="transition-colors hover:text-white"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Search Flights
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#how-it-works"
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.("how-it-works")}
                     className="transition-colors hover:text-white"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
                     How It Works
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -100,22 +121,24 @@ export default function Footer() {
               </h4>
               <ul className="space-y-2.5 text-sm">
                 <li>
-                  <a
-                    href="/terms"
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.("terms")}
                     className="transition-colors hover:text-white"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
                     Terms of Service
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="/privacy"
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.("privacy")}
                     className="transition-colors hover:text-white"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
                     Privacy Policy
-                  </a>
+                  </button>
                 </li>
                 <li
                   className="text-xs pt-1"

@@ -6,7 +6,7 @@ import { fetchAirportBoard } from "@/api/flightApi"
 
 const CONTAINER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
 
-export default function AirportBoard({ query, onSearch, onBack }) {
+export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSelectFlight }) {
   const [tab, setTab] = useState("arrivals")
   const [board, setBoard] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -38,7 +38,7 @@ export default function AirportBoard({ query, onSearch, onBack }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900">
-      <Navbar onSearch={onSearch} />
+      <Navbar onSearch={onSearch} onNavigate={onNavigate} />
 
       <div className={`flex-1 pt-28 pb-16 ${CONTAINER}`}>
         <button type="button" onClick={onBack} className="text-sm text-cyan-600 underline mb-4">
@@ -86,12 +86,13 @@ export default function AirportBoard({ query, onSearch, onBack }) {
             <ArrivalsDeparturesTable
               flights={tab === "arrivals" ? board.arrivals : board.departures}
               mode={tab}
+              onSelectFlight={onSelectFlight}
             />
           )}
         </div>
       </div>
 
-      <Footer />
+      <Footer onNavigate={onNavigate} />
     </div>
   )
 }

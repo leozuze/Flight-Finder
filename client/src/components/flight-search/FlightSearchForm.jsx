@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeftRight, Search, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import AirportAutocomplete from "@/components/AirportAutocomplete"
 
 const currencies = ["GBP", "USD", "EUR", "INR", "AUD", "CAD"]
 
@@ -46,11 +47,11 @@ export default function FlightSearchForm({
       <div className="flex flex-col sm:flex-row items-stretch gap-3">
         <div className="flex-1">
           <label className="text-xs font-semibold text-slate-400 tracking-wide">ORIGIN</label>
-          <input
-            type="text"
-            placeholder="e.g. KJFK or New York"
+          <AirportAutocomplete
             value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
+            onChange={setOrigin}
+            onSelect={(airport) => setOrigin(`${airport.city || airport.name} (${airport.iata})`)}
+            placeholder="e.g. KJFK or New York"
             className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
           />
         </div>
@@ -66,11 +67,11 @@ export default function FlightSearchForm({
 
         <div className="flex-1">
           <label className="text-xs font-semibold text-slate-400 tracking-wide">DESTINATION</label>
-          <input
-            type="text"
-            placeholder="e.g. KLAX or Los Angeles"
+          <AirportAutocomplete
             value={destination}
-            onChange={(e) => setDestination(e.target.value)}
+            onChange={setDestination}
+            onSelect={(airport) => setDestination(`${airport.city || airport.name} (${airport.iata})`)}
+            placeholder="e.g. KLAX or Los Angeles"
             className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
           />
         </div>

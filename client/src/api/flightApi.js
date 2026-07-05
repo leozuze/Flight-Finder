@@ -36,3 +36,11 @@ export async function fetchAirportBoard(airport) {
   })
   return res.json()
 }
+export async function fetchFlightDetail(ident) {
+  const res = await fetch(`${API_BASE}/flight`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ident }),
+  })
+  return res.json()
+}

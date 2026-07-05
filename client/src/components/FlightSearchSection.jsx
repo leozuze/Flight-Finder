@@ -4,7 +4,15 @@ import FlightResultsTable from "@/components/flight-search/FlightResultsTable"
 import OtherFlightsSection from "@/components/flight-search/OtherFlightsSection"
 import { searchFlights, quickSearchFlights, checkFlightStatus } from "@/api/flightApi"
 
-export default function FlightSearchSection({ externalQuery }) {
+// Same logic as Navbar.jsx: pulls "KJFK" out of "New York (KJFK)".
+// Falls back to the trimmed raw value if there's no parenthesized code,
+// so plain city-name typing still works.
+const extractCode = (val) => {
+  const match = (val || "").match(/\(([A-Z]{3})\)\s*$/)
+  return match ? match[1] : (val || "").trim()
+}
+
+export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
   const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
   const [tripType, setTripType] = useState("round")
@@ -35,6 +43,14 @@ export default function FlightSearchSection({ externalQuery }) {
     e.preventDefault()
     if (!origin || !destination || !budget || !email) return
 
+    const originCode = extractCode(origin)
+    const destinationCode = extractCode(destination)
+
+    if (!originCode || !destinationCode) {
+      setError("Please select a valid origin and destination.")
+      return
+    }
+
     setLoading(true)
     setResults(null)
     setError(null)
@@ -43,7 +59,7 @@ export default function FlightSearchSection({ externalQuery }) {
 
     try {
       const data = await searchFlights({
-        origin, destination, tripType,
+        origin: originCode, destination: destinationCode, tripType,
         budget: Number(budget), currency, email,
         adults: Number(adults), travelClass,
       })
@@ -84,7 +100,7 @@ export default function FlightSearchSection({ externalQuery }) {
     setResults(null)
     setError(null)
     try {
-      const data = await quickSearchFlights(o, d)
+      const data = await quickSearchFlights(extractCode(o), extractCode(d))
       if (data.error) setQuickError(data.error)
       else setQuickResults(data)
     } catch {
@@ -131,6 +147,8 @@ export default function FlightSearchSection({ externalQuery }) {
             destination={destination}
             originCode={quickResults.originCode}
             destinationCode={quickResults.destinationCode}
+            onSelectFlight={onSelectFlight}
+
             title="Flight Results"
           />
         )}
@@ -157,6 +175,7 @@ export default function FlightSearchSection({ externalQuery }) {
                 status={status}
                 statusLoading={statusLoading}
                 onCheckStatus={checkStatus}
+                onSelectFlight={onSelectFlight}
               />
             )}
 
@@ -168,6 +187,7 @@ export default function FlightSearchSection({ externalQuery }) {
                   destination={destination}
                   originCode={results.bestDeal.originCode}
                   destinationCode={results.bestDeal.destinationCode}
+                  onSelectFlight={onSelectFlight}
                 />
               </div>
             )}

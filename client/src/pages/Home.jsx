@@ -5,7 +5,7 @@ import Footer from "@/components/Footer"
 
 const CONTAINER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
 
-export default function Home({ startingQuery, onSearch }) {
+export default function Home({ startingQuery, onSearch, onNavigate , onSelectFlight }) {
   const [navQuery, setNavQuery] = useState(startingQuery || null)
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function Home({ startingQuery, onSearch }) {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <Navbar onSearch={onSearch} />
+      <Navbar onSearch={onSearch} onNavigate={onNavigate} />
 
       <div className={`pt-28 text-center ${CONTAINER}`}>
         <div className="max-w-2xl mx-auto">
@@ -28,11 +28,11 @@ export default function Home({ startingQuery, onSearch }) {
       </div>
 
       <div className={`mt-8 ${CONTAINER}`}>
-        <FlightSearchSection externalQuery={navQuery} />
+        <FlightSearchSection externalQuery={navQuery} onSelectFlight={onSelectFlight} />
       </div>
 
       <div className="mt-16">
-        <Footer />
+        <Footer onNavigate={onNavigate} />
       </div>
     </div>
   )
