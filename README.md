@@ -339,4 +339,4 @@ This project is for educational purposes. Flight prices and availability are sub
 
 ---
 
-Made with ✈️ by [jayzcreative](https://github.com/jayzcreative)
+Made with love by [jayzcreative](https://github.com/jayzcreative)
