@@ -13,6 +13,7 @@ A full-stack flight deal tracker that searches for cheap flights and notifies us
 - 💰 **Price Comparison**: Compare the latest fare against the stored lowest price
 - 📊 **Data Management**: Update destination pricing in Google Sheets via Sheety
 - 📧 **Multi-Channel Alerts**: Send notifications via email 
+- 🌍 **Multi-Language Support**: Translate flight information using DeepL API (frontend)
 - ⚙️ **Environment Configuration**: Secure API keys and endpoints using `.env`
 - **Modern UI**: React + Vite frontend for easy flight browsing
 - **REST API**: Flask-based API for seamless integration
@@ -31,9 +32,13 @@ A full-stack flight deal tracker that searches for cheap flights and notifies us
 - **SMTP** - Email notifications
 
 ### Frontend
-- **React 18** - UI framework
+- **React 19** - UI framework
 - **Vite** - Build tool & dev server
 - **JavaScript/JSX** - Component development
+- **TailwindCSS** - Styling framework
+- **i18next** - Internationalization (i18n)
+- **DeepL Node** - Language translation services
+- **Shadcn UI** - Pre-built components
 
 ## Project Structure
 
@@ -70,6 +75,9 @@ Flight-Finder/
     ├── public/                        # Static assets
     │   └── [favicon, images, etc.]
     │
+    ├── scripts/                       # Build and utility scripts
+    │   └── [build scripts]
+    │
     └── src/                           # React components & logic
         ├── api/                       # API client functions
         │   ├── flights.js             # Flight API calls
@@ -91,6 +99,10 @@ Flight-Finder/
         │   ├── airports.json          # Airport codes and data
         │   └── [other data files]
         │
+        ├── i18n/                      # Internationalization (i18n)
+        │   ├── i18n.js                # i18next configuration
+        │   └── locales/               # Translation files (en, es, fr, etc.)
+        │
         ├── pages/                     # Page-level components
         │   ├── SearchPage.jsx         # Main search interface
         │   ├── DealsPage.jsx          # Featured deals view
@@ -103,6 +115,7 @@ Flight-Finder/
         │   └── [other libraries]
         │
         ├── utils/                     # Utility functions
+        │   ├── flightFormatters.js    # Flight data formatting helpers
         │   ├── constants.js           # Application constants
         │   ├── validators.js          # Input validation
         │   └── [other utilities]
@@ -187,13 +200,24 @@ Flight-Finder/
    npm install
    ```
 
-3. **Start development server**
+3. **Configure environment variables**
+   
+   Create a `.env.local` file in the `client` directory:
+   ```env
+   # DeepL Configuration (for frontend translation)
+   VITE_DEEPL_KEY=your_deepl_api_key
+   
+   # Backend API URL
+   VITE_API_URL=http://localhost:5000/api
+   ```
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
    The client will be available at `http://localhost:5173`
 
-4. **Build for production**
+5. **Build for production**
    ```bash
    npm run build
    ```
@@ -207,6 +231,13 @@ The backend integrates with SerpAPI and AviationStack to:
 3. Compare flight options and identify the cheapest fares
 4. Update Google Sheets with price changes via Sheety
 5. Send email notifications when prices drop below thresholds
+
+### Multi-Language Support
+The frontend uses:
+- **i18next** for managing translations
+- **DeepL API** for dynamic language translation
+- **Browser language detection** for automatic language selection
+- Supports multiple languages with locale-specific files
 
 ### REST API (api.py)
 Provides endpoints for:
@@ -230,11 +261,16 @@ Provides endpoints for:
    - Comprehensive flight database
    - Free tier available with limitations
 
-3. **Sheety** - Get from [sheety.co](https://sheety.co)
+3. **DeepL** - Get from [deepl.com](https://www.deepl.com) (Frontend only)
+   - API for language translation
+   - Free tier available (500,000 characters/month)
+   - Supports 29+ languages
+
+4. **Sheety** - Get from [sheety.co](https://sheety.co)
    - Connects to your Google Sheet
    - Stores destinations and prices
 
-4. **Gmail** - Use your Gmail account
+5. **Gmail** - Use your Gmail account
    - Generate [App Password](https://myaccount.google.com/apppasswords) for SMTP
 
 ## Usage Examples
@@ -255,6 +291,7 @@ The frontend allows users to:
 - Define price thresholds
 - Choose notification preferences
 - View price history
+- Translate flight information to preferred languages
 
 ## Customization
 
@@ -267,13 +304,16 @@ ORIGIN_AIRPORT=JFK  # Instead of LHR
 ### Modify Notification Logic
 Edit `server/src/notification_manager.py` to customize alerts
 
+### Add Language Support
+Add new locale files in `client/src/i18n/locales/` and configure in `client/src/i18n/i18n.js`
+
 ### Style the Frontend
-Update CSS/components in `client/src/` for custom branding
+Update CSS/components in `client/src/` or modify TailwindCSS configuration for custom branding
 
 ## Security Notes
 
-- ⚠️ **Never commit `.env` file** to version control
-- Add `.env` to `.gitignore` (already done)
+- ⚠️ **Never commit `.env` files** to version control
+- Add `.env` and `.env.local` to `.gitignore` (already done)
 - Use strong API keys and tokens
 - Rotate credentials periodically
 - Don't share `.env` details in public repositories
@@ -295,14 +335,20 @@ pip install -r server/requirements.txt
 ### Frontend not connecting to backend
 - Verify Flask API is running (`python server/api.py`)
 - Check CORS configuration in `api.py`
-- Confirm API URL matches in frontend code
+- Confirm API URL matches in frontend code and `.env.local`
+
+### Translation not working
+- Verify DeepL API key is correct in `.env.local`
+- Check browser console for errors
+- Ensure i18next configuration in `client/src/i18n/i18n.js` is correct
 
 ## Development Workflow
 
 1. **Backend development**: Edit files in `server/src/`
 2. **Frontend development**: Edit files in `client/src/`
-3. **Test changes locally** before committing
-4. **Push to main** when ready for production
+3. **Add translations**: Add/update locale files in `client/src/i18n/locales/`
+4. **Test changes locally** before committing
+5. **Push to main** when ready for production
 
 ## Contributing
 
@@ -322,6 +368,8 @@ Contributions are welcome! Please:
 - [ ] Webhook integrations
 - [ ] Dark mode UI
 - [ ] User authentication system
+- [ ] SMS notifications (Twilio integration)
+- [ ] Progressive Web App (PWA) support
 
 ## License
 
