@@ -10,6 +10,7 @@ This is the frontend application for Flight Finder, a full-stack flight deal tra
 - Price threshold settings
 - User notifications preferences
 - Interactive flight booking interface
+- Airport information display
 
 ## Tech Stack
 
@@ -28,6 +29,15 @@ client/
 │   └── [other static files]
 │
 ├── src/                               # React source code
+│   ├── api/                           # API client functions
+│   │   ├── flights.js                 # Flight API calls
+│   │   ├── airports.js                # Airport API calls
+│   │   └── [other API modules]
+│   │
+│   ├── assets/                        # Images and static resources
+│   │   ├── images/                    # Image files
+│   │   └── [other assets]
+│   │
 │   ├── components/                    # Reusable UI components
 │   │   ├── FlightCard.jsx             # Display individual flights
 │   │   ├── SearchBar.jsx              # Flight search input
@@ -35,20 +45,24 @@ client/
 │   │   ├── NotificationSettings.jsx   # User notification preferences
 │   │   └── [other components]
 │   │
+│   ├── data/                          # Data files and constants
+│   │   ├── airports.json              # Airport codes and data
+│   │   └── [other data files]
+│   │
 │   ├── pages/                         # Page-level components
 │   │   ├── SearchPage.jsx             # Main search interface
 │   │   ├── DealsPage.jsx              # Featured deals view
 │   │   ├── SettingsPage.jsx           # User settings
 │   │   └── [other pages]
 │   │
-│   ├── hooks/                         # Custom React hooks
-│   │   ├── useFlights.js              # Flight data fetching logic
-│   │   ├── useDestinations.js         # Destination management
-│   │   └── [other hooks]
+│   ├── lib/                           # Utility libraries
+│   │   ├── hooks.js                   # Custom React hooks
+│   │   ├── formatters.js              # Data formatting helpers
+│   │   └── [other libraries]
 │   │
 │   ├── utils/                         # Utility functions
-│   │   ├── api.js                     # API client functions
-│   │   ├── formatters.js              # Data formatting helpers
+│   │   ├── constants.js               # Application constants
+│   │   ├── validators.js              # Input validation
 │   │   └── [other utilities]
 │   │
 │   ├── App.jsx                        # Main App component & routing
@@ -121,6 +135,11 @@ client/
 - Real-time price updates from backend API (powered by SerpAPI & AviationStack)
 - Sort and filter results
 
+### Airport Information
+- Browse airport codes and details
+- View airport facilities and information
+- Search by airport name or code
+
 ### Destination Management
 - Add/remove flight destination watches
 - Set price alert thresholds
@@ -145,10 +164,10 @@ client/
 
 ### Backend API Connection
 
-Edit API endpoint in `src/utils/api.js`:
+Edit API endpoint in `src/api/flights.js` or `src/utils/constants.js`:
 
 ```javascript
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:5000/api';
 ```
 
 Or set environment variable:
@@ -196,7 +215,7 @@ export default MyComponent;
 ### Using Custom Hooks
 
 ```jsx
-import { useFlights } from '../hooks/useFlights';
+import { useFlights } from '../lib/hooks';
 
 export function FlightList() {
   const { flights, loading, error } = useFlights();
@@ -219,7 +238,7 @@ export function FlightList() {
 ### Fetching Flight Data
 
 ```javascript
-// src/utils/api.js
+// src/api/flights.js
 export async function searchFlights(params) {
   const response = await fetch(`${API_BASE_URL}/flights`, {
     method: 'POST',
@@ -235,6 +254,16 @@ const flights = await searchFlights({
   destination: 'CDG',
   departDate: '2024-12-25'
 });
+```
+
+### Fetching Airport Data
+
+```javascript
+// src/api/airports.js
+export async function getAirportInfo(code) {
+  const response = await fetch(`${API_BASE_URL}/airports/${code}`);
+  return response.json();
+}
 ```
 
 ## Styling
@@ -334,14 +363,19 @@ npm run build
    - Easy to test and maintain
 
 3. **Use hooks for logic**
-   - Custom hooks for reusable logic
+   - Custom hooks in `lib/hooks.js` for reusable logic
    - Keep components readable
 
-4. **Optimize renders**
+4. **Organize API calls**
+   - Keep API calls in `api/` folder
+   - Use consistent naming conventions
+   - Handle errors properly
+
+5. **Optimize renders**
    - Use `React.memo` for expensive components
    - Avoid inline object/array creation in props
 
-5. **Error handling**
+6. **Error handling**
    - Wrap API calls in try/catch
    - Show user-friendly error messages
 
@@ -364,7 +398,7 @@ npm run build
 ### API Connection Issues
 - Verify backend is running on `http://localhost:5000`
 - Check browser console for CORS errors
-- Confirm `.env` variables are set correctly
+- Confirm environment variables are set correctly
 - Ensure SerpAPI and AviationStack credentials are configured in backend
 
 ## Further Resources
@@ -375,6 +409,7 @@ npm run build
 - [ESLint Rules](https://eslint.org/docs/latest/rules/)
 - [SerpAPI Documentation](https://serpapi.com/docs)
 - [AviationStack Documentation](https://aviationstack.com/documentation)
+- [Sheety Documentation](https://sheety.co)
 
 ## License
 
