@@ -5,21 +5,37 @@ import { ChevronDown } from "lucide-react"
 import logo from "@/assets/logo.png"
 
 const languages = [
-  { code: "en-US", label: "English (US)" },
-  { code: "en-GB", label: "English (UK)" },
-  { code: "fr", label: "French" },
-  { code: "es", label: "Spanish" },
-  { code: "pt", label: "Portuguese" },
-  { code: "ar", label: "Arabic" },
-  { code: "zh", label: "Chinese" },
-  { code: "de", label: "German" },
-  { code: "ja", label: "Japanese" },
-  { code: "ru", label: "Russian" },
-  { code: "it", label: "Italian" },
-  { code: "ko", label: "Korean" },
-  { code: "nl", label: "Dutch" },
-  { code: "tr", label: "Turkish" },
+  { code: "en-US", label: "English (US)", country: "us" },
+  { code: "en-GB", label: "English (UK)", country: "gb" },
+  { code: "fr", label: "French", country: "fr" },
+  { code: "es", label: "Spanish", country: "es" },
+  { code: "pt", label: "Portuguese", country: "pt" },
+  { code: "ar", label: "Arabic", country: "sa" },
+  { code: "zh", label: "Chinese", country: "cn" },
+  { code: "de", label: "German", country: "de" },
+  { code: "ja", label: "Japanese", country: "jp" },
+  { code: "ru", label: "Russian", country: "ru" },
+  { code: "it", label: "Italian", country: "it" },
+  { code: "ko", label: "Korean", country: "kr" },
+  { code: "nl", label: "Dutch", country: "nl" },
+  { code: "tr", label: "Turkish", country: "tr" },
 ]
+
+// Small flag image component backed by flagcdn.com — kept identical to the
+// one in Navbar.jsx so both language selectors render consistently.
+function FlagIcon({ country, label }) {
+  return (
+    <img
+      src={`https://flagcdn.com/24x18/${country}.png`}
+      srcSet={`https://flagcdn.com/48x36/${country}.png 2x`}
+      width={20}
+      height={15}
+      alt={label}
+      className="inline-block rounded-[2px] shrink-0"
+      style={{ objectFit: "cover" }}
+    />
+  )
+}
 
 export default function Footer({ onNavigate }) {
   const { t, i18n } = useTranslation()
@@ -171,6 +187,7 @@ export default function Footer({ onNavigate }) {
               onClick={() => setLangOpen(!langOpen)}
               className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-900 transition-colors py-1"
             >
+              <FlagIcon country={selectedLang.country} label={selectedLang.label} />
               <span>{selectedLang.label}</span>
               <ChevronDown
                 className="w-3.5 h-3.5 transition-transform duration-200"
@@ -196,7 +213,10 @@ export default function Footer({ onNavigate }) {
                           lang.code === selectedLang.code ? "text-cyan-600" : "text-slate-600"
                         }`}
                       >
-                        {lang.label}
+                        <span className="flex items-center gap-1.5">
+                          <FlagIcon country={lang.country} label={lang.label} />
+                          <span>{lang.label}</span>
+                        </span>
                         {lang.code === selectedLang.code && (
                           <span className="text-cyan-600">✓</span>
                         )}

@@ -7,21 +7,56 @@ import logo from "@/assets/logo.png"
 import AirportAutocomplete from "@/components/AirportAutocomplete"
 
 const languages = [
-  { code: "en-US", label: "English (US)" },
-  { code: "en-GB", label: "English (UK)" },
-  { code: "fr", label: "French" },
-  { code: "es", label: "Spanish" },
-  { code: "pt", label: "Portuguese" },
-  { code: "ar", label: "Arabic" },
-  { code: "zh", label: "Chinese" },
-  { code: "de", label: "German" },
-  { code: "ja", label: "Japanese" },
-  { code: "ru", label: "Russian" },
-  { code: "it", label: "Italian" },
-  { code: "ko", label: "Korean" },
-  { code: "nl", label: "Dutch" },
-  { code: "tr", label: "Turkish" },
+  { code: "en-US", label: "English (US)", country: "us" },
+  { code: "en-GB", label: "English (UK)", country: "gb" },
+  { code: "fr", label: "French", country: "fr" },
+  { code: "es", label: "Spanish", country: "es" },
+  { code: "pt", label: "Portuguese", country: "pt" },
+  { code: "ar", label: "Arabic", country: "sa" },
+  { code: "zh", label: "Chinese", country: "cn" },
+  { code: "de", label: "German", country: "de" },
+  { code: "ja", label: "Japanese", country: "jp" },
+  { code: "ru", label: "Russian", country: "ru" },
+  { code: "it", label: "Italian", country: "it" },
+  { code: "ko", label: "Korean", country: "kr" },
+  { code: "nl", label: "Dutch", country: "nl" },
+  { code: "tr", label: "Turkish", country: "tr" },
 ]
+
+// Small flag image component backed by flagcdn.com — renders consistently
+// across OS/browsers, unlike emoji flags which Windows shows as letter codes.
+function FlagIcon({ country, label }) {
+  return (
+    <img
+      src={`https://flagcdn.com/24x18/${country}.png`}
+      srcSet={`https://flagcdn.com/48x36/${country}.png 2x`}
+      width={20}
+      height={15}
+      alt={label}
+      className="inline-block rounded-[2px] shrink-0"
+      style={{ objectFit: "cover" }}
+    />
+  )
+}
+
+// Representative timezone for each supported language, used to show a
+// live local time next to the language dropdown.
+const languageTimeZones = {
+  "en-US": "America/New_York",
+  "en-GB": "Europe/London",
+  fr: "Europe/Paris",
+  es: "Europe/Madrid",
+  pt: "Europe/Lisbon",
+  ar: "Asia/Dubai",
+  zh: "Asia/Shanghai",
+  de: "Europe/Berlin",
+  ja: "Asia/Tokyo",
+  ru: "Europe/Moscow",
+  it: "Europe/Rome",
+  ko: "Asia/Seoul",
+  nl: "Europe/Amsterdam",
+  tr: "Europe/Istanbul",
+}
 
 export default function Navbar({ onSearch, onNavigate }) {
   const { t, i18n } = useTranslation()
@@ -30,8 +65,16 @@ export default function Navbar({ onSearch, onNavigate }) {
   const [langOpen, setLangOpen] = useState(false)
   const [searchTypeOpen, setSearchTypeOpen] = useState(false)
   const [searchValues, setSearchValues] = useState({})
+  const [now, setNow] = useState(new Date())
   const langRef = useRef(null)
   const searchTypeRef = useRef(null)
+
+  // Tick every second so the time shown next to the language dropdown
+  // stays live.
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
 
   const searchTypes = [
     { key: "all", label: t("navbar.search_type_all") },
@@ -62,6 +105,14 @@ export default function Navbar({ onSearch, onNavigate }) {
   const [selectedSearchType, setSelectedSearchType] = useState(searchTypes[0])
 
   const selectedLang = languages.find((l) => l.code === i18n.language) || languages[0]
+
+  const timeZone = languageTimeZones[selectedLang.code] || "UTC"
+  const formattedTime = new Intl.DateTimeFormat(selectedLang.code, {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone,
+    timeZoneName: "short",
+  }).format(now)
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -175,7 +226,7 @@ export default function Navbar({ onSearch, onNavigate }) {
                 className="flex items-center gap-1.5 py-1"
                 style={{ color: "var(--color-text-secondary)" }}
               >
-                14:32 GMT
+                {formattedTime}
               </span>
 
               {/* Language Dropdown */}
@@ -184,7 +235,10 @@ export default function Navbar({ onSearch, onNavigate }) {
                   onClick={() => setLangOpen(!langOpen)}
                   className="flex items-center gap-1.5 hover:text-white transition-colors py-1"
                 >
-                  <span>{selectedLang.label}</span>
+                  <span className="flex items-center gap-1.5">
+                    <FlagIcon country={selectedLang.country} label={selectedLang.label} />
+                    <span>{selectedLang.label}</span>
+                  </span>
                   <ChevronDown
                     className="w-3 h-3 transition-transform duration-200"
                     style={{ transform: langOpen ? "rotate(180deg)" : "rotate(0deg)" }}
@@ -217,7 +271,10 @@ export default function Navbar({ onSearch, onNavigate }) {
                                   : "var(--color-text-secondary)",
                             }}
                           >
-                            {lang.label}
+                            <span className="flex items-center gap-1.5">
+                              <FlagIcon country={lang.country} label={lang.label} />
+                              <span>{lang.label}</span>
+                            </span>
                             {lang.code === selectedLang.code && (
                               <span style={{ color: "var(--color-accent)" }}>✓</span>
                             )}
