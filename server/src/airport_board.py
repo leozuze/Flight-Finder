@@ -63,7 +63,8 @@ class AirportBoard:
 
     def get_flight(self, flight_iata):
         """Method to look up a single flight by flight number, e.g. 'KQ706'."""
-        results = self._get({"flight_iata": flight_iata})
+        normalized = flight_iata.replace(" ", "").upper().strip()
+        results = self._get({"flight_iata": normalized})
         return self._normalize(results[0], "flight") if results else None
 
     @staticmethod
