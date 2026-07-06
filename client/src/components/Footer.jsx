@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import logo from "@/assets/logo.png"
@@ -11,8 +12,6 @@ const languages = [
   { code: "pt", label: "Portuguese" },
   { code: "ar", label: "Arabic" },
   { code: "zh", label: "Chinese" },
-  { code: "hi", label: "Hindi" },
-  { code: "sw", label: "Swahili" },
   { code: "de", label: "German" },
   { code: "ja", label: "Japanese" },
   { code: "ru", label: "Russian" },
@@ -23,9 +22,11 @@ const languages = [
 ]
 
 export default function Footer({ onNavigate }) {
+  const { t, i18n } = useTranslation()
   const [langOpen, setLangOpen] = useState(false)
-  const [selectedLang, setSelectedLang] = useState(languages[0])
   const langRef = useRef(null)
+
+  const selectedLang = languages.find((l) => l.code === i18n.language) || languages[0]
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -36,6 +37,11 @@ export default function Footer({ onNavigate }) {
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+
+  const handleLanguageSelect = (lang) => {
+    i18n.changeLanguage(lang.code)
+    setLangOpen(false)
+  }
 
   return (
     <>
@@ -68,8 +74,7 @@ export default function Footer({ onNavigate }) {
               className="text-sm mt-3 leading-relaxed"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              SkyScout tracks fares around the clock and surfaces the cheapest
-              flights on your route, so you don't have to keep checking.
+              {t("footer.brand_blurb")}
             </p>
           </div>
 
@@ -79,25 +84,24 @@ export default function Footer({ onNavigate }) {
                 className="text-xs font-semibold tracking-wide mb-4"
                 style={{ color: "var(--color-text-primary)" }}
               >
-                QUICK LINKS
+                {t("footer.quick_links")}
               </h4>
               <ul className="space-y-2.5 text-sm">
-                              <li>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onNavigate?.("home")
-                    // wait a tick for Home to render before scrolling to #search
-                    requestAnimationFrame(() => {
-                      document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
-                    })
-                  }}
-                  className="transition-colors hover:text-white"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  Search Flights
-                </button>
-              </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onNavigate?.("home")
+                      requestAnimationFrame(() => {
+                        document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
+                      })
+                    }}
+                    className="transition-colors hover:text-white"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    {t("common.search_flights")}
+                  </button>
+                </li>
                 <li>
                   <button
                     type="button"
@@ -105,7 +109,7 @@ export default function Footer({ onNavigate }) {
                     className="transition-colors hover:text-white"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
-                    How It Works
+                    {t("footer.how_it_works")}
                   </button>
                 </li>
               </ul>
@@ -117,7 +121,7 @@ export default function Footer({ onNavigate }) {
                 className="text-xs font-semibold tracking-wide mb-4"
                 style={{ color: "var(--color-text-primary)" }}
               >
-                LEGAL & TRUST
+                {t("footer.legal_trust")}
               </h4>
               <ul className="space-y-2.5 text-sm">
                 <li>
@@ -127,7 +131,7 @@ export default function Footer({ onNavigate }) {
                     className="transition-colors hover:text-white"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
-                    Terms of Service
+                    {t("footer.terms_of_service")}
                   </button>
                 </li>
                 <li>
@@ -137,14 +141,14 @@ export default function Footer({ onNavigate }) {
                     className="transition-colors hover:text-white"
                     style={{ color: "var(--color-text-secondary)" }}
                   >
-                    Privacy Policy
+                    {t("footer.privacy_policy")}
                   </button>
                 </li>
                 <li
                   className="text-xs pt-1"
                   style={{ color: "var(--color-text-muted)" }}
                 >
-                  Flight results powered by Google Flights, via SerpApi.
+                  {t("footer.powered_by")}
                 </li>
               </ul>
             </div>
@@ -158,7 +162,7 @@ export default function Footer({ onNavigate }) {
 
           {/* Copyright */}
           <div className="text-xs text-slate-400 order-2 sm:order-1">
-            © 2026 SkyScout. All rights reserved.
+            {t("common.copyright")}
           </div>
 
           {/* Language selector */}
@@ -187,10 +191,7 @@ export default function Footer({ onNavigate }) {
                     {languages.map((lang) => (
                       <button
                         key={lang.code}
-                        onClick={() => {
-                          setSelectedLang(lang)
-                          setLangOpen(false)
-                        }}
+                        onClick={() => handleLanguageSelect(lang)}
                         className={`w-full text-left px-3 py-2 text-xs hover:bg-slate-50 transition-colors flex items-center justify-between ${
                           lang.code === selectedLang.code ? "text-cyan-600" : "text-slate-600"
                         }`}

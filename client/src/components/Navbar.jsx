@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Search, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import logo from "@/assets/logo.png"
 import AirportAutocomplete from "@/components/AirportAutocomplete"
-
-
-
 
 const languages = [
   { code: "en-US", label: "English (US)" },
@@ -16,8 +14,6 @@ const languages = [
   { code: "pt", label: "Portuguese" },
   { code: "ar", label: "Arabic" },
   { code: "zh", label: "Chinese" },
-  { code: "hi", label: "Hindi" },
-  { code: "sw", label: "Swahili" },
   { code: "de", label: "German" },
   { code: "ja", label: "Japanese" },
   { code: "ru", label: "Russian" },
@@ -27,72 +23,45 @@ const languages = [
   { code: "tr", label: "Turkish" },
 ]
 
-const searchTypes = [
-  { key: "all", label: "All" },
-  { key: "route", label: "Route" },
-  { key: "airport", label: "Airport" },
-]
-
-const searchFieldsConfig = {
-  all: [{ id: "q", placeholder: "Search for airport, or city" }],
-  route: [
-    { id: "from", placeholder: "From (e.g. KJFK or New York)" },
-    { id: "to", placeholder: "To (e.g. KLAX or Los Angeles)" },
-  ],
-  airport: [
-    { id: "code", placeholder: "Airport Code (e.g. KJFK)" },
-    { id: "city", placeholder: "Airport City (e.g. New York)" },
-  ],
-}
-
-const marqueeMessages = [
-  "Never miss a fare drop.",
-  "Cheap flights, found for you.",
-  "Deals before they disappear.",
-  "Smart fares. Zero effort.",
-  "Track fares. Book smarter.",
-]
-
-function Marquee({ items }) {
-  const loopItems = [...items, ...items] // duplicated for seamless loop
-
-  return (
-    <div className="relative overflow-hidden flex-1 h-full flex items-center">
-      <motion.div
-        className="flex items-center gap-8 whitespace-nowrap"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 22, ease: "linear", repeat: Infinity }}
-      >
-        {loopItems.map((msg, i) => (
-          <span key={i} className="flex items-center gap-8">
-            <span>{msg}</span>
-            <span style={{ color: "var(--color-accent)" }}>•</span>
-          </span>
-        ))}
-      </motion.div>
-      {/* fade edges so text doesn't hard-cut */}
-      <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-8"
-        style={{ background: "linear-gradient(to right, var(--color-bg-secondary), transparent)" }}
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-8"
-        style={{ background: "linear-gradient(to left, var(--color-bg-secondary), transparent)" }}
-      />
-    </div>
-  )
-}
-
-export default function Navbar({ onSearch , onNavigate }) {
+export default function Navbar({ onSearch, onNavigate }) {
+  const { t, i18n } = useTranslation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const [selectedLang, setSelectedLang] = useState(languages[0])
   const [searchTypeOpen, setSearchTypeOpen] = useState(false)
-  const [selectedSearchType, setSelectedSearchType] = useState(searchTypes[0])
   const [searchValues, setSearchValues] = useState({})
   const langRef = useRef(null)
   const searchTypeRef = useRef(null)
+
+  const searchTypes = [
+    { key: "all", label: t("navbar.search_type_all") },
+    { key: "route", label: t("navbar.search_type_route") },
+    { key: "airport", label: t("navbar.search_type_airport") },
+  ]
+
+  const searchFieldsConfig = {
+    all: [{ id: "q", placeholder: t("navbar.placeholder_all") }],
+    route: [
+      { id: "from", placeholder: t("navbar.placeholder_from") },
+      { id: "to", placeholder: t("navbar.placeholder_to") },
+    ],
+    airport: [
+      { id: "code", placeholder: t("navbar.placeholder_airport_code") },
+      { id: "city", placeholder: t("navbar.placeholder_airport_city") },
+    ],
+  }
+
+  const marqueeMessages = [
+    t("navbar.marquee_1"),
+    t("navbar.marquee_2"),
+    t("navbar.marquee_3"),
+    t("navbar.marquee_4"),
+    t("navbar.marquee_5"),
+  ]
+
+  const [selectedSearchType, setSelectedSearchType] = useState(searchTypes[0])
+
+  const selectedLang = languages.find((l) => l.code === i18n.language) || languages[0]
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -124,57 +93,63 @@ export default function Navbar({ onSearch , onNavigate }) {
     setSearchValues((prev) => ({ ...prev, [id]: value }))
   }
 
-  const activeFields = searchFieldsConfig[selectedSearchType.key]
-
-const extractCode = (val) => {
-  const match = val.match(/\(([A-Z]{3})\)\s*$/)
-  return match ? match[1] : val.trim()
-}
-
-const handleSubmitSearch = () => {
-  if (selectedSearchType.key === "route") {
-    const originVal = extractCode(searchValues.from || "")
-    const destinationVal = extractCode(searchValues.to || "")
-    if (!originVal || !destinationVal) {
-      alert("Please enter both an origin and destination, e.g. 'Pune to Harare'.")
-      return
-    }
-    onSearch?.({ type: "route", origin: originVal, destination: destinationVal })
-
-  } else if (selectedSearchType.key === "all") {
-    const raw = (searchValues.q || "").trim()
-    if (!raw) {
-      alert("Please enter a route, airport, or city, e.g. 'Pune to Harare' or 'KJFK'.")
-      return
-    }
-    const parts = raw.split(/\s+to\s+/i)
-    if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
-      onSearch?.({
-        type: "route",
-        origin: extractCode(parts[0].trim()),
-        destination: extractCode(parts[1].trim()),
-      })
-    } else {
-      onSearch?.({ type: "airport", query: extractCode(raw) })
-    }
-
-  } else if (selectedSearchType.key === "airport") {
-    const code = extractCode((searchValues.code || "").trim())
-    const city = extractCode((searchValues.city || "").trim())
-    if (!code && !city) {
-      alert("Please enter an airport code or city, e.g. 'KJFK' or 'New York'.")
-      return
-    }
-    onSearch?.({ type: "airport", query: code || city, code, city })
-
-  } else {
-    alert("This search type isn't available yet — try 'Route', 'All', or 'Airport'.")
-    return
+  const handleLanguageSelect = (lang) => {
+    i18n.changeLanguage(lang.code)
+    setLangOpen(false)
   }
 
-  document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
-  setMobileOpen(false)
-}
+  const activeFields = searchFieldsConfig[selectedSearchType.key]
+
+  const extractCode = (val) => {
+    const match = val.match(/\(([A-Z]{3})\)\s*$/)
+    return match ? match[1] : val.trim()
+  }
+
+  const handleSubmitSearch = () => {
+    if (selectedSearchType.key === "route") {
+      const originVal = extractCode(searchValues.from || "")
+      const destinationVal = extractCode(searchValues.to || "")
+      if (!originVal || !destinationVal) {
+        alert(t("navbar.alert_route_missing"))
+        return
+      }
+      onSearch?.({ type: "route", origin: originVal, destination: destinationVal })
+
+    } else if (selectedSearchType.key === "all") {
+      const raw = (searchValues.q || "").trim()
+      if (!raw) {
+        alert(t("navbar.alert_all_missing"))
+        return
+      }
+      const parts = raw.split(/\s+to\s+/i)
+      if (parts.length === 2 && parts[0].trim() && parts[1].trim()) {
+        onSearch?.({
+          type: "route",
+          origin: extractCode(parts[0].trim()),
+          destination: extractCode(parts[1].trim()),
+        })
+      } else {
+        onSearch?.({ type: "airport", query: extractCode(raw) })
+      }
+
+    } else if (selectedSearchType.key === "airport") {
+      const code = extractCode((searchValues.code || "").trim())
+      const city = extractCode((searchValues.city || "").trim())
+      if (!code && !city) {
+        alert(t("navbar.alert_airport_missing"))
+        return
+      }
+      onSearch?.({ type: "airport", query: code || city, code, city })
+
+    } else {
+      alert(t("navbar.alert_type_unavailable"))
+      return
+    }
+
+    document.getElementById("search")?.scrollIntoView({ behavior: "smooth" })
+    setMobileOpen(false)
+  }
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -233,10 +208,7 @@ const handleSubmitSearch = () => {
                         {languages.map((lang) => (
                           <button
                             key={lang.code}
-                            onClick={() => {
-                              setSelectedLang(lang)
-                              setLangOpen(false)
-                            }}
+                            onClick={() => handleLanguageSelect(lang)}
                             className="w-full text-left px-3 py-2 text-xs hover:bg-white/10 transition-colors flex items-center justify-between"
                             style={{
                               color:
@@ -411,7 +383,7 @@ const handleSubmitSearch = () => {
                   value={selectedSearchType.key}
                   onChange={(e) =>
                     handleSearchTypeSelect(
-                      searchTypes.find((t) => t.key === e.target.value)
+                      searchTypes.find((type) => type.key === e.target.value)
                     )
                   }
                   className="w-full text-sm px-3 py-2.5 outline-none"
@@ -427,21 +399,21 @@ const handleSubmitSearch = () => {
                   ))}
                 </select>
 
-                  {activeFields.map((field) => (
-                    <AirportAutocomplete
-                      key={field.id}
-                      value={searchValues[field.id] || ""}
-                      onChange={(val) => handleFieldChange(field.id, val)}
-                      onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
-                      placeholder={field.placeholder}
-                      className="w-full text-sm px-3 py-2.5 outline-none border-t"
-                      style={{
-                        background: "rgba(255,255,255,0.05)",
-                        color: "var(--color-text-primary)",
-                        borderColor: "var(--color-border)",
-                      }}
-                    />
-                  ))}
+                {activeFields.map((field) => (
+                  <AirportAutocomplete
+                    key={field.id}
+                    value={searchValues[field.id] || ""}
+                    onChange={(val) => handleFieldChange(field.id, val)}
+                    onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
+                    placeholder={field.placeholder}
+                    className="w-full text-sm px-3 py-2.5 outline-none border-t"
+                    style={{
+                      background: "rgba(255,255,255,0.05)",
+                      color: "var(--color-text-primary)",
+                      borderColor: "var(--color-border)",
+                    }}
+                  />
+                ))}
               </div>
             </div>
 
@@ -452,12 +424,42 @@ const handleSubmitSearch = () => {
                 className="w-full rounded-full text-white font-medium"
                 style={{ background: "var(--color-accent)" }}
               >
-                Find Flights
+                {t("common.search_flights")}
               </Button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </motion.header>
+  )
+}
+
+function Marquee({ items }) {
+  const loopItems = [...items, ...items] // duplicated for seamless loop
+
+  return (
+    <div className="relative overflow-hidden flex-1 h-full flex items-center">
+      <motion.div
+        className="flex items-center gap-8 whitespace-nowrap"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 22, ease: "linear", repeat: Infinity }}
+      >
+        {loopItems.map((msg, i) => (
+          <span key={i} className="flex items-center gap-8">
+            <span>{msg}</span>
+            <span style={{ color: "var(--color-accent)" }}>•</span>
+          </span>
+        ))}
+      </motion.div>
+      {/* fade edges so text doesn't hard-cut */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 w-8"
+        style={{ background: "linear-gradient(to right, var(--color-bg-secondary), transparent)" }}
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 w-8"
+        style={{ background: "linear-gradient(to left, var(--color-bg-secondary), transparent)" }}
+      />
+    </div>
   )
 }

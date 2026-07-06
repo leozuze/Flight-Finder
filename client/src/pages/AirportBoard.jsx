@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import ArrivalsDeparturesTable from "@/components/airport-board/ArrivalsDeparturesTable"
@@ -7,6 +8,7 @@ import { fetchAirportBoard } from "@/api/flightApi"
 const CONTAINER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
 
 export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSelectFlight }) {
+  const { t } = useTranslation()
   const [tab, setTab] = useState("arrivals")
   const [board, setBoard] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -27,14 +29,14 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
         else setBoard(data)
       })
       .catch(() => {
-        if (!cancelled) setError("Something went wrong reaching the airport service. Please try again.")
+        if (!cancelled) setError(t("airportBoard.error_generic"))
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
       })
 
     return () => { cancelled = true }
-  }, [query])
+  }, [query, t])
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900">
@@ -42,29 +44,29 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
 
       <div className={`flex-1 pt-28 pb-16 ${CONTAINER}`}>
         <button type="button" onClick={onBack} className="text-sm text-cyan-600 underline mb-4">
-          ← Back to search
+          ← {t("common.back_to_search")}
         </button>
 
         <h1 className="text-2xl font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-          {board?.airportName || query?.query || "Airport"}
+          {board?.airportName || query?.query || t("airportBoard.default_title")}
           {board?.airportCode ? ` (${board.airportCode})` : ""}
         </h1>
         {board?.city && <p className="mt-1 text-slate-500 text-sm">{board.city}</p>}
 
         <div className="mt-6 flex gap-2">
           {[
-            { key: "arrivals", label: "Arrivals" },
-            { key: "departures", label: "Departures" },
-          ].map((t) => (
+            { key: "arrivals", label: t("airportBoard.arrivals") },
+            { key: "departures", label: t("airportBoard.departures") },
+          ].map((tItem) => (
             <button
-              key={t.key}
+              key={tItem.key}
               type="button"
-              onClick={() => setTab(t.key)}
+              onClick={() => setTab(tItem.key)}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                tab === t.key ? "bg-cyan-500 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                tab === tItem.key ? "bg-cyan-500 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
               }`}
             >
-              {t.label}
+              {tItem.label}
             </button>
           ))}
         </div>
@@ -72,7 +74,7 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
         <div className="mt-4">
           {loading && (
             <div className="text-center text-slate-400 py-10 animate-pulse">
-              Loading the flight board...
+              {t("airportBoard.loading")}
             </div>
           )}
 

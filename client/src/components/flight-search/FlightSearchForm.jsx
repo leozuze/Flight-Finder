@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeftRight, Search, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -19,39 +20,43 @@ export default function FlightSearchForm({
   onSubmit,
   onSwap,
 }) {
+  const { t } = useTranslation()
+
+  const tripTypes = [
+    { key: "round", label: t("searchForm.round_trip") },
+    { key: "oneway", label: t("searchForm.one_way") },
+  ]
+
   return (
     <form
       onSubmit={onSubmit}
       className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 sm:p-8 space-y-5"
     >
       <div className="flex gap-2">
-        {[
-          { key: "round", label: "Round Trip" },
-          { key: "oneway", label: "One Way" },
-        ].map((t) => (
+        {tripTypes.map((tt) => (
           <button
-            key={t.key}
+            key={tt.key}
             type="button"
-            onClick={() => setTripType(t.key)}
+            onClick={() => setTripType(tt.key)}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              tripType === t.key
+              tripType === tt.key
                 ? "bg-cyan-500 text-white"
                 : "bg-slate-100 text-slate-500 hover:bg-slate-200"
             }`}
           >
-            {t.label}
+            {tt.label}
           </button>
         ))}
       </div>
 
       <div className="flex flex-col sm:flex-row items-stretch gap-3">
         <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">ORIGIN</label>
+          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.origin_label")}</label>
           <AirportAutocomplete
             value={origin}
             onChange={setOrigin}
             onSelect={(airport) => setOrigin(`${airport.city || airport.name} (${airport.iata})`)}
-            placeholder="e.g. KJFK or New York"
+            placeholder={t("searchForm.origin_placeholder")}
             className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
           />
         </div>
@@ -66,12 +71,12 @@ export default function FlightSearchForm({
         </button>
 
         <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">DESTINATION</label>
+          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.destination_label")}</label>
           <AirportAutocomplete
             value={destination}
             onChange={setDestination}
             onSelect={(airport) => setDestination(`${airport.city || airport.name} (${airport.iata})`)}
-            placeholder="e.g. KLAX or Los Angeles"
+            placeholder={t("searchForm.destination_placeholder")}
             className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
           />
         </div>
@@ -79,7 +84,7 @@ export default function FlightSearchForm({
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">BUDGET</label>
+          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.budget_label")}</label>
           <div className="flex mt-1 rounded-lg border border-slate-200 overflow-hidden">
             <select
               value={currency}
@@ -93,7 +98,7 @@ export default function FlightSearchForm({
             <input
               type="number"
               min="1"
-              placeholder="Max price"
+              placeholder={t("searchForm.budget_placeholder")}
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
               className="flex-1 bg-slate-50 px-3 py-2.5 text-sm outline-none"
@@ -102,10 +107,10 @@ export default function FlightSearchForm({
         </div>
 
         <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">EMAIL</label>
+          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.email_label")}</label>
           <input
             type="email"
-            placeholder="you@example.com"
+            placeholder={t("searchForm.email_placeholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
@@ -119,7 +124,7 @@ export default function FlightSearchForm({
           onClick={() => setAdvancedOpen(!advancedOpen)}
           className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors"
         >
-          Advanced options
+          {t("searchForm.advanced_options")}
           <ChevronDown
             className="w-3.5 h-3.5 transition-transform duration-200"
             style={{ transform: advancedOpen ? "rotate(180deg)" : "rotate(0deg)" }}
@@ -137,7 +142,7 @@ export default function FlightSearchForm({
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
                 <div>
-                  <label className="text-xs font-semibold text-slate-400 tracking-wide">ADULTS</label>
+                  <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.adults_label")}</label>
                   <input
                     type="number"
                     min="1"
@@ -147,16 +152,16 @@ export default function FlightSearchForm({
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-slate-400 tracking-wide">CABIN CLASS</label>
+                  <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.cabin_class_label")}</label>
                   <select
                     value={travelClass}
                     onChange={(e) => setTravelClass(e.target.value)}
                     className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none"
                   >
-                    <option value="economy" style={{ color: "#000" }}>Economy</option>
-                    <option value="premium" style={{ color: "#000" }}>Premium Economy</option>
-                    <option value="business" style={{ color: "#000" }}>Business</option>
-                    <option value="first" style={{ color: "#000" }}>First</option>
+                    <option value="economy" style={{ color: "#000" }}>{t("searchForm.economy")}</option>
+                    <option value="premium" style={{ color: "#000" }}>{t("searchForm.premium_economy")}</option>
+                    <option value="business" style={{ color: "#000" }}>{t("searchForm.business")}</option>
+                    <option value="first" style={{ color: "#000" }}>{t("searchForm.first")}</option>
                   </select>
                 </div>
               </div>
@@ -171,7 +176,7 @@ export default function FlightSearchForm({
         className="w-full bg-cyan-500 hover:bg-cyan-600 text-white rounded-full py-6 text-base font-medium gap-2"
       >
         <Search className="w-4 h-4" />
-        {loading ? "Searching..." : "Search Flights"}
+        {loading ? t("searchForm.searching") : t("searchForm.search_button")}
       </Button>
     </form>
   )

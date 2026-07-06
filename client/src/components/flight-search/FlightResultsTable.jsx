@@ -1,14 +1,22 @@
+import { useTranslation } from "react-i18next"
 import { Play } from "lucide-react"
 import { formatDateTime } from "@/utils/flightFormatters"
 
 export default function FlightResultsTable({ flight, origin, destination, status, statusLoading, onCheckStatus, onSelectFlight }) {
+  const { t } = useTranslation()
   const originLabel = flight.originCode ? `(${flight.originCode}) ${origin}` : origin
   const destinationLabel = flight.destinationCode ? `(${flight.destinationCode}) ${destination}` : destination
+
+  const connectionsLabel = flight.stops === 0
+    ? t("resultsTable.direct")
+    : `${flight.stops} ${flight.stops > 1 ? t("resultsTable.stops") : t("resultsTable.stop")}${
+        flight.stopAirports?.length ? ` ${t("resultsTable.via")} ${flight.stopAirports.join(", ")}` : ""
+      }`
 
   return (
     <div className="border border-cyan-500 rounded-lg overflow-hidden">
       <div className="bg-cyan-600 text-white px-4 py-3 font-semibold text-base flex items-center gap-2 flex-wrap">
-        <span>Cheapest Flight Results: {originLabel}</span>
+        <span>{t("resultsTable.cheapest_results")}: {originLabel}</span>
         <Play className="w-4 h-4 shrink-0" fill="currentColor" />
         <span>{destinationLabel}</span>
       </div>
@@ -17,13 +25,13 @@ export default function FlightResultsTable({ flight, origin, destination, status
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-orange-500 border-b border-slate-200">
-              <th className="px-4 py-2.5 font-medium">Airline</th>
-              <th className="px-4 py-2.5 font-medium">Ident</th>
-              <th className="px-4 py-2.5 font-medium">Aircraft</th>
-              <th className="px-4 py-2.5 font-medium">Connections</th>
-              <th className="px-4 py-2.5 font-medium">Status</th>
-              <th className="px-4 py-2.5 font-medium">Departure</th>
-              <th className="px-4 py-2.5 font-medium">Arrival</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.airline")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.ident")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.aircraft")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.connections")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.status")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.departure")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.arrival")}</th>
             </tr>
           </thead>
           <tbody>
@@ -50,13 +58,7 @@ export default function FlightResultsTable({ flight, origin, destination, status
                 )}
               </td>
               <td className="px-4 py-3 text-slate-700">{flight.aircraft || ""}</td>
-              <td className="px-4 py-3 text-slate-700">
-                {flight.stops === 0
-                  ? "Direct"
-                  : `${flight.stops} stop${flight.stops > 1 ? "s" : ""}${
-                      flight.stopAirports?.length ? ` via ${flight.stopAirports.join(", ")}` : ""
-                    }`}
-              </td>
+              <td className="px-4 py-3 text-slate-700">{connectionsLabel}</td>
               <td className="px-4 py-3 text-slate-700">
                 {status ? (
                   <span>{status}</span>
@@ -67,7 +69,7 @@ export default function FlightResultsTable({ flight, origin, destination, status
                     disabled={statusLoading || !flight.flightNumber}
                     className="text-cyan-600 underline text-xs disabled:text-slate-300 disabled:no-underline"
                   >
-                    {statusLoading ? "Checking..." : "Check status"}
+                    {statusLoading ? t("resultsTable.checking") : t("resultsTable.check_status")}
                   </button>
                 )}
               </td>

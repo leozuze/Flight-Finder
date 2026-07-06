@@ -1,7 +1,10 @@
+import { useTranslation } from "react-i18next"
 import { formatDateTime } from "@/utils/flightFormatters"
 
 export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", onSelectFlight }) {
-  const placeColumnLabel = mode === "arrivals" ? "Origin" : "Destination"
+  const { t } = useTranslation()
+  const placeColumnLabel = mode === "arrivals" ? t("resultsTable.origin") : t("resultsTable.destination")
+  const modeLabel = mode === "arrivals" ? t("airportBoard.arrivals") : t("airportBoard.departures")
 
   return (
     <div className="border border-slate-300 rounded-lg overflow-hidden">
@@ -9,20 +12,20 @@ export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", on
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-orange-500 border-b border-slate-200 bg-white">
-              <th className="px-4 py-2.5 font-medium">Ident</th>
-              <th className="px-4 py-2.5 font-medium">Airline</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.ident")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.airline")}</th>
               <th className="px-4 py-2.5 font-medium">{placeColumnLabel}</th>
-              <th className="px-4 py-2.5 font-medium">Terminal / Gate</th>
-              <th className="px-4 py-2.5 font-medium">Scheduled</th>
-              <th className="px-4 py-2.5 font-medium">Estimated / Actual</th>
-              <th className="px-4 py-2.5 font-medium">Status</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.terminal_gate")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.scheduled")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.estimated_actual")}</th>
+              <th className="px-4 py-2.5 font-medium">{t("resultsTable.status")}</th>
             </tr>
           </thead>
           <tbody>
             {(!flights || flights.length === 0) && (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-center text-slate-400">
-                  No {mode} to show right now.
+                  {t("airportBoard.no_flights", { mode: modeLabel.toLowerCase() })}
                 </td>
               </tr>
             )}
@@ -68,7 +71,7 @@ export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", on
                     {formatDateTime(f.estimatedTime || f.actualTime)}
                   </td>
                   <td className="px-4 py-3 text-slate-700">
-                    {f.status !== "N/A" ? f.status : "Unknown"}
+                    {f.status !== "N/A" ? f.status : t("common.unknown")}
                   </td>
                 </tr>
               )

@@ -1,11 +1,13 @@
 import { useState, useMemo, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown, SlidersHorizontal } from "lucide-react"
 import FilterPanelContent from "./FilterPanelContent"
 import OtherFlightsTable from "./OtherFlightsTable"
 import { getMinutesOfDay, getDurationMinutes, getDepartDateLabel } from "@/utils/flightFormatters"
 
-export default function OtherFlightsSection({ flights, origin, destination, originCode, destinationCode, title = "Other Flights", onSelectFlight }) {
+export default function OtherFlightsSection({ flights, origin, destination, originCode, destinationCode, title, onSelectFlight }) {
+  const { t } = useTranslation()
   const [panelOpen, setPanelOpen] = useState(true)
 
   const meta = useMemo(() => {
@@ -19,7 +21,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
       if (f.airline) airlines.add(f.airline)
       if (f.aircraft) aircraft.add(f.aircraft)
       ;(f.stopAirports || []).forEach((a) => connections.add(a))
-      if (f.stops === 0) connections.add("Direct")
+      if (f.stops === 0) connections.add(t("resultsTable.direct"))
       departLabels.add(getDepartDateLabel(f.departDate))
 
       const dur = getDurationMinutes(f.departDate, f.returnDate)
@@ -38,7 +40,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
       departLabels: Array.from(departLabels),
       durationRange: [minDuration, maxDuration],
     }
-  }, [flights])
+  }, [flights, t])
 
   const [selectedAirlines, setSelectedAirlines] = useState([])
   const [selectedAircraft, setSelectedAircraft] = useState([])
@@ -64,7 +66,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
       if (f.airline && !selectedAirlines.includes(f.airline)) return false
       if (f.aircraft && !selectedAircraft.includes(f.aircraft)) return false
 
-      const flightConnections = f.stops === 0 ? ["Direct"] : (f.stopAirports || [])
+      const flightConnections = f.stops === 0 ? [t("resultsTable.direct")] : (f.stopAirports || [])
       if (flightConnections.length && !flightConnections.some((c) => selectedConnections.includes(c))) return false
 
       const departLabel = getDepartDateLabel(f.departDate)
@@ -81,7 +83,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
 
       return true
     })
-  }, [flights, selectedAirlines, selectedAircraft, selectedConnections, selectedDepart, departTime, arriveTime, duration])
+  }, [flights, selectedAirlines, selectedAircraft, selectedConnections, selectedDepart, departTime, arriveTime, duration, t])
 
   const filterProps = {
     meta,
@@ -104,7 +106,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="w-3.5 h-3.5" />
-            Filter Flights
+            {t("filters.filter_flights")}
           </span>
           <ChevronDown
             className="w-3.5 h-3.5 transition-transform duration-200"
@@ -131,7 +133,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
 
       <div className="hidden lg:block border border-slate-200 rounded-lg overflow-hidden">
         <div className="bg-slate-50 px-4 py-2.5 text-sm text-slate-500 border-b border-slate-200">
-          Refine Flight Results
+          {t("filters.refine_results")}
         </div>
         <div className="p-4">
           <FilterPanelContent {...filterProps} />

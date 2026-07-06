@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import FlightSearchForm from "@/components/flight-search/FlightSearchForm"
 import FlightResultsTable from "@/components/flight-search/FlightResultsTable"
 import OtherFlightsSection from "@/components/flight-search/OtherFlightsSection"
 import { searchFlights, quickSearchFlights, checkFlightStatus } from "@/api/flightApi"
 
-// Same logic as Navbar.jsx: pulls "KJFK" out of "New York (KJFK)".
-// Falls back to the trimmed raw value if there's no parenthesized code,
-// so plain city-name typing still works.
 const extractCode = (val) => {
   const match = (val || "").match(/\(([A-Z]{3})\)\s*$/)
   return match ? match[1] : (val || "").trim()
 }
 
 export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
+  const { t } = useTranslation()
   const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
   const [tripType, setTripType] = useState("round")
@@ -47,7 +46,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
     const destinationCode = extractCode(destination)
 
     if (!originCode || !destinationCode) {
-      setError("Please select a valid origin and destination.")
+      setError(t("flightSearch.invalid_origin_destination"))
       return
     }
 
@@ -67,7 +66,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
       if (data.error) setError(data.error)
       else setResults(data)
     } catch {
-      setError("Something went wrong reaching the search service. Please try again.")
+      setError(t("flightSearch.error_generic"))
     } finally {
       setLoading(false)
     }
@@ -78,9 +77,9 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
     setStatusLoading(true)
     try {
       const data = await checkFlightStatus(flightNumber, date)
-      setStatus(data.status || "Unavailable")
+      setStatus(data.status || t("flightSearch.status_unavailable"))
     } catch {
-      setStatus("Unavailable")
+      setStatus(t("flightSearch.status_unavailable"))
     } finally {
       setStatusLoading(false)
     }
@@ -91,6 +90,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
     setOrigin(externalQuery.origin)
     setDestination(externalQuery.destination)
     runQuickSearch(externalQuery.origin, externalQuery.destination)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [externalQuery])
 
   const runQuickSearch = async (o, d) => {
@@ -104,7 +104,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
       if (data.error) setQuickError(data.error)
       else setQuickResults(data)
     } catch {
-      setQuickError("Something went wrong reaching the search service. Please try again.")
+      setQuickError(t("flightSearch.error_generic"))
     } finally {
       setQuickLoading(false)
     }
@@ -130,7 +130,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
       <div className="mt-8">
         {quickLoading && (
           <div className="text-center text-slate-400 py-10 animate-pulse">
-            Scanning routes for the cheapest fares...
+            {t("flightSearch.scanning")}
           </div>
         )}
 
@@ -148,8 +148,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
             originCode={quickResults.originCode}
             destinationCode={quickResults.destinationCode}
             onSelectFlight={onSelectFlight}
-
-            title="Flight Results"
+            title={t("resultsTable.flight_results")}
           />
         )}
 
@@ -157,7 +156,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
           <>
             {loading && (
               <div className="text-center text-slate-400 py-10 animate-pulse">
-                Scanning routes for the cheapest fares...
+                {t("flightSearch.scanning")}
               </div>
             )}
 

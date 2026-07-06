@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import Navbar from "@/components/Navbar"
 import FlightSearchSection from "@/components/FlightSearchSection"
 import Footer from "@/components/Footer"
 
 const CONTAINER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
 
-export default function Home({ startingQuery, onSearch, onNavigate , onSelectFlight }) {
+export default function Home({ startingQuery, onSearch, onNavigate, onSelectFlight }) {
+  const { t } = useTranslation()
   const [navQuery, setNavQuery] = useState(startingQuery || null)
 
   useEffect(() => {
@@ -19,10 +21,10 @@ export default function Home({ startingQuery, onSearch, onNavigate , onSelectFli
       <div className={`pt-28 text-center ${CONTAINER}`}>
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-            Never overpay for a flight again
+            {t("home.hero_title")}
           </h1>
           <p className="mt-3 text-slate-500 text-base">
-            Set your route and budget, and we'll email you when the price drops.
+            {t("home.hero_subtitle")}
           </p>
         </div>
       </div>

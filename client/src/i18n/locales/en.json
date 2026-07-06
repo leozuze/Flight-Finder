@@ -1,0 +1,194 @@
+{
+  "common": {
+    "search_flights": "Search Flights",
+    "back": "Back",
+    "back_to_search": "Back to search",
+    "loading": "Loading...",
+    "unknown": "Unknown",
+    "copyright": "© 2026 SkyScout. All rights reserved."
+  },
+
+  "navbar": {
+    "search_type_all": "All",
+    "search_type_route": "Route",
+    "search_type_airport": "Airport",
+    "placeholder_all": "Search for flight, tail, airport, or city",
+    "placeholder_from": "From (e.g. KJFK or New York)",
+    "placeholder_to": "To (e.g. KLAX or Los Angeles)",
+    "placeholder_airport_code": "Airport Code (e.g. KJFK)",
+    "placeholder_airport_city": "Airport City (e.g. New York)",
+    "alert_route_missing": "Please enter both an origin and destination, e.g. 'Pune to Harare'.",
+    "alert_all_missing": "Please enter a route, airport, or city, e.g. 'Pune to Harare' or 'KJFK'.",
+    "alert_airport_missing": "Please enter an airport code or city, e.g. 'KJFK' or 'New York'.",
+    "alert_type_unavailable": "This search type isn't available yet — try 'Route', 'All', or 'Airport'.",
+    "marquee_1": "Never miss a fare drop.",
+    "marquee_2": "Cheap flights, found for you.",
+    "marquee_3": "Deals before they disappear.",
+    "marquee_4": "Smart fares. Zero effort.",
+    "marquee_5": "Track fares. Book smarter."
+  },
+
+  "footer": {
+    "brand_blurb": "SkyScout tracks fares around the clock and surfaces the cheapest flights on your route, so you don't have to keep checking.",
+    "quick_links": "QUICK LINKS",
+    "how_it_works": "How It Works",
+    "legal_trust": "LEGAL & TRUST",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "powered_by": "Flight results powered by Google Flights, via SerpApi."
+  },
+
+  "home": {
+    "hero_title": "Never overpay for a flight again",
+    "hero_subtitle": "Set your route and budget, and we'll email you when the price drops."
+  },
+
+  "howItWorks": {
+    "title": "How SkyScout works",
+    "subtitle": "Finding the right fare shouldn't take hours of refreshing tabs. Here's how we do the watching for you.",
+    "step1_title": "Search your route",
+    "step1_description": "Tell us where you're flying from and to, along with your budget and travel dates. We scan live fares across airlines instantly.",
+    "step2_title": "We watch the fares for you",
+    "step2_description": "Once your search is saved, SkyScout keeps an eye on that route. The moment a fare drops within your budget, you're the first to know.",
+    "step3_title": "Book with confidence",
+    "step3_description": "Get notified by email the instant a matching deal appears, so you can book before the price disappears.",
+    "cta_title": "Ready to find your next fare?",
+    "cta_subtitle": "Head back to search and set up your first price alert in under a minute.",
+    "cta_button": "Start searching"
+  },
+
+  "terms": {
+    "title": "Terms of Service",
+    "last_updated": "Last updated: July 2026",
+    "section1_title": "1. Acceptance of terms",
+    "section1_body": "By accessing or using SkyScout, you agree to be bound by these Terms of Service. If you don't agree, please don't use the service.",
+    "section2_title": "2. What SkyScout does",
+    "section2_body": "SkyScout searches publicly available flight fare data and sends you email notifications when a fare matching your saved criteria becomes available. We are not a travel agency, airline, or booking platform — we do not process payments, issue tickets, or guarantee fare accuracy at the time of booking.",
+    "section3_title": "3. Fare accuracy",
+    "section3_body": "Flight prices change constantly and are controlled entirely by airlines and third-party data providers. While we strive to surface accurate, up-to-date fares, SkyScout cannot guarantee that a displayed price will be available when you attempt to book it elsewhere.",
+    "section4_title": "4. User responsibilities",
+    "section4_body": "You agree to provide accurate information (such as your email address) when using our alert features, and not to misuse the service — including attempts to overload, scrape, or interfere with SkyScout's search infrastructure.",
+    "section5_title": "5. No liability for booking outcomes",
+    "section5_body": "SkyScout is not responsible for any losses, missed fares, or booking issues that occur on third-party airline or travel sites. Always verify final pricing and terms directly with the airline before completing a purchase.",
+    "section6_title": "6. Changes to these terms",
+    "section6_body": "We may update these Terms of Service from time to time. Continued use of SkyScout after changes are posted constitutes acceptance of the revised terms.",
+    "section7_title": "7. Contact",
+    "section7_body": "Questions about these terms? Reach out to us through the contact details listed on our homepage."
+  },
+
+  "privacy": {
+    "title": "Privacy Policy",
+    "last_updated": "Last updated: July 2026",
+    "section1_title": "1. What we collect",
+    "section1_body": "When you use SkyScout's search and price-alert features, we collect the information you voluntarily provide — such as your email address, origin and destination cities, travel dates, and budget preferences.",
+    "section2_title": "2. How we use your information",
+    "section2_body": "Your email address is used solely to send you fare-drop notifications for the routes you've searched. Your search criteria is stored so we can match future fares against your budget and alert you when a deal appears.",
+    "section3_title": "3. Third-party data providers",
+    "section3_body": "SkyScout retrieves flight fare and airport data from third-party providers to power search results and arrivals/departures boards. We do not share your personal email address or search history with these providers beyond what's needed to perform the search itself.",
+    "section4_title": "4. Data storage",
+    "section4_body": "Search records and alert preferences are stored securely and used only to operate the price-alert feature. We do not sell, rent, or share your personal data with advertisers or unrelated third parties.",
+    "section5_title": "5. Cookies and tracking",
+    "section5_body": "SkyScout does not use tracking cookies for advertising purposes. Any technical data collected is used only to keep the service functioning correctly.",
+    "section6_title": "6. Your choices",
+    "section6_body": "You can stop receiving fare alerts at any time by no longer submitting new searches with your email address. If you'd like existing data removed, contact us using the details on our homepage.",
+    "section7_title": "7. Changes to this policy",
+    "section7_body": "We may update this Privacy Policy periodically to reflect changes in how SkyScout operates. We'll post the updated date at the top of this page whenever changes are made."
+  },
+
+  "airportBoard": {
+    "arrivals": "Arrivals",
+    "departures": "Departures",
+    "loading": "Loading the flight board...",
+    "error_generic": "Something went wrong reaching the airport service. Please try again.",
+    "no_flights": "No {{mode}} to show right now.",
+    "default_title": "Airport"
+  },
+
+  "flightDetail": {
+    "loading": "Loading flight details...",
+    "error_generic": "Something went wrong reaching the flight service. Please try again.",
+    "status_label": "Status:",
+    "departure_label": "DEPARTURE",
+    "arrival_label": "ARRIVAL",
+    "aircraft_label": "AIRCRAFT",
+    "aircraft_unavailable": "Aircraft details aren't available on the current data plan.",
+    "terminal": "Terminal",
+    "gate": "Gate",
+    "scheduled": "Scheduled",
+    "estimated": "Estimated",
+    "actual": "Actual",
+    "unknown_airline": "Unknown Airline",
+    "unknown_airport": "Unknown airport"
+  },
+
+  "searchForm": {
+    "round_trip": "Round Trip",
+    "one_way": "One Way",
+    "origin_label": "ORIGIN",
+    "destination_label": "DESTINATION",
+    "origin_placeholder": "e.g. KJFK or New York",
+    "destination_placeholder": "e.g. KLAX or Los Angeles",
+    "budget_label": "BUDGET",
+    "budget_placeholder": "Max price",
+    "email_label": "EMAIL",
+    "email_placeholder": "you@example.com",
+    "advanced_options": "Advanced options",
+    "adults_label": "ADULTS",
+    "cabin_class_label": "CABIN CLASS",
+    "economy": "Economy",
+    "premium_economy": "Premium Economy",
+    "business": "Business",
+    "first": "First",
+    "search_button": "Search Flights",
+    "searching": "Searching..."
+  },
+
+"resultsTable": {
+  "airline": "Airline",
+  "ident": "Ident",
+  "aircraft": "Aircraft",
+  "connections": "Connections",
+  "status": "Status",
+  "departure": "Departure",
+  "arrival": "Arrival",
+  "price": "Price",
+  "origin": "Origin",
+  "destination": "Destination",
+  "terminal_gate": "Terminal / Gate",
+  "scheduled": "Scheduled",
+  "estimated_actual": "Estimated / Actual",
+  "direct": "Direct",
+  "stop": "stop",
+  "stops": "stops",
+  "via": "via",
+  "flight": "flight",
+  "flights": "flights",
+  "showing": "Showing {{shown}} of {{total}}",
+  "check_status": "Check status",
+  "checking": "Checking...",
+  "no_flights_match": "No flights match the selected filters.",
+  "cheapest_results": "Cheapest Flight Results",
+  "other_flights": "Other Flights",
+  "flight_results": "Flight Results"
+},
+  "filters": {
+    "filter_flights": "Filter Flights",
+    "refine_results": "Refine Flight Results",
+    "airline": "Airline",
+    "depart": "Depart",
+    "departure_time": "Departure Time",
+    "arrival_time": "Arrival Time",
+    "duration": "Duration",
+    "connection": "Connection",
+    "aircraft": "Aircraft",
+    "show_all": "show all",
+    "only": "only"
+  },
+
+  "flightSearch": {
+    "invalid_origin_destination": "Please select a valid origin and destination.",
+    "error_generic": "Something went wrong reaching the search service. Please try again.",
+    "scanning": "Scanning routes for the cheapest fares...",
+    "status_unavailable": "Unavailable"
+  }
+}

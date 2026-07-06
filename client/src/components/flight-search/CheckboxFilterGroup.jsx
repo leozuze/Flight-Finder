@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next"
+
 export default function CheckboxFilterGroup({ label, options, selected, setSelected, hideShowAll }) {
+  const { t } = useTranslation()
   if (!options.length) return null
   const allSelected = selected.length === options.length
 
@@ -18,7 +21,7 @@ export default function CheckboxFilterGroup({ label, options, selected, setSelec
               onChange={() => setSelected(allSelected ? [] : options)}
               className="accent-cyan-500"
             />
-            show all
+            {t("filters.show_all")}
           </label>
         )}
         {options.map((opt) => (
@@ -37,7 +40,7 @@ export default function CheckboxFilterGroup({ label, options, selected, setSelec
               onClick={() => setSelected([opt])}
               className="text-xs text-cyan-600 underline shrink-0"
             >
-              only
+              {t("filters.only")}
             </button>
           </div>
         ))}
