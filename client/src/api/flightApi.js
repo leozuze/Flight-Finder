@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000/api"
+const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api`
 
 export async function searchFlights(payload) {
   const res = await fetch(`${API_BASE}/search`, {
@@ -27,7 +27,6 @@ export async function checkFlightStatus(flightNumber, date) {
   return res.json()
 }
 
-// FIXED — backend's AirportBoardRequest expects `airport`, not `query`
 export async function fetchAirportBoard(airport) {
   const res = await fetch(`${API_BASE}/airport-board`, {
     method: "POST",
@@ -36,6 +35,7 @@ export async function fetchAirportBoard(airport) {
   })
   return res.json()
 }
+
 export async function fetchFlightDetail(ident) {
   const res = await fetch(`${API_BASE}/flight`, {
     method: "POST",
