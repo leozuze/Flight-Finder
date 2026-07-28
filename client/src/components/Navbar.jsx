@@ -23,8 +23,6 @@ const languages = [
   { code: "tr", label: "Turkish", country: "tr" },
 ]
 
-// Small flag image component backed by flagcdn.com — renders consistently
-// across OS/browsers, unlike emoji flags which Windows shows as letter codes.
 function FlagIcon({ country, label }) {
   return (
     <img
@@ -39,8 +37,6 @@ function FlagIcon({ country, label }) {
   )
 }
 
-// Representative timezone for each supported language, used to show a
-// live local time next to the language dropdown.
 const languageTimeZones = {
   "en-US": "America/New_York",
   "en-GB": "Europe/London",
@@ -62,6 +58,7 @@ export default function Navbar({ onSearch, onNavigate }) {
   const { t, i18n } = useTranslation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [menuOverflowVisible, setMenuOverflowVisible] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [searchTypeOpen, setSearchTypeOpen] = useState(false)
   const [searchValues, setSearchValues] = useState({})
@@ -69,12 +66,14 @@ export default function Navbar({ onSearch, onNavigate }) {
   const langRef = useRef(null)
   const searchTypeRef = useRef(null)
 
-  // Tick every second so the time shown next to the language dropdown
-  // stays live.
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(id)
   }, [])
+
+  useEffect(() => {
+    if (!mobileOpen) setMenuOverflowVisible(false)
+  }, [mobileOpen])
 
   const searchTypes = [
     { key: "all", label: t("navbar.search_type_all") },
@@ -120,7 +119,6 @@ export default function Navbar({ onSearch, onNavigate }) {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) {
@@ -221,7 +219,6 @@ export default function Navbar({ onSearch, onNavigate }) {
             <Marquee items={marqueeMessages} />
 
             <div className="flex items-center gap-4">
-              {/* Time display */}
               <span
                 className="flex items-center gap-1.5 py-1"
                 style={{ color: "var(--color-text-secondary)" }}
@@ -229,7 +226,6 @@ export default function Navbar({ onSearch, onNavigate }) {
                 {formattedTime}
               </span>
 
-              {/* Language Dropdown */}
               <div className="relative" ref={langRef}>
                 <button
                   onClick={() => setLangOpen(!langOpen)}
@@ -295,7 +291,6 @@ export default function Navbar({ onSearch, onNavigate }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 h-16">
 
-            {/* Logo lockup: image overlaps the tail end of the wordmark */}
             <button
               type="button"
               onClick={() => onNavigate?.("home")}
@@ -313,7 +308,7 @@ export default function Navbar({ onSearch, onNavigate }) {
                 className="h-16 w-auto -ml-7 relative z-0 pointer-events-none"
               />
             </button>
-            {/* Search Bar: type dropdown + dynamic fields + submit */}
+
             <div
               className="flex-1 hidden md:flex items-stretch h-10 rounded-lg border overflow-visible"
               style={{
@@ -321,7 +316,6 @@ export default function Navbar({ onSearch, onNavigate }) {
                 borderColor: "var(--color-border)",
               }}
             >
-              {/* Search type dropdown */}
               <div className="relative" ref={searchTypeRef}>
                 <button
                   onClick={() => setSearchTypeOpen(!searchTypeOpen)}
@@ -371,7 +365,6 @@ export default function Navbar({ onSearch, onNavigate }) {
                 </AnimatePresence>
               </div>
 
-              {/* Dynamic input fields for the selected search type */}
               {activeFields.map((field, i) => (
                 <AirportAutocomplete
                   key={field.id}
@@ -386,7 +379,6 @@ export default function Navbar({ onSearch, onNavigate }) {
                 />
               ))}
 
-              {/* Submit */}
               <button
                 onClick={handleSubmitSearch}
                 className="px-4 flex items-center justify-center shrink-0 rounded-r-lg transition-colors"
@@ -402,7 +394,6 @@ export default function Navbar({ onSearch, onNavigate }) {
               </button>
             </div>
 
-            {/* Hamburger (mobile only) */}
             <div className="flex items-center gap-3 ml-auto">
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
@@ -424,16 +415,17 @@ export default function Navbar({ onSearch, onNavigate }) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden border-b overflow-hidden"
+            onAnimationComplete={() => setMenuOverflowVisible(true)}
+            className="md:hidden border-b"
             style={{
               background: "var(--color-bg-secondary)",
               borderColor: "var(--color-border)",
+              overflow: menuOverflowVisible ? "visible" : "hidden",
             }}
           >
-            {/* Mobile search type dropdown */}
             <div className="px-4 pt-4">
               <div
-                className="rounded-lg border overflow-hidden"
+                className="rounded-lg border"
                 style={{ borderColor: "var(--color-border)" }}
               >
                 <select
@@ -443,7 +435,7 @@ export default function Navbar({ onSearch, onNavigate }) {
                       searchTypes.find((type) => type.key === e.target.value)
                     )
                   }
-                  className="w-full text-sm px-3 py-2.5 outline-none"
+                  className="w-full text-sm px-3 py-2.5 outline-none rounded-t-lg"
                   style={{
                     background: "rgba(255,255,255,0.05)",
                     color: "var(--color-text-primary)",
@@ -463,7 +455,7 @@ export default function Navbar({ onSearch, onNavigate }) {
                     onChange={(val) => handleFieldChange(field.id, val)}
                     onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
                     placeholder={field.placeholder}
-                    className="w-full text-sm px-3 py-2.5 outline-none border-t"
+                    className="w-full text-sm px-3 py-2.5 outline-none border-t last:rounded-b-lg"
                     style={{
                       background: "rgba(255,255,255,0.05)",
                       color: "var(--color-text-primary)",
@@ -474,7 +466,6 @@ export default function Navbar({ onSearch, onNavigate }) {
               </div>
             </div>
 
-            {/* Mobile CTA */}
             <div className="px-4 py-4">
               <Button
                 onClick={handleSubmitSearch}
@@ -492,7 +483,7 @@ export default function Navbar({ onSearch, onNavigate }) {
 }
 
 function Marquee({ items }) {
-  const loopItems = [...items, ...items] // duplicated for seamless loop
+  const loopItems = [...items, ...items]
 
   return (
     <div className="relative overflow-hidden flex-1 h-full flex items-center">
@@ -508,7 +499,6 @@ function Marquee({ items }) {
           </span>
         ))}
       </motion.div>
-      {/* fade edges so text doesn't hard-cut */}
       <div
         className="pointer-events-none absolute inset-y-0 left-0 w-8"
         style={{ background: "linear-gradient(to right, var(--color-bg-secondary), transparent)" }}
