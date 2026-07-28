@@ -185,10 +185,14 @@
     "only": "only"
   },
 
-  "flightSearch": {
-    "invalid_origin_destination": "Please select a valid origin and destination.",
-    "error_generic": "Something went wrong reaching the search service. Please try again.",
-    "scanning": "Scanning routes for the cheapest fares...",
-    "status_unavailable": "Unavailable"
-  }
+"flightSearch": {
+  "invalid_origin_destination": "Please select a valid origin and destination.",
+  "error_generic": "Something went wrong reaching the search service. Please try again.",
+  "scanning": "Scanning routes for the cheapest fares...",
+  "status_unavailable": "Unavailable",
+  "step_search_routes": "Searching available routes...",
+  "step_compare_prices": "Comparing prices across airlines...",
+  "step_check_availability": "Checking real-time availability...",
+  "step_finalizing": "Finalizing your results..."
+}
 }

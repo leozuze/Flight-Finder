@@ -17,9 +17,9 @@
     "placeholder_airport_code": "Código del aeropuerto (p. ej., KJFK)",
     "placeholder_airport_city": "Ciudad aeroportuaria (p. ej., Nueva York)",
     "alert_route_missing": "Introduce tanto el punto de partida como el de destino; por ejemplo, «de Pune a Harare».",
-    "alert_all_missing": "Introduce una ruta, un aeropuerto o una ciudad, por ejemplo, «de Pune a Harare» o «KJFK».",
+    "alert_all_missing": "Introduce una ruta, un aeropuerto o una ciudad; por ejemplo, «de Pune a Harare» o «KJFK».",
     "alert_airport_missing": "Introduce un código de aeropuerto o una ciudad, por ejemplo, «KJFK» o «Nueva York».",
-    "alert_type_unavailable": "Este tipo de búsqueda aún no está disponible; prueba con «Ruta», «Todas» o «Aeropuerto».",
+    "alert_type_unavailable": "Este tipo de búsqueda aún no está disponible. Prueba con «Ruta», «Todas» o «Aeropuerto».",
     "marquee_1": "No te pierdas nunca una bajada de precios.",
     "marquee_2": "Vuelos baratos, seleccionados para ti.",
     "marquee_3": "Ofertas antes de que desaparezcan.",
@@ -44,9 +44,9 @@
     "subtitle": "Encontrar la tarifa adecuada no debería suponer pasar horas actualizando pestañas. Así es como nos encargamos de buscarla por ti.",
     "step1_title": "Busca tu ruta",
     "step1_description": "Indícanos desde dónde y hacia dónde vas a volar, junto con tu presupuesto y las fechas del viaje. Analizamos al instante las tarifas en tiempo real de todas las aerolíneas.",
-    "step2_title": "Estamos pendientes de las tarifas por ti",
+    "step2_title": "Nos encargamos de vigilar las tarifas por ti",
     "step2_description": "Una vez guardada tu búsqueda, SkyScout se encarga de vigilar esa ruta. En cuanto una tarifa baje hasta situarse dentro de tu presupuesto, serás el primero en enterarte.",
-    "step3_title": "Reserva con confianza",
+    "step3_title": "Reserva con total confianza",
     "step3_description": "Recibe una notificación por correo electrónico en cuanto aparezca una oferta que se ajuste a tus criterios, para que puedas reservar antes de que el precio cambie.",
     "cta_title": "¿Estás listo para encontrar tu próximo billete?",
     "cta_subtitle": "Vuelve a la búsqueda y configura tu primera alerta de precios en menos de un minuto.",
@@ -57,7 +57,7 @@
     "last_updated": "Última actualización: julio de 2026",
     "section1_title": "1. Aceptación de las condiciones",
     "section1_body": "Al acceder a SkyScout o utilizarlo, aceptas quedar sujeto a estas Condiciones de servicio. Si no estás de acuerdo, te rogamos que no utilices el servicio.",
-    "section2_title": "2. Qué hace SkyScout",
+    "section2_title": "2. Para qué sirve SkyScout",
     "section2_body": "SkyScout busca entre los datos de tarifas aéreas disponibles públicamente y te envía notificaciones por correo electrónico cuando aparece una tarifa que se ajusta a los criterios que has guardado. No somos una agencia de viajes, una aerolínea ni una plataforma de reservas; no gestionamos pagos, no emitimos billetes ni garantizamos la exactitud de las tarifas en el momento de la reserva.",
     "section3_title": "3. Exactitud de las tarifas",
     "section3_body": "Los precios de los vuelos cambian constantemente y dependen totalmente de las compañías aéreas y de los proveedores de datos externos. Aunque nos esforzamos por mostrar tarifas precisas y actualizadas, SkyScout no puede garantizar que un precio mostrado esté disponible cuando intentes reservarlo en otro sitio.",
@@ -74,9 +74,9 @@
     "title": "Política de privacidad",
     "last_updated": "Última actualización: julio de 2026",
     "section1_title": "1. Qué datos recopilamos",
-    "section1_body": "Cuando utilizas las funciones de búsqueda y alertas de precios de SkyScout, recopilamos la información que nos facilitas voluntariamente, como tu dirección de correo electrónico, las ciudades de origen y destino, las fechas del viaje y tus preferencias presupuestarias.",
+    "section1_body": "Cuando utilizas las funciones de búsqueda y de alertas de precios de SkyScout, recopilamos la información que nos facilitas voluntariamente, como tu dirección de correo electrónico, las ciudades de origen y destino, las fechas del viaje y tus preferencias presupuestarias.",
     "section2_title": "2. Cómo utilizamos tus datos",
-    "section2_body": "Tu dirección de correo electrónico se utiliza exclusivamente para enviarte notificaciones de bajadas de precios en las rutas que has buscado. Guardamos tus criterios de búsqueda para poder comparar futuras tarifas con tu presupuesto y avisarte cuando aparezca una oferta.",
+    "section2_body": "Tu dirección de correo electrónico se utiliza exclusivamente para enviarte notificaciones de bajadas de precios en las rutas que has buscado. Tus criterios de búsqueda se guardan para que podamos comparar futuras tarifas con tu presupuesto y avisarte cuando aparezca una oferta.",
     "section3_title": "3. Proveedores de datos externos",
     "section3_body": "SkyScout obtiene datos sobre tarifas aéreas y aeropuertos de proveedores externos para generar los resultados de búsqueda y los paneles de llegadas y salidas. No compartimos tu dirección de correo electrónico personal ni tu historial de búsqueda con estos proveedores más allá de lo necesario para realizar la propia búsqueda.",
     "section4_title": "4. Almacenamiento de datos",
@@ -92,7 +92,7 @@
     "arrivals": "Llegadas",
     "departures": "Salidas",
     "loading": "Cargando el panel de vuelos...",
-    "error_generic": "Se ha producido un error al conectar con el servicio del aeropuerto. Inténtalo de nuevo.",
+    "error_generic": "Se ha producido un error al acceder al servicio del aeropuerto. Inténtalo de nuevo.",
     "no_flights": "No hay ningún {{mode}} que mostrar en este momento.",
     "default_title": "Aeropuerto"
   },
@@ -148,7 +148,7 @@
     "scheduled": "Programado",
     "estimated_actual": "Estimado / Real",
     "direct": "Directo",
-    "stop": "parar",
+    "stop": "basta",
     "stops": "paradas",
     "via": "a través de",
     "flight": "vuelo",
@@ -159,7 +159,7 @@
     "no_flights_match": "No hay vuelos que se ajusten a los filtros seleccionados.",
     "cheapest_results": "Resultados de vuelos más baratos",
     "other_flights": "Otros vuelos",
-    "flight_results": "Resultados de los vuelos"
+    "flight_results": "Resultados del vuelo"
   },
   "filters": {
     "filter_flights": "Filtrar vuelos",
@@ -178,6 +178,10 @@
     "invalid_origin_destination": "Selecciona un origen y un destino válidos.",
     "error_generic": "Se ha producido un error al acceder al servicio de búsqueda. Inténtalo de nuevo.",
     "scanning": "Buscando rutas con las tarifas más baratas...",
-    "status_unavailable": "No disponible"
+    "status_unavailable": "No disponible",
+    "step_search_routes": "Buscando rutas disponibles...",
+    "step_compare_prices": "Comparar los precios de las distintas compañías aéreas...",
+    "step_check_availability": "Comprobando la disponibilidad en tiempo real...",
+    "step_finalizing": "Se están procesando los resultados..."
   }
 }

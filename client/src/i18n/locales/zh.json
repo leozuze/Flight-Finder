@@ -16,15 +16,15 @@
     "placeholder_to": "发往（例如 KLAX 或洛杉矶）",
     "placeholder_airport_code": "机场代码（例如：KJFK）",
     "placeholder_airport_city": "机场城（例如纽约）",
-    "alert_route_missing": "请同时输入出发地和目的地，例如“浦那到哈拉雷”。",
-    "alert_all_missing": "请输入航线、机场或城市，例如“浦那至哈拉雷”或“KJFK”。",
+    "alert_route_missing": "请同时输入出发地和目的地，例如“浦那至哈拉雷”。",
+    "alert_all_missing": "请输入航线、机场或城市名称，例如“浦那至哈拉雷”或“KJFK”。",
     "alert_airport_missing": "请输入机场代码或城市名称，例如“KJFK”或“纽约”。",
     "alert_type_unavailable": "此搜索类型目前尚不可用——请尝试“航线”、“全部”或“机场”。",
     "marquee_1": "绝不错过任何一次票价下调。",
     "marquee_2": "为您找到的特价机票。",
-    "marquee_3": "优惠快手下单，错过不再。",
+    "marquee_3": "优惠即将结束，抓紧抢购。",
     "marquee_4": "智能票价。轻松无忧。",
-    "marquee_5": "掌握票价，更明智地预订。"
+    "marquee_5": "掌握票价动态。更明智地预订。"
   },
   "footer": {
     "brand_blurb": "SkyScout 全天候追踪机票价格，并为您筛选出该航线上的最便宜航班，这样您就不必反复查询了。",
@@ -37,7 +37,7 @@
   },
   "home": {
     "hero_title": "再也不用为机票多花冤枉钱了",
-    "hero_subtitle": "设定好您的行程和预算，一旦价格下降，我们会通过电子邮件通知您。"
+    "hero_subtitle": "设定您的行程和预算，一旦价格下降，我们会通过电子邮件通知您。"
   },
   "howItWorks": {
     "title": "SkyScout 的工作原理",
@@ -48,19 +48,19 @@
     "step2_description": "一旦保存了搜索，SkyScout 就会持续关注该航线。一旦票价降至您的预算范围内，您将第一时间收到通知。",
     "step3_title": "放心预订",
     "step3_description": "一旦出现符合条件的优惠，您将立即收到电子邮件通知，这样您就能在价格变前抢先预订。",
-    "cta_title": "准备好查找下一趟航班了吗？",
+    "cta_title": "准备好寻找下一趟航班了吗？",
     "cta_subtitle": "返回搜索页面，不到一分钟即可设置您的第一个价格提醒。",
     "cta_button": "开始搜索"
   },
   "terms": {
     "title": "服务条款",
     "last_updated": "最后更新：2026年7月",
-    "section1_title": "1. 条款接受",
+    "section1_title": "1. 接受条款",
     "section1_body": "访问或使用 SkyScout 即表示您同意遵守本《服务条款》。如果您不同意，请不要使用本服务。",
     "section2_title": "2. SkyScout 的功能",
     "section2_body": "SkyScout 会搜索公开的机票价格数据，并在出现符合您保存条件的机票时向您发送电子邮件通知。我们并非旅行社、航空公司或预订平台——我们不处理支付、不出票，也不保证预订时的票价准确性。",
     "section3_title": "3. 票价准确性",
-    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但SkyScout无法保证当您尝试在其他平台预订时，显示的价格仍然有效。",
+    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但 SkyScout 无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
     "section4_title": "4. 用户责任",
     "section4_body": "您同意在使用我们的提醒功能时提供准确的信息（例如您的电子邮件地址），且不得滥用该服务——包括试图使 SkyScout 的搜索基础设施过载、抓取数据或干扰其运行。",
     "section5_title": "5. 对预订结果不承担任何责任",
@@ -76,17 +76,17 @@
     "section1_title": "1. 我们收集的信息",
     "section1_body": "当您使用 SkyScout 的搜索和价格提醒功能时，我们会收集您自愿提供的信息——例如您的电子邮件地址、出发地和目的地城市、旅行日期以及预算偏好。",
     "section2_title": "2. 我们如何使用您的信息",
-    "section2_body": "您的电子邮箱地址仅用于向您发送您曾搜索过的航线的机票价格下调通知。我们会保存您的搜索条件，以便将来将机票价格与您的预算进行比对，并在出现优惠时通知您。",
+    "section2_body": "您的电子邮箱地址仅用于向您发送您曾搜索过的航线的机票价格下调通知。我们会保存您的搜索条件，以便将来根据您的预算匹配机票价格，并在出现优惠时通知您。",
     "section3_title": "3. 第三方数据提供商",
-    "section3_body": "SkyScout 从第三方供应商处获取机票价格和机场数据，以支持搜索结果及航班到发信息板的显示。除执行搜索本身所需的信息外，我们不会向这些供应商分享您的个人电子邮箱地址或搜索记录。",
+    "section3_body": "SkyScout 从第三方供应商处获取机票价格和机场数据，以支持搜索结果及航班到发信息板的显示。除执行搜索本身所需的信息外，我们不会向这些供应商共享您的个人电子邮箱地址或搜索记录。",
     "section4_title": "4. 数据存储",
-    "section4_body": "搜索记录和提醒偏好设置均以安全方式存储，且仅用于运行价格提醒功能。我们不会向广告商或无关的第三方出售、出租或共享您的个人数据。",
+    "section4_body": "搜索记录和价格提醒偏好设置均以安全方式存储，且仅用于运行价格提醒功能。我们不会向广告商或无关的第三方出售、出租或共享您的个人数据。",
     "section5_title": "5. Cookie 和跟踪",
     "section5_body": "SkyScout 不会出于广告目的使用追踪 Cookie。所收集的任何技术数据仅用于确保服务正常运行。",
     "section6_title": "6. 您的选择",
     "section6_body": "您可以随时停止接收票价提醒，只需不再使用您的电子邮箱地址进行新的搜索即可。如果您希望删除现有数据，请通过我们主页上的联系方式与我们联系。",
     "section7_title": "7. 本政策的变更",
-    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每次进行修改时，我们都会在本页面顶部公布更新日期。"
+    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每当进行修改时，我们都会在本页面顶部公布更新日期。"
   },
   "airportBoard": {
     "arrivals": "抵达",
@@ -98,7 +98,7 @@
   },
   "flightDetail": {
     "loading": "正在加载航班详情...",
-    "error_generic": "连接航班服务时出现错误。请重试。",
+    "error_generic": "调用航班服务时出现错误。请重试。",
     "status_label": "状态：",
     "departure_label": "出发",
     "arrival_label": "抵达",
@@ -125,7 +125,7 @@
     "email_placeholder": "you@example.com",
     "advanced_options": "高级选项",
     "adults_label": "成人",
-    "cabin_class_label": "舱位等级",
+    "cabin_class_label": "客舱等级",
     "economy": "经济",
     "premium_economy": "高级经济舱",
     "business": "商业",
@@ -156,10 +156,10 @@
     "showing": "显示 {{shown}} 条，共 {{total}} 条",
     "check_status": "查看状态",
     "checking": "正在检查...",
-    "no_flights_match": "没有航班符合所选筛选条件。",
+    "no_flights_match": "没有航班符合所选条件。",
     "cheapest_results": "最便宜的航班搜索结果",
     "other_flights": "其他航班",
-    "flight_results": "飞行结果"
+    "flight_results": "航班结果"
   },
   "filters": {
     "filter_flights": "筛选航班",
@@ -178,6 +178,10 @@
     "invalid_origin_destination": "请选择有效的出发地和目的地。",
     "error_generic": "连接搜索服务时出现错误。请重试。",
     "scanning": "正在搜索最便宜票价的航线……",
-    "status_unavailable": "不可用"
+    "status_unavailable": "不可用",
+    "step_search_routes": "正在搜索可用路线...",
+    "step_compare_prices": "比较各家航空公司的票价……",
+    "step_check_availability": "正在查询实时空房情况...",
+    "step_finalizing": "正在处理您的结果……"
   }
 }

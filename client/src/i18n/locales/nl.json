@@ -20,10 +20,10 @@
     "alert_all_missing": "Voer een route, luchthaven of stad in, bijvoorbeeld 'Pune naar Harare' of 'KJFK'.",
     "alert_airport_missing": "Voer een luchthavencode of een stad in, bijvoorbeeld 'KJFK' of 'New York'.",
     "alert_type_unavailable": "Dit zoektype is nog niet beschikbaar — probeer eens 'Route', 'Alles' of 'Luchthaven'.",
-    "marquee_1": "Mis nooit meer een prijsdaling.",
+    "marquee_1": "Mis nooit meer een tariefverlaging.",
     "marquee_2": "Goedkope vluchten, speciaal voor jou gevonden.",
     "marquee_3": "Aanbiedingen voordat ze verdwijnen.",
-    "marquee_4": "Slimme tarieven. Zonder moeite.",
+    "marquee_4": "Slimme tarieven. Geen gedoe.",
     "marquee_5": "Houd de tarieven in de gaten. Boek slimmer."
   },
   "footer": {
@@ -41,9 +41,9 @@
   },
   "howItWorks": {
     "title": "Hoe SkyScout werkt",
-    "subtitle": "Het vinden van het juiste tarief hoeft niet urenlang tabbladen verversen te kosten. Zo houden wij het voor je in de gaten.",
+    "subtitle": "Het vinden van het juiste tarief hoeft geen urenlang verversen van tabbladen te kosten. Zo houden wij het voor je in de gaten.",
     "step1_title": "Zoek je route",
-    "step1_description": "Laat ons weten van waar je vertrekt en waar je naartoe vliegt, en geef ook je budget en reisdata door. We zoeken direct in realtime naar de actuele tarieven van alle luchtvaartmaatschappijen.",
+    "step1_description": "Geef aan waarvandaan en waarheen je vliegt, en vermeld ook je budget en reisdata. We zoeken direct in realtime naar actuele tarieven bij verschillende luchtvaartmaatschappijen.",
     "step2_title": "Wij houden de tarieven voor u in de gaten",
     "step2_description": "Zodra je zoekopdracht is opgeslagen, houdt SkyScout die route in de gaten. Zodra een tarief binnen je budget daalt, ben jij de eerste die het weet.",
     "step3_title": "Boek met een gerust hart",
@@ -56,7 +56,7 @@
     "title": "Gebruiksvoorwaarden",
     "last_updated": "Laatst bijgewerkt: juli 2026",
     "section1_title": "1. Aanvaarding van de voorwaarden",
-    "section1_body": "Door SkyScout te bezoeken of te gebruiken, gaat u akkoord met deze gebruiksvoorwaarden. Als u hier niet mee akkoord gaat, verzoeken wij u de dienst niet te gebruiken.",
+    "section1_body": "Door SkyScout te bezoeken of te gebruiken, gaat u akkoord met deze gebruiksvoorwaarden. Als u hiermee niet akkoord gaat, verzoeken wij u de dienst niet te gebruiken.",
     "section2_title": "2. Wat SkyScout doet",
     "section2_body": "SkyScout doorzoekt openbaar beschikbare gegevens over vliegtarieven en stuurt je e-mailmeldingen wanneer er een tarief beschikbaar komt dat aan je opgeslagen criteria voldoet. Wij zijn geen reisbureau, luchtvaartmaatschappij of boekingsplatform — wij verwerken geen betalingen, geven geen tickets uit en garanderen niet dat de tarieven op het moment van boeken correct zijn.",
     "section3_title": "3. Nauwkeurigheid van de tarieven",
@@ -64,7 +64,7 @@
     "section4_title": "4. Verantwoordelijkheden van de gebruiker",
     "section4_body": "U stemt ermee in om bij het gebruik van onze meldingsfuncties juiste gegevens (zoals uw e-mailadres) te verstrekken en geen misbruik te maken van de dienst — met inbegrip van pogingen om de zoekinfrastructuur van SkyScout te overbelasten, te scrapen of te verstoren.",
     "section5_title": "5. Geen aansprakelijkheid voor het resultaat van de boeking",
-    "section5_body": "SkyScout is niet aansprakelijk voor eventuele verliezen, gemiste tarieven of boekingsproblemen die zich voordoen op websites van externe luchtvaartmaatschappijen of reisbureaus. Controleer altijd de definitieve prijs en voorwaarden rechtstreeks bij de luchtvaartmaatschappij voordat u een aankoop afrondt.",
+    "section5_body": "SkyScout is niet aansprakelijk voor eventuele verliezen, gemiste tarieven of boekingsproblemen die zich voordoen op websites van externe luchtvaartmaatschappijen of reisorganisaties. Controleer altijd de definitieve prijs en voorwaarden rechtstreeks bij de luchtvaartmaatschappij voordat u een aankoop afrondt.",
     "section6_title": "6. Wijzigingen in deze voorwaarden",
     "section6_body": "We kunnen deze gebruiksvoorwaarden van tijd tot tijd aanpassen. Als u SkyScout blijft gebruiken nadat wijzigingen zijn gepubliceerd, betekent dit dat u akkoord gaat met de aangepaste voorwaarden.",
     "section7_title": "7. Contact",
@@ -80,29 +80,29 @@
     "section3_title": "3. Externe gegevensleveranciers",
     "section3_body": "SkyScout haalt vluchtprijzen en luchthavengegevens op bij externe aanbieders om zoekresultaten en vertrek- en aankomstborden te genereren. Wij delen uw persoonlijke e-mailadres of zoekgeschiedenis niet met deze aanbieders, behalve voor zover dat nodig is om de zoekopdracht zelf uit te voeren.",
     "section4_title": "4. Gegevensopslag",
-    "section4_body": "Zoekgegevens en instellingen voor prijswaarschuwingen worden veilig opgeslagen en uitsluitend gebruikt voor het functioneren van de prijswaarschuwingsfunctie. Wij verkopen, verhuren of delen uw persoonsgegevens niet met adverteerders of niet-gerelateerde derde partijen.",
+    "section4_body": "Zoekgegevens en instellingen voor prijswaarschuwingen worden veilig opgeslagen en uitsluitend gebruikt voor het beheer van de prijswaarschuwingsfunctie. Wij verkopen, verhuren of delen uw persoonsgegevens niet met adverteerders of niet-gerelateerde derde partijen.",
     "section5_title": "5. Cookies en tracking",
     "section5_body": "SkyScout maakt geen gebruik van trackingcookies voor reclamedoeleinden. Eventuele verzamelde technische gegevens worden uitsluitend gebruikt om de dienst correct te laten functioneren.",
     "section6_title": "6. Jouw keuzes",
-    "section6_body": "Je kunt je op elk moment afmelden voor tariefmeldingen door geen nieuwe zoekopdrachten meer in te voeren met je e-mailadres. Als je bestaande gegevens wilt laten verwijderen, neem dan contact met ons op via de contactgegevens op onze homepage.",
+    "section6_body": "U kunt zich op elk moment afmelden voor tariefmeldingen door geen nieuwe zoekopdrachten meer in te voeren met uw e-mailadres. Als u wilt dat bestaande gegevens worden verwijderd, neem dan contact met ons op via de contactgegevens op onze homepage.",
     "section7_title": "7. Wijzigingen in dit beleid",
-    "section7_body": "We kunnen dit privacybeleid van tijd tot tijd aanpassen om rekening te houden met wijzigingen in de werkwijze van SkyScout. Telkens wanneer er wijzigingen worden aangebracht, vermelden we de datum van de laatste update bovenaan deze pagina."
+    "section7_body": "We kunnen dit privacybeleid van tijd tot tijd aanpassen om rekening te houden met wijzigingen in de manier waarop SkyScout werkt. Telkens wanneer er wijzigingen worden aangebracht, vermelden we de datum van de laatste update bovenaan deze pagina."
   },
   "airportBoard": {
     "arrivals": "Aankomsten",
     "departures": "Vertrek",
     "loading": "Het vluchtbord wordt geladen...",
-    "error_generic": "Er is een fout opgetreden bij het verbinden met de luchthavendienst. Probeer het nog eens.",
+    "error_generic": "Er is een fout opgetreden bij het opvragen van de luchthavendienst. Probeer het nog eens.",
     "no_flights": "Er is momenteel geen {{mode}} om weer te geven.",
     "default_title": "Luchthaven"
   },
   "flightDetail": {
     "loading": "Vluchtgegevens worden geladen...",
-    "error_generic": "Er is een fout opgetreden bij het opvragen van de vluchtinformatie. Probeer het nog eens.",
+    "error_generic": "Er is een fout opgetreden bij het opvragen van de vluchtgegevens. Probeer het nog eens.",
     "status_label": "Status:",
     "departure_label": "VERTREK",
     "arrival_label": "AANKOMST",
-    "aircraft_label": "VLIEGTUIG",
+    "aircraft_label": "VLIEGTUIGEN",
     "aircraft_unavailable": "Informatie over vliegtuigen is niet beschikbaar in het huidige data-abonnement.",
     "terminal": "Terminal",
     "gate": "Poort",
@@ -115,7 +115,7 @@
   "searchForm": {
     "round_trip": "Heen- en terugreis",
     "one_way": "Enkele reis",
-    "origin_label": "OORSPRONG",
+    "origin_label": "HERKOMST",
     "destination_label": "BESTEMMING",
     "origin_placeholder": "bijv. KJFK of New York",
     "destination_placeholder": "bijv. KLAX of Los Angeles",
@@ -131,7 +131,7 @@
     "business": "Zakelijk",
     "first": "Ten eerste",
     "search_button": "Vluchten zoeken",
-    "searching": "Zoeken..."
+    "searching": "Bezig met zoeken..."
   },
   "resultsTable": {
     "airline": "Luchtvaartmaatschappij",
@@ -158,7 +158,7 @@
     "checking": "Bezig met controleren...",
     "no_flights_match": "Er zijn geen vluchten die aan de geselecteerde filters voldoen.",
     "cheapest_results": "Resultaten voor de goedkoopste vluchten",
-    "other_flights": "Andere vluchten",
+    "other_flights": "Overige vluchten",
     "flight_results": "Vluchtresultaten"
   },
   "filters": {
@@ -175,9 +175,13 @@
     "only": "alleen"
   },
   "flightSearch": {
-    "invalid_origin_destination": "Kies een geldige vertrekplaats en bestemming.",
+    "invalid_origin_destination": "Kies een geldige vertrek- en bestemmingsplaats.",
     "error_generic": "Er is een fout opgetreden bij het verbinden met de zoekservice. Probeer het nog eens.",
     "scanning": "Op zoek naar de goedkoopste vluchten...",
-    "status_unavailable": "Niet beschikbaar"
+    "status_unavailable": "Niet beschikbaar",
+    "step_search_routes": "Beschikbare routes worden gezocht...",
+    "step_compare_prices": "Prijzen van verschillende luchtvaartmaatschappijen vergelijken...",
+    "step_check_availability": "De beschikbaarheid wordt in realtime gecontroleerd...",
+    "step_finalizing": "Je resultaten worden verwerkt..."
   }
 }

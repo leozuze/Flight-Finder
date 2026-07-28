@@ -11,12 +11,12 @@
     "search_type_all": "Todos",
     "search_type_route": "Percurso",
     "search_type_airport": "Aeroporto",
-    "placeholder_all": "Pesquisar por voo, número de cauda, aeroporto ou cidade",
+    "placeholder_all": "Pesquisar voo, matrícula, aeroporto ou cidade",
     "placeholder_from": "De (por exemplo, KJFK ou Nova Iorque)",
     "placeholder_to": "Para (por exemplo, KLAX ou Los Angeles)",
     "placeholder_airport_code": "Código do aeroporto (por exemplo, KJFK)",
     "placeholder_airport_city": "Cidade do Aeroporto (por exemplo, Nova Iorque)",
-    "alert_route_missing": "Indique, por favor, tanto o ponto de partida como o de destino, por exemplo, «de Pune para Harare».",
+    "alert_route_missing": "Por favor, introduza tanto o ponto de partida como o de destino, por exemplo, «de Pune para Harare».",
     "alert_all_missing": "Introduza uma rota, um aeroporto ou uma cidade, por exemplo, «Pune para Harare» ou «KJFK».",
     "alert_airport_missing": "Introduza um código de aeroporto ou uma cidade, por exemplo, «KJFK» ou «Nova Iorque».",
     "alert_type_unavailable": "Este tipo de pesquisa ainda não está disponível — experimente «Rota», «Todas» ou «Aeroporto».",
@@ -24,7 +24,7 @@
     "marquee_2": "Voos baratos, encontrados para si.",
     "marquee_3": "Ofertas antes que desapareçam.",
     "marquee_4": "Tarifas inteligentes. Sem esforço.",
-    "marquee_5": "Acompanhe os preços. Reserve de forma mais inteligente."
+    "marquee_5": "Acompanhe as tarifas. Faça reservas de forma mais inteligente."
   },
   "footer": {
     "brand_blurb": "O SkyScout acompanha as tarifas 24 horas por dia e apresenta os voos mais baratos para o teu percurso, para que não tenhas de estar sempre a verificar.",
@@ -36,7 +36,7 @@
     "powered_by": "Resultados de voos fornecidos pelo Google Flights, através do SerpApi."
   },
   "home": {
-    "hero_title": "Nunca mais pagues a mais por um voo",
+    "hero_title": "Nunca mais pague a mais por um voo",
     "hero_subtitle": "Defina o seu itinerário e o seu orçamento, e enviar-lhe-emos um e-mail assim que o preço baixar."
   },
   "howItWorks": {
@@ -74,13 +74,13 @@
     "title": "Política de Privacidade",
     "last_updated": "Última atualização: julho de 2026",
     "section1_title": "1. O que recolhemos",
-    "section1_body": "Quando utiliza as funcionalidades de pesquisa e de alertas de preços do SkyScout, recolhemos as informações que nos fornece voluntariamente — tais como o seu endereço de e-mail, as cidades de origem e de destino, as datas da viagem e as suas preferências orçamentais.",
+    "section1_body": "Quando utiliza as funcionalidades de pesquisa e de alertas de preços do SkyScout, recolhemos as informações que nos fornece voluntariamente — tais como o seu endereço de e-mail, as cidades de origem e de destino, as datas da viagem e as suas preferências em termos de orçamento.",
     "section2_title": "2. Como utilizamos as suas informações",
     "section2_body": "O seu endereço de e-mail é utilizado exclusivamente para lhe enviar notificações sobre reduções de tarifas nas rotas que pesquisou. Os seus critérios de pesquisa são guardados para que possamos comparar tarifas futuras com o seu orçamento e alertá-lo quando surgir uma oferta.",
     "section3_title": "3. Fornecedores de dados externos",
     "section3_body": "O SkyScout obtém dados sobre tarifas aéreas e aeroportos junto de fornecedores externos para alimentar os resultados de pesquisa e os painéis de chegadas e partidas. Não partilhamos o seu endereço de e-mail pessoal nem o seu histórico de pesquisa com esses fornecedores, para além do estritamente necessário para realizar a própria pesquisa.",
     "section4_title": "4. Armazenamento de dados",
-    "section4_body": "Os registos de pesquisa e as preferências de alertas são armazenados de forma segura e utilizados apenas para o funcionamento da funcionalidade de alertas de preços. Não vendemos, alugamos nem partilhamos os seus dados pessoais com anunciantes ou terceiros não relacionados.",
+    "section4_body": "Os registos de pesquisa e as preferências de alertas são armazenados de forma segura e utilizados exclusivamente para o funcionamento da funcionalidade de alertas de preços. Não vendemos, alugamos nem partilhamos os seus dados pessoais com anunciantes ou terceiros não relacionados.",
     "section5_title": "5. Cookies e rastreamento",
     "section5_body": "O SkyScout não utiliza cookies de rastreamento para fins publicitários. Quaisquer dados técnicos recolhidos são utilizados apenas para garantir o bom funcionamento do serviço.",
     "section6_title": "6. As tuas escolhas",
@@ -113,7 +113,7 @@
     "unknown_airport": "Aeroporto desconhecido"
   },
   "searchForm": {
-    "round_trip": "Ida e volta",
+    "round_trip": "Viagem de ida e volta",
     "one_way": "Só de ida",
     "origin_label": "ORIGEM",
     "destination_label": "DESTINO",
@@ -163,7 +163,7 @@
   },
   "filters": {
     "filter_flights": "Filtrar voos",
-    "refine_results": "Aperfeiçoar os resultados de voos",
+    "refine_results": "Refinar os resultados dos voos",
     "airline": "Companhia aérea",
     "depart": "Partir",
     "departure_time": "Hora de partida",
@@ -178,6 +178,10 @@
     "invalid_origin_destination": "Por favor, selecione um ponto de partida e um destino válidos.",
     "error_generic": "Ocorreu um erro ao aceder ao serviço de pesquisa. Por favor, tente novamente.",
     "scanning": "A procurar as tarifas mais baratas...",
-    "status_unavailable": "Indisponível"
+    "status_unavailable": "Indisponível",
+    "step_search_routes": "A procurar percursos disponíveis...",
+    "step_compare_prices": "Comparar preços entre companhias aéreas...",
+    "step_check_availability": "A verificar a disponibilidade em tempo real...",
+    "step_finalizing": "A finalizar os seus resultados..."
   }
 }

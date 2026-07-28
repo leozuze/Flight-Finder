@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next"
 import FlightSearchForm from "@/components/flight-search/FlightSearchForm"
 import FlightResultsTable from "@/components/flight-search/FlightResultsTable"
 import OtherFlightsSection from "@/components/flight-search/OtherFlightsSection"
+import SearchProgressSteps from "@/components/flight-search/SearchProgressSteps"
+import { useDelayedLoading } from "@/hooks/useDelayedLoading"
 import { searchFlights, quickSearchFlights, checkFlightStatus } from "@/api/flightApi"
 
 const extractCode = (val) => {
@@ -32,6 +34,12 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
   const [quickResults, setQuickResults] = useState(null)
   const [quickLoading, setQuickLoading] = useState(false)
   const [quickError, setQuickError] = useState(null)
+
+  // These stay true a beat longer than the real loading flags, so the step
+  // checklist gets to finish reading instead of vanishing the instant data
+  // arrives — see useDelayedLoading for the reasoning.
+  const showLoading = useDelayedLoading(loading)
+  const showQuickLoading = useDelayedLoading(quickLoading)
 
   const swap = () => {
     setOrigin(destination)
@@ -65,7 +73,8 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
 
       if (data.error) setError(data.error)
       else setResults(data)
-    } catch {
+    } catch (err) {
+      console.error("[SkyScout] full search failed:", err)
       setError(t("flightSearch.error_generic"))
     } finally {
       setLoading(false)
@@ -78,7 +87,8 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
     try {
       const data = await checkFlightStatus(flightNumber, date)
       setStatus(data.status || t("flightSearch.status_unavailable"))
-    } catch {
+    } catch (err) {
+      console.error("[SkyScout] status check failed:", err)
       setStatus(t("flightSearch.status_unavailable"))
     } finally {
       setStatusLoading(false)
@@ -103,7 +113,8 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
       const data = await quickSearchFlights(extractCode(o), extractCode(d))
       if (data.error) setQuickError(data.error)
       else setQuickResults(data)
-    } catch {
+    } catch (err) {
+      console.error("[SkyScout] quick search failed:", err)
       setQuickError(t("flightSearch.error_generic"))
     } finally {
       setQuickLoading(false)
@@ -128,19 +139,15 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
       />
 
       <div className="mt-8">
-        {quickLoading && (
-          <div className="text-center text-slate-400 py-10 animate-pulse">
-            {t("flightSearch.scanning")}
-          </div>
-        )}
+        {showQuickLoading && <SearchProgressSteps active={quickLoading} />}
 
-        {!quickLoading && quickError && (
+        {!showQuickLoading && quickError && (
           <div className="text-center text-red-500 bg-red-50 border border-red-100 rounded-xl py-4 px-4 text-sm">
             {quickError}
           </div>
         )}
 
-        {!quickLoading && quickResults?.flights?.length > 0 && (
+        {!showQuickLoading && quickResults?.flights?.length > 0 && (
           <OtherFlightsSection
             flights={quickResults.flights}
             origin={origin}
@@ -152,21 +159,17 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
           />
         )}
 
-        {!quickResults && !quickLoading && (
+        {!quickResults && !showQuickLoading && (
           <>
-            {loading && (
-              <div className="text-center text-slate-400 py-10 animate-pulse">
-                {t("flightSearch.scanning")}
-              </div>
-            )}
+            {showLoading && <SearchProgressSteps active={loading} />}
 
-            {!loading && error && (
+            {!showLoading && error && (
               <div className="text-center text-red-500 bg-red-50 border border-red-100 rounded-xl py-4 px-4 text-sm">
                 {error}
               </div>
             )}
 
-            {!loading && results?.bestDeal && (
+            {!showLoading && results?.bestDeal && (
               <FlightResultsTable
                 flight={results.bestDeal}
                 origin={origin}
@@ -178,7 +181,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
               />
             )}
 
-            {!loading && results?.otherFlights?.length > 0 && (
+            {!showLoading && results?.otherFlights?.length > 0 && (
               <div className="mt-6">
                 <OtherFlightsSection
                   flights={results.otherFlights}
