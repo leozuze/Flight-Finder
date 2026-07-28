@@ -1,15 +1,40 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+import asyncio
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 
-from src.flight_search import FlightSearch
-from src.flight_data import find_cheapest_flight, find_all_flights_sorted
-from src.data_manager import DataManager
-from src.notification_manager import NotificationManager
-from src.airport_board import AirportBoard
+import httpx
+from fastapi import BackgroundTasks, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
-app = FastAPI()
+from src.airport_board import AirportBoard
+from src.cache import TTLCache
+from src.data_manager import DataManager
+from src.flight_data import find_all_flights_sorted, find_cheapest_flight
+from src.flight_search import FlightSearch
+from src.notification_manager import NotificationManager
+
+TRIP_TYPE_MAP = {"round": "1", "oneway": "2"}
+CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
+
+SEARCH_WINDOW_DAYS = 30  # always search the next month automatically — no longer user-configurable
+FLIGHT_CACHE_TTL_SECONDS = 900  # 15 min — flight prices don't meaningfully change faster than this
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """One shared async HTTP client + connection pool for the app's whole
+    lifetime, instead of opening/closing a connection on every request."""
+    async with httpx.AsyncClient() as client:
+        app.state.flight_search = FlightSearch(client)
+        app.state.data_manager = DataManager(client)
+        app.state.notification_manager = NotificationManager(client)
+        app.state.airport_board = AirportBoard(client)
+        app.state.flight_cache = TTLCache(default_ttl_seconds=FLIGHT_CACHE_TTL_SECONDS)
+        yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,29 +46,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-flight_search = FlightSearch()
-data_manager = DataManager()
-notification_manager = NotificationManager()
-airport_board = AirportBoard()
 
-TRIP_TYPE_MAP = {"round": "1", "oneway": "2"}
-CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
-
-SEARCH_WINDOW_DAYS = 30  # always search the next month automatically — no longer user-configurable
+def build_cache_key(origin_code, destination_code, trip_type, travel_class, currency, is_direct):
+    return f"{origin_code}:{destination_code}:{trip_type}:{travel_class}:{currency}:{is_direct}"
 
 
-def resolve_iata(value: str) -> str:
-    """Resolve a city/airport name to an IATA code, or pass through
-    unchanged if the input is already a 3-letter IATA code.
+async def _search_with_cache(flight_search, cache, origin_code, destination_code,
+                              tomorrow, end_date, trip_type, currency, adults,
+                              travel_class, is_direct):
+    """Wraps check_flights with a TTL cache keyed on the search parameters
+    (not the date window, since that's always 'tomorrow to +30 days').
+    Two users searching the same route within the TTL both hit the cache
+    instead of both paying for a fresh SerpAPI call."""
+    key = build_cache_key(origin_code, destination_code, trip_type, travel_class, currency, is_direct)
+    cached = cache.get(key)
+    if cached is not None:
+        return cached
 
-    Same pass-through check already used in /api/airport-board, shared
-    here so /api/search and /api/flights don't re-run an autocomplete
-    lookup on a value that's already a resolved code.
-    """
-    value = value.strip()
-    if len(value) == 3 and value.isalpha():
-        return value.upper()
-    return flight_search.get_iata_code(value)
+    result = await flight_search.check_flights(
+        origin_city_code=origin_code,
+        destination_city_code=destination_code,
+        from_time=tomorrow,
+        to_time=end_date if trip_type == "1" else None,
+        is_direct=is_direct,
+        trip_type=trip_type,
+        currency=currency,
+        adults=adults,
+        travel_class=travel_class,
+    )
+    cache.set(key, result)
+    return result
 
 
 class StatusRequest(BaseModel):
@@ -52,8 +84,8 @@ class StatusRequest(BaseModel):
 
 
 @app.post("/api/status")
-def get_status(req: StatusRequest):
-    status = flight_search.get_flight_status(req.flightNumber, req.date)
+async def get_status(req: StatusRequest):
+    status = await app.state.flight_search.get_flight_status(req.flightNumber, req.date)
     return {"status": status}
 
 
@@ -69,54 +101,51 @@ class SearchRequest(BaseModel):
 
 
 @app.post("/api/search")
-def search_flights(req: SearchRequest):
+async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
+    flight_search = app.state.flight_search
+    data_manager = app.state.data_manager
+    notification_manager = app.state.notification_manager
+    cache = app.state.flight_cache
+
     trip_type = TRIP_TYPE_MAP[req.tripType]
     travel_class = CLASS_MAP[req.travelClass]
 
     tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     end_date = (datetime.now() + timedelta(days=SEARCH_WINDOW_DAYS)).strftime("%Y-%m-%d")
 
-    origin_code = resolve_iata(req.origin)
-    destination_code = resolve_iata(req.destination)
+    # Origin/destination resolution is independent work — run concurrently
+    # instead of two sequential blocking calls.
+    origin_code, destination_code = await asyncio.gather(
+        flight_search.get_iata_code(req.origin),
+        flight_search.get_iata_code(req.destination),
+    )
 
     if origin_code == "N/A" or destination_code == "N/A":
         return {"error": "Could not find IATA codes for the given cities."}
 
-    flights = flight_search.check_flights(
-        origin_city_code=origin_code,
-        destination_city_code=destination_code,
-        from_time=tomorrow,
-        to_time=end_date if trip_type == "1" else None,
-        is_direct=True,
-        trip_type=trip_type,
-        currency=req.currency,
-        adults=req.adults,
-        travel_class=travel_class,
+    flights = await _search_with_cache(
+        flight_search, cache, origin_code, destination_code, tomorrow, end_date,
+        trip_type, req.currency, req.adults, travel_class, is_direct=True,
     )
     cheapest = find_cheapest_flight(flights, trip_type=trip_type)
 
     if cheapest.price == "N/A":
-        flights = flight_search.check_flights(
-            origin_city_code=origin_code,
-            destination_city_code=destination_code,
-            from_time=tomorrow,
-            to_time=end_date if trip_type == "1" else None,
-            is_direct=False,
-            trip_type=trip_type,
-            currency=req.currency,
-            adults=req.adults,
-            travel_class=travel_class,
+        flights = await _search_with_cache(
+            flight_search, cache, origin_code, destination_code, tomorrow, end_date,
+            trip_type, req.currency, req.adults, travel_class, is_direct=False,
         )
         cheapest = find_cheapest_flight(flights, trip_type=trip_type)
 
     if cheapest.price == "N/A":
         return {"error": "No flights found within your criteria."}
 
-    # Build the full sorted list from whichever search (direct or indirect) succeeded
     all_sorted = find_all_flights_sorted(flights, trip_type=trip_type)
     other_flights = all_sorted[1:] if len(all_sorted) > 1 else []
 
-    data_manager.post_search_result(
+    # Sheety write + email are side effects the user doesn't need to wait
+    # on — they run after the response has already gone out.
+    background_tasks.add_task(
+        data_manager.post_search_result,
         email=req.email,
         origin=req.origin,
         destination=req.destination,
@@ -130,7 +159,8 @@ def search_flights(req: SearchRequest):
     )
 
     if cheapest.price <= req.budget:
-        notification_manager.send_emails(
+        background_tasks.add_task(
+            notification_manager.send_emails,
             customer_emails=[req.email],
             price=cheapest.price,
             departure_code=cheapest.origin_airport,
@@ -187,43 +217,34 @@ class FlightsOnlyRequest(BaseModel):
 
 
 @app.post("/api/flights")
-def get_flights_only(req: FlightsOnlyRequest):
+async def get_flights_only(req: FlightsOnlyRequest):
+    flight_search = app.state.flight_search
+    cache = app.state.flight_cache
+
     trip_type = TRIP_TYPE_MAP[req.tripType]
     travel_class = CLASS_MAP[req.travelClass]
 
     tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
     end_date = (datetime.now() + timedelta(days=SEARCH_WINDOW_DAYS)).strftime("%Y-%m-%d")
 
-    origin_code = resolve_iata(req.origin)
-    destination_code = resolve_iata(req.destination)
+    origin_code, destination_code = await asyncio.gather(
+        flight_search.get_iata_code(req.origin),
+        flight_search.get_iata_code(req.destination),
+    )
 
     if origin_code == "N/A" or destination_code == "N/A":
         return {"error": "Could not find IATA codes for the given cities."}
 
-    flights = flight_search.check_flights(
-        origin_city_code=origin_code,
-        destination_city_code=destination_code,
-        from_time=tomorrow,
-        to_time=end_date if trip_type == "1" else None,
-        is_direct=True,
-        trip_type=trip_type,
-        currency=req.currency,
-        adults=req.adults,
-        travel_class=travel_class,
+    flights = await _search_with_cache(
+        flight_search, cache, origin_code, destination_code, tomorrow, end_date,
+        trip_type, req.currency, req.adults, travel_class, is_direct=True,
     )
     all_sorted = find_all_flights_sorted(flights, trip_type=trip_type)
 
     if not all_sorted:
-        flights = flight_search.check_flights(
-            origin_city_code=origin_code,
-            destination_city_code=destination_code,
-            from_time=tomorrow,
-            to_time=end_date if trip_type == "1" else None,
-            is_direct=False,
-            trip_type=trip_type,
-            currency=req.currency,
-            adults=req.adults,
-            travel_class=travel_class,
+        flights = await _search_with_cache(
+            flight_search, cache, origin_code, destination_code, tomorrow, end_date,
+            trip_type, req.currency, req.adults, travel_class, is_direct=False,
         )
         all_sorted = find_all_flights_sorted(flights, trip_type=trip_type)
 
@@ -257,20 +278,16 @@ class AirportBoardRequest(BaseModel):
 
 
 @app.post("/api/airport-board")
-def get_airport_board(req: AirportBoardRequest):
-    airport_input = req.airport.strip()
+async def get_airport_board(req: AirportBoardRequest):
+    flight_search = app.state.flight_search
+    airport_board = app.state.airport_board
 
-    # Treat a bare 3-letter input as an IATA code already; otherwise resolve
-    # the city/airport name the same way /api/search resolves origin/destination.
-    if len(airport_input) == 3 and airport_input.isalpha():
-        airport_code = airport_input.upper()
-    else:
-        airport_code = flight_search.get_iata_code(airport_input)
+    airport_code = await flight_search.get_iata_code(req.airport)
 
     if airport_code == "N/A":
         return {"error": "Could not find an IATA code for the given airport/city."}
 
-    board = airport_board.get_board(airport_code)
+    board = await airport_board.get_board(airport_code)
 
     if not board["arrivals"] and not board["departures"]:
         return {"error": "No flight data found for that airport."}
@@ -287,8 +304,9 @@ class FlightLookupRequest(BaseModel):
 
 
 @app.post("/api/flight")
-def get_flight_detail(req: FlightLookupRequest):
-    result = airport_board.get_flight(req.ident.strip().upper())
+async def get_flight_detail(req: FlightLookupRequest):
+    airport_board = app.state.airport_board
+    result = await airport_board.get_flight(req.ident.strip().upper())
 
     if not result:
         return {"error": "No flight found for that identifier."}
