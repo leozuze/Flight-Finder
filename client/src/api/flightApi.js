@@ -1,46 +1,47 @@
 const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api`
 
+async function postJSON(path, body) {
+  let res
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+  } catch (err) {
+    throw new Error(`Network error calling ${path}: ${err.message}`)
+  }
+
+  let data
+  try {
+    data = await res.json()
+  } catch {
+    throw new Error(`${path} returned a non-JSON response (status ${res.status})`)
+  }
+
+  if (!res.ok) {
+    throw new Error(data?.error || data?.detail || `${path} failed with status ${res.status}`)
+  }
+
+  return data
+}
+
 export async function searchFlights(payload) {
-  const res = await fetch(`${API_BASE}/search`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  })
-  return res.json()
+  return postJSON("/search", payload)
 }
 
 export async function quickSearchFlights(origin, destination) {
-  const res = await fetch(`${API_BASE}/flights`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ origin, destination }),
-  })
-  return res.json()
+  return postJSON("/flights", { origin, destination })
 }
 
 export async function checkFlightStatus(flightNumber, date) {
-  const res = await fetch(`${API_BASE}/status`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ flightNumber, date }),
-  })
-  return res.json()
+  return postJSON("/status", { flightNumber, date })
 }
 
 export async function fetchAirportBoard(airport) {
-  const res = await fetch(`${API_BASE}/airport-board`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ airport }),
-  })
-  return res.json()
+  return postJSON("/airport-board", { airport })
 }
 
 export async function fetchFlightDetail(ident) {
-  const res = await fetch(`${API_BASE}/flight`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ident }),
-  })
-  return res.json()
+  return postJSON("/flight", { ident })
 }
