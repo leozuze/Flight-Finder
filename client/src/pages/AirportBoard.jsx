@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import ArrivalsDeparturesTable from "@/components/airport-board/ArrivalsDeparturesTable"
+import SearchProgressSteps from "@/components/flight-search/SearchProgressSteps"
+import { useDelayedLoading } from "@/hooks/useDelayedLoading"
 import { fetchAirportBoard } from "@/api/flightApi"
 
 const CONTAINER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -13,6 +15,8 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
   const [board, setBoard] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  const showLoading = useDelayedLoading(loading)
 
   useEffect(() => {
     if (!query?.query) return
@@ -28,8 +32,10 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
         if (data.error) setError(data.error)
         else setBoard(data)
       })
-      .catch(() => {
-        if (!cancelled) setError(t("airportBoard.error_generic"))
+      .catch((err) => {
+        if (cancelled) return
+        console.error("[SkyScout] airport board fetch failed:", err)
+        setError(t("airportBoard.error_generic"))
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
@@ -72,19 +78,15 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
         </div>
 
         <div className="mt-4">
-          {loading && (
-            <div className="text-center text-slate-400 py-10 animate-pulse">
-              {t("airportBoard.loading")}
-            </div>
-          )}
+          {showLoading && <SearchProgressSteps active={loading} />}
 
-          {!loading && error && (
+          {!showLoading && error && (
             <div className="text-center text-red-500 bg-red-50 border border-red-100 rounded-xl py-4 px-4 text-sm">
               {error}
             </div>
           )}
 
-          {!loading && !error && board && (
+          {!showLoading && !error && board && (
             <ArrivalsDeparturesTable
               flights={tab === "arrivals" ? board.arrivals : board.departures}
               mode={tab}
