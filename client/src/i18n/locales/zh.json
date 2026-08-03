@@ -11,9 +11,9 @@
     "search_type_all": "全部",
     "search_type_route": "路线",
     "search_type_airport": "机场",
-    "placeholder_all": "搜索航班、尾号、机场或城市",
-    "placeholder_from": "从（例如 KJFK 或纽约）",
-    "placeholder_to": "发往（例如 KLAX 或洛杉矶）",
+    "placeholder_all": "搜索航班、尾号、机场、城市或国家",
+    "placeholder_from": "从（例如 KJFK 或纽约或印度）",
+    "placeholder_to": "发往（例如：KLAX、洛杉矶或德国）",
     "placeholder_airport_code": "机场代码（例如：KJFK）",
     "placeholder_airport_city": "机场城（例如纽约）",
     "alert_route_missing": "请同时输入出发地和目的地，例如“浦那至哈拉雷”。",
@@ -86,7 +86,7 @@
     "section6_title": "6. 您的选择",
     "section6_body": "您可以随时停止接收票价提醒，只需不再使用您的电子邮箱地址进行新的搜索即可。如果您希望删除现有数据，请通过我们主页上的联系方式与我们联系。",
     "section7_title": "7. 本政策的变更",
-    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每当进行修改时，我们都会在本页面顶部公布更新日期。"
+    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每次进行修改时，我们都会在本页面顶部公布更新日期。"
   },
   "airportBoard": {
     "arrivals": "抵达",

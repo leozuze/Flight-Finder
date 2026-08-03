@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
-import { formatDateTime } from "@/utils/flightFormatters"
+import { formatDateTime, getAirlineCode } from "@/utils/flightFormatters"
+import AirlineLogo from "@/components/AirlineLogo"
 
 export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", onSelectFlight }) {
   const { t } = useTranslation()
@@ -40,6 +41,7 @@ export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", on
               ].filter(Boolean).join(" / ") || "—"
 
               const hasIdent = f.ident && f.ident !== "N/A"
+              const airlineCode = getAirlineCode(f.ident)
 
               return (
                 <tr
@@ -60,7 +62,12 @@ export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", on
                     )}
                   </td>
                   <td className="px-4 py-3 text-slate-700">
-                    {f.airline !== "N/A" ? f.airline : ""}
+                    <div className="flex items-center gap-2">
+                      {airlineCode && (
+                        <AirlineLogo iataCode={airlineCode} airlineName={f.airline} className="w-6 h-6"/>
+                      )}
+                      <span>{f.airline !== "N/A" ? f.airline : ""}</span>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-slate-700">{place}</td>
                   <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{terminalGate}</td>

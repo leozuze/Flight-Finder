@@ -11,9 +11,9 @@
     "search_type_all": "Tout",
     "search_type_route": "Itinéraire",
     "search_type_airport": "Aéroport",
-    "placeholder_all": "Rechercher un vol, un numéro d'immatriculation, un aéroport ou une ville",
-    "placeholder_from": "Au départ de (par exemple, KJFK ou New York)",
-    "placeholder_to": "Vers (par exemple, KLAX ou Los Angeles)",
+    "placeholder_all": "Rechercher un vol, un numéro d'immatriculation, un aéroport, une ville ou un pays",
+    "placeholder_from": "Au départ de (par exemple : KJFK, New York ou l'Inde)",
+    "placeholder_to": "Vers (par exemple KLAX, Los Angeles ou l'Allemagne)",
     "placeholder_airport_code": "Code aéroport (par ex. KJFK)",
     "placeholder_airport_city": "Ville aéroportuaire (par exemple, New York)",
     "alert_route_missing": "Veuillez indiquer à la fois un lieu de départ et une destination, par exemple « de Pune à Harare ».",
@@ -23,7 +23,7 @@
     "marquee_1": "Ne manquez jamais une baisse de prix.",
     "marquee_2": "Des vols pas chers, sélectionnés spécialement pour vous.",
     "marquee_3": "Profitez des offres avant qu'elles ne disparaissent.",
-    "marquee_4": "Des tarifs intelligents. Sans aucun effort.",
+    "marquee_4": "Des tarifs intelligents. Aucun effort.",
     "marquee_5": "Suivez les tarifs. Réservez plus malin."
   },
   "footer": {
@@ -66,7 +66,7 @@
     "section5_title": "5. Exclusion de toute responsabilité quant au résultat de la réservation",
     "section5_body": "SkyScout décline toute responsabilité en cas de pertes, de tarifs manqués ou de problèmes de réservation survenant sur les sites de compagnies aériennes ou d'agences de voyage tierces. Vérifiez toujours le prix définitif et les conditions directement auprès de la compagnie aérienne avant de finaliser votre achat.",
     "section6_title": "6. Modifications apportées aux présentes conditions",
-    "section6_body": "Nous pouvons être amenés à mettre à jour les présentes Conditions générales d'utilisation de temps à autre. La poursuite de l'utilisation de SkyScout après la publication des modifications vaut acceptation des conditions révisées.",
+    "section6_body": "Nous pouvons être amenés à mettre à jour les présentes Conditions générales d'utilisation de temps à autre. Le fait de continuer à utiliser SkyScout après la publication des modifications vaut acceptation des conditions révisées.",
     "section7_title": "7. Contact",
     "section7_body": "Vous avez des questions concernant ces conditions ? N'hésitez pas à nous contacter via les coordonnées indiquées sur notre page d'accueil."
   },
@@ -84,9 +84,9 @@
     "section5_title": "5. Cookies et suivi",
     "section5_body": "SkyScout n'utilise pas de cookies de suivi à des fins publicitaires. Les données techniques collectées servent uniquement à assurer le bon fonctionnement du service.",
     "section6_title": "6. Vos choix",
-    "section6_body": "Vous pouvez à tout moment cesser de recevoir des alertes sur les tarifs en ne lançant plus de nouvelles recherches avec votre adresse e-mail. Si vous souhaitez que vos données existantes soient supprimées, contactez-nous en utilisant les coordonnées indiquées sur notre page d'accueil.",
+    "section6_body": "Vous pouvez à tout moment ne plus recevoir d'alertes sur les tarifs en cessant d'effectuer de nouvelles recherches avec votre adresse e-mail. Si vous souhaitez que vos données existantes soient supprimées, contactez-nous en utilisant les coordonnées indiquées sur notre page d'accueil.",
     "section7_title": "7. Modifications apportées à la présente politique",
-    "section7_body": "Nous pouvons être amenés à mettre à jour la présente Politique de confidentialité de temps à autre afin de refléter les changements apportés au fonctionnement de SkyScout. Chaque fois que des modifications seront apportées, nous indiquerons la date de mise à jour en haut de cette page."
+    "section7_body": "Nous pouvons être amenés à mettre à jour régulièrement la présente Politique de confidentialité afin de refléter les changements apportés au fonctionnement de SkyScout. Chaque fois que des modifications seront apportées, nous indiquerons la date de mise à jour en haut de cette page."
   },
   "airportBoard": {
     "arrivals": "Arrivées",

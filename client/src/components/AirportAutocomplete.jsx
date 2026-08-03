@@ -28,7 +28,7 @@ function highlightMatch(text, query) {
   )
 }
 
-export default function AirportAutocomplete({ value, onChange, onSelect, placeholder, className, style }) {
+export default function AirportAutocomplete({ value, onChange, onSelect, placeholder, className, style ,dropdownAlign = "left"}) {
   const [open, setOpen] = useState(false)
   const [highlighted, setHighlighted] = useState(-1)
   const wrapperRef = useRef(null)
@@ -87,7 +87,9 @@ export default function AirportAutocomplete({ value, onChange, onSelect, placeho
       />
 
       {open && results.length > 0 && (
-        <div className="absolute left-0 top-full mt-1 w-80 max-w-[90vw] max-h-72 overflow-y-auto rounded-lg border shadow-xl z-50 bg-white">
+        <div  className={`absolute top-full mt-1 w-80 max-w-[90vw] max-h-72 overflow-y-auto rounded-lg border shadow-xl z-50 bg-white ${
+        dropdownAlign === "right" ? "right-0" : "left-0"
+      }`}>
           {results.map((a, i) => (
             <button
                 key={a.iata}

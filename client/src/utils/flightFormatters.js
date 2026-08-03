@@ -57,3 +57,14 @@ export function getDepartDateLabel(value) {
   if (sameDay(d, tomorrow)) return "Tomorrow"
   return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })
 }
+
+export function getAirlineCode(ident) {
+  if (!ident || ident === "N/A") return null
+  const match = ident.match(/^([A-Z]{2,3})\d/)
+  return match ? match[1] : null
+}
+
+export function getAirlineLogoUrl(iataCode, size = 70) {
+  if (!iataCode) return null
+  return `https://www.gstatic.com/flights/airline_logos/${size}px/${iataCode}.png`
+}

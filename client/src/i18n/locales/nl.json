@@ -11,9 +11,9 @@
     "search_type_all": "Alles",
     "search_type_route": "Route",
     "search_type_airport": "Luchthaven",
-    "placeholder_all": "Zoek op vlucht, staartnummer, luchthaven of stad",
-    "placeholder_from": "Vanuit (bijv. KJFK of New York)",
-    "placeholder_to": "Naar (bijv. KLAX of Los Angeles)",
+    "placeholder_all": "Zoek op vlucht, staartnummer, luchthaven, stad of land",
+    "placeholder_from": "Van (bijv. KJFK of New York of India)",
+    "placeholder_to": "Naar (bijv. KLAX of Los Angeles of Duitsland)",
     "placeholder_airport_code": "Luchthavencode (bijv. KJFK)",
     "placeholder_airport_city": "Luchthavenstad (bijv. New York)",
     "alert_route_missing": "Voer zowel een vertrekplaats als een bestemming in, bijvoorbeeld 'Pune naar Harare'.",
@@ -43,7 +43,7 @@
     "title": "Hoe SkyScout werkt",
     "subtitle": "Het vinden van het juiste tarief hoeft geen urenlang verversen van tabbladen te kosten. Zo houden wij het voor je in de gaten.",
     "step1_title": "Zoek je route",
-    "step1_description": "Geef aan waarvandaan en waarheen je vliegt, en vermeld ook je budget en reisdata. We zoeken direct in realtime naar actuele tarieven bij verschillende luchtvaartmaatschappijen.",
+    "step1_description": "Geef aan waarvandaan en waarheen je vliegt, en vermeld ook je budget en reisdata. Wij vergelijken direct de actuele tarieven van alle luchtvaartmaatschappijen.",
     "step2_title": "Wij houden de tarieven voor u in de gaten",
     "step2_description": "Zodra je zoekopdracht is opgeslagen, houdt SkyScout die route in de gaten. Zodra een tarief binnen je budget daalt, ben jij de eerste die het weet.",
     "step3_title": "Boek met een gerust hart",
@@ -68,7 +68,7 @@
     "section6_title": "6. Wijzigingen in deze voorwaarden",
     "section6_body": "We kunnen deze gebruiksvoorwaarden van tijd tot tijd aanpassen. Als u SkyScout blijft gebruiken nadat wijzigingen zijn gepubliceerd, betekent dit dat u akkoord gaat met de aangepaste voorwaarden.",
     "section7_title": "7. Contact",
-    "section7_body": "Heeft u vragen over deze voorwaarden? Neem dan contact met ons op via de contactgegevens op onze homepage."
+    "section7_body": "Heeft u vragen over deze voorwaarden? Neem dan contact met ons op via de contactgegevens op onze startpagina."
   },
   "privacy": {
     "title": "Privacybeleid",
@@ -80,7 +80,7 @@
     "section3_title": "3. Externe gegevensleveranciers",
     "section3_body": "SkyScout haalt vluchtprijzen en luchthavengegevens op bij externe aanbieders om zoekresultaten en vertrek- en aankomstborden te genereren. Wij delen uw persoonlijke e-mailadres of zoekgeschiedenis niet met deze aanbieders, behalve voor zover dat nodig is om de zoekopdracht zelf uit te voeren.",
     "section4_title": "4. Gegevensopslag",
-    "section4_body": "Zoekgegevens en instellingen voor prijswaarschuwingen worden veilig opgeslagen en uitsluitend gebruikt voor het beheer van de prijswaarschuwingsfunctie. Wij verkopen, verhuren of delen uw persoonsgegevens niet met adverteerders of niet-gerelateerde derde partijen.",
+    "section4_body": "Zoekgegevens en instellingen voor prijswaarschuwingen worden veilig opgeslagen en uitsluitend gebruikt voor het functioneren van de prijswaarschuwingsfunctie. Wij verkopen, verhuren of delen uw persoonsgegevens niet met adverteerders of niet-gerelateerde derde partijen.",
     "section5_title": "5. Cookies en tracking",
     "section5_body": "SkyScout maakt geen gebruik van trackingcookies voor reclamedoeleinden. Eventuele verzamelde technische gegevens worden uitsluitend gebruikt om de dienst correct te laten functioneren.",
     "section6_title": "6. Jouw keuzes",
@@ -179,7 +179,7 @@
     "error_generic": "Er is een fout opgetreden bij het verbinden met de zoekservice. Probeer het nog eens.",
     "scanning": "Op zoek naar de goedkoopste vluchten...",
     "status_unavailable": "Niet beschikbaar",
-    "step_search_routes": "Beschikbare routes worden gezocht...",
+    "step_search_routes": "Beschikbare routes worden opgezocht...",
     "step_compare_prices": "Prijzen van verschillende luchtvaartmaatschappijen vergelijken...",
     "step_check_availability": "De beschikbaarheid wordt in realtime gecontroleerd...",
     "step_finalizing": "Je resultaten worden verwerkt..."

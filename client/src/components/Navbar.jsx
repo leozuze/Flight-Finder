@@ -365,19 +365,21 @@ export default function Navbar({ onSearch, onNavigate }) {
                 </AnimatePresence>
               </div>
 
-              {activeFields.map((field, i) => (
-                <AirportAutocomplete
-                  key={field.id}
-                  value={searchValues[field.id] || ""}
-                  onChange={(val) => handleFieldChange(field.id, val)}
-                  onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
-                  placeholder={field.placeholder}
-                  className={`flex-1 min-w-0 bg-transparent text-sm outline-none px-3 ${
-                    i > 0 ? "border-l" : ""
-                  }`}
-                  style={{ color: "var(--color-text-primary)", borderColor: "var(--color-border)" }}
-                />
-              ))}
+      
+        {activeFields.map((field, i) => (
+          <AirportAutocomplete
+            key={field.id}
+            value={searchValues[field.id] || ""}
+            onChange={(val) => handleFieldChange(field.id, val)}
+            onSelect={(airport) => handleFieldChange(field.id, `${airport.city || airport.name} (${airport.iata})`)}
+            placeholder={field.placeholder}
+            dropdownAlign={i > 0 ? "right" : "left"}   // 2nd field's dropdown opens leftward, not off-screen
+            className={`flex-1 min-w-[140px] bg-transparent text-sm outline-none px-3 ${
+              i > 0 ? "border-l" : ""
+            }`}
+            style={{ color: "var(--color-text-primary)", borderColor: "var(--color-border)" }}
+          />
+        ))}
 
               <button
                 onClick={handleSubmitSearch}

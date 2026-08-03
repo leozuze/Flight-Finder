@@ -2,11 +2,11 @@ import { useTranslation } from "react-i18next"
 import { Play } from "lucide-react"
 import { formatDateTime } from "@/utils/flightFormatters"
 
-export default function FlightResultsTable({ flight, origin, destination, status, statusLoading, onCheckStatus, onSelectFlight }) {
+export default function FlightResultsTable({ flight, origin, destination, travelClass, status, statusLoading, onCheckStatus, onSelectFlight }) {
   const { t } = useTranslation()
   const originLabel = flight.originCode ? `(${flight.originCode}) ${origin}` : origin
   const destinationLabel = flight.destinationCode ? `(${flight.destinationCode}) ${destination}` : destination
-
+  const classKey = travelClass === "premium" ? "premium_economy" : travelClass
   const connectionsLabel = flight.stops === 0
     ? t("resultsTable.direct")
     : `${flight.stops} ${flight.stops > 1 ? t("resultsTable.stops") : t("resultsTable.stop")}${
@@ -39,7 +39,7 @@ export default function FlightResultsTable({ flight, origin, destination, status
               <td className="px-4 py-3 text-slate-700">
                 <div className="flex items-center gap-2">
                   {flight.airlineLogo && (
-                    <img src={flight.airlineLogo} alt={flight.airline || "airline logo"} className="w-5 h-5 object-contain" />
+                    <img src={flight.airlineLogo} alt={flight.airline || "airline logo"} className="w-6 h-6 object-contain" />
                   )}
                   <span>{flight.airline || ""}</span>
                 </div>
@@ -79,8 +79,12 @@ export default function FlightResultsTable({ flight, origin, destination, status
           </tbody>
         </table>
       </div>
-
-      <div className="px-4 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-end text-sm">
+    <div className="px-4 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-sm">
+        {classKey && (
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+            {t(`searchForm.${classKey}`)}
+          </span>
+        )}
         <span className="text-lg font-bold text-cyan-600">
           {flight.currency} {flight.price}
         </span>

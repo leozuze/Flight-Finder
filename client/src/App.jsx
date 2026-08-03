@@ -1,4 +1,5 @@
-import { useState } from "react"
+// App.jsx
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from "react-router-dom"
 import Home from "@/pages/Home"
 import AirportBoard from "@/pages/AirportBoard"
 import FlightDetail from "@/pages/FlightDetail"
@@ -6,65 +7,86 @@ import HowItWorks from "@/pages/HowItWorks"
 import TermsOfService from "@/pages/TermsOfService"
 import PrivacyPolicy from "@/pages/PrivacyPolicy"
 
-function App() {
-  const [page, setPage] = useState("home")
-  const [routeQuery, setRouteQuery] = useState(null)
-  const [airportQuery, setAirportQuery] = useState(null)
-  const [flightIdent, setFlightIdent] = useState(null)
-  const [previousPage, setPreviousPage] = useState("home")
+function AppRoutes() {
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleSearch = (result) => {
     if (result.type === "route") {
-      setRouteQuery({ origin: result.origin, destination: result.destination })
-      setPage("home")
+      navigate("/", { state: { routeQuery: { origin: result.origin, destination: result.destination } } })
     } else if (result.type === "airport") {
-      setAirportQuery(result)
-      setPage("airport-board")
+      navigate("/airport-board", { state: { airportQuery: result } })
     }
   }
 
   const handleSelectFlight = (ident) => {
-    setFlightIdent(ident)
-    setPreviousPage(page)
-    setPage("flight-detail")
+    navigate(`/flight/${encodeURIComponent(ident)}`)
   }
 
-  if (page === "airport-board") {
-    return (
-      <AirportBoard
-        query={airportQuery}
-        onSearch={handleSearch}
-        onBack={() => setPage("home")}
-        onNavigate={setPage}
-        onSelectFlight={handleSelectFlight}
+  const handleNavigate = (dest) => {
+    const routes = {
+      home: "/",
+      "airport-board": "/airport-board",
+      "how-it-works": "/how-it-works",
+      terms: "/terms",
+      privacy: "/privacy",
+    }
+    navigate(routes[dest] || "/")
+  }
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Home
+            startingQuery={location.state?.routeQuery || null}
+            onSearch={handleSearch}
+            onNavigate={handleNavigate}
+            onSelectFlight={handleSelectFlight}
+          />
+        }
       />
-    )
-  }
-
-  if (page === "flight-detail") {
-    return (
-      <FlightDetail
-        ident={flightIdent}
-        onSearch={handleSearch}
-        onNavigate={setPage}
-        onBack={() => setPage(previousPage)}
-      />
-    )
-  }
-
-  if (page === "how-it-works") {
-    return <HowItWorks onSearch={handleSearch} onNavigate={setPage} />
-  }
-
-  if (page === "terms") {
-    return <TermsOfService onSearch={handleSearch} onNavigate={setPage} />
-  }
-
-  if (page === "privacy") {
-    return <PrivacyPolicy onSearch={handleSearch} onNavigate={setPage} />
-  }
-
-  return <Home startingQuery={routeQuery} onSearch={handleSearch} onNavigate={setPage} onSelectFlight={handleSelectFlight} />
+      <Route path="/airport-board" element={<AirportBoardRoute onSearch={handleSearch} onNavigate={handleNavigate} onSelectFlight={handleSelectFlight} />} />
+      <Route path="/flight/:ident" element={<FlightDetailRoute onSearch={handleSearch} onNavigate={handleNavigate} />} />
+      <Route path="/how-it-works" element={<HowItWorks onSearch={handleSearch} onNavigate={handleNavigate} />} />
+      <Route path="/terms" element={<TermsOfService onSearch={handleSearch} onNavigate={handleNavigate} />} />
+      <Route path="/privacy" element={<PrivacyPolicy onSearch={handleSearch} onNavigate={handleNavigate} />} />
+    </Routes>
+  )
 }
 
-export default App
+function AirportBoardRoute({ onSearch, onNavigate, onSelectFlight }) {
+  const location = useLocation()
+  const navigate = useNavigate()
+  return (
+    <AirportBoard
+      query={location.state?.airportQuery}
+      onSearch={onSearch}
+      onNavigate={onNavigate}
+      onSelectFlight={onSelectFlight}
+      onBack={() => navigate(-1)}
+    />
+  )
+}
+
+function FlightDetailRoute({ onSearch, onNavigate }) {
+  const { ident } = useParams()
+  const navigate = useNavigate()
+  return (
+    <FlightDetail
+      ident={ident}
+      onSearch={onSearch}
+      onNavigate={onNavigate}
+      onBack={() => navigate(-1)}
+    />
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  )
+}

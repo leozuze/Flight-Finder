@@ -2,12 +2,12 @@ import { useTranslation } from "react-i18next"
 import { Play } from "lucide-react"
 import { formatDateTime } from "@/utils/flightFormatters"
 
-export default function OtherFlightsTable({ flights, totalCount, origin, destination, originCode, destinationCode, title, onSelectFlight }) {
+export default function OtherFlightsTable({ flights, totalCount, origin, destination, originCode, destinationCode, travelClass, title, onSelectFlight }) {
   const { t } = useTranslation()
   const resolvedTitle = title || t("resultsTable.other_flights")
   const originLabel = originCode ? `(${originCode}) ${origin}` : origin
   const destinationLabel = destinationCode ? `(${destinationCode}) ${destination}` : destination
-
+  const classKey = travelClass === "premium" ? "premium_economy" : travelClass
   return (
     <div className="border border-slate-300 rounded-lg overflow-hidden">
       <div className="bg-slate-700 text-white px-4 py-3 font-semibold text-base flex items-center gap-2 flex-wrap">
@@ -16,11 +16,17 @@ export default function OtherFlightsTable({ flights, totalCount, origin, destina
         <span>{destinationLabel}</span>
       </div>
 
-      <div className="bg-slate-50 px-4 py-2.5 text-sm text-slate-600 border-b border-slate-200">
-        {t("resultsTable.showing", { shown: flights.length, total: totalCount })}{" "}
-        {totalCount > 1 ? t("resultsTable.flights") : t("resultsTable.flight")}
+    <div className="bg-slate-50 px-4 py-2.5 text-sm text-slate-600 border-b border-slate-200 flex items-center justify-between">
+        <span>
+          {t("resultsTable.showing", { shown: flights.length, total: totalCount })}{" "}
+          {totalCount > 1 ? t("resultsTable.flights") : t("resultsTable.flight")}
+        </span>
+        {classKey && (
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+            {t(`searchForm.${classKey}`)}
+          </span>
+        )}
       </div>
-
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>

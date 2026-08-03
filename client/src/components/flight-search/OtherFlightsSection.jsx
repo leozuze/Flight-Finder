@@ -6,7 +6,7 @@ import FilterPanelContent from "./FilterPanelContent"
 import OtherFlightsTable from "./OtherFlightsTable"
 import { getMinutesOfDay, getDurationMinutes, getDepartDateLabel } from "@/utils/flightFormatters"
 
-export default function OtherFlightsSection({ flights, origin, destination, originCode, destinationCode, title, onSelectFlight }) {
+export default function OtherFlightsSection({ flights, origin, destination, originCode, destinationCode, travelClass, title, onSelectFlight }) {
   const { t } = useTranslation()
   const [panelOpen, setPanelOpen] = useState(true)
 
@@ -147,6 +147,7 @@ export default function OtherFlightsSection({ flights, origin, destination, orig
         destination={destination}
         originCode={originCode}
         destinationCode={destinationCode}
+        travelClass={travelClass}
         title={title}
         onSelectFlight={onSelectFlight}
       />

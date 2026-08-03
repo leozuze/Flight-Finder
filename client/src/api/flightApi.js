@@ -30,8 +30,8 @@ export async function searchFlights(payload) {
   return postJSON("/search", payload)
 }
 
-export async function quickSearchFlights(origin, destination) {
-  return postJSON("/flights", { origin, destination })
+export async function quickSearchFlights(origin, destination,travelClass = "economy") {
+  return postJSON("/flights", { origin, destination, travelClass })
 }
 
 export async function checkFlightStatus(flightNumber, date) {

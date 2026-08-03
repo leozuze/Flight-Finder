@@ -99,18 +99,18 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
     if (!externalQuery) return
     setOrigin(externalQuery.origin)
     setDestination(externalQuery.destination)
-    runQuickSearch(externalQuery.origin, externalQuery.destination)
+    runQuickSearch(externalQuery.origin, externalQuery.destination, travelClass)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [externalQuery])
 
-  const runQuickSearch = async (o, d) => {
+  const runQuickSearch = async (o, d, tc = travelClass) => {
     setQuickLoading(true)
     setQuickResults(null)
     setQuickError(null)
     setResults(null)
     setError(null)
     try {
-      const data = await quickSearchFlights(extractCode(o), extractCode(d))
+      const data = await quickSearchFlights(extractCode(o), extractCode(d), tc)
       if (data.error) setQuickError(data.error)
       else setQuickResults(data)
     } catch (err) {
@@ -154,6 +154,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
             destination={destination}
             originCode={quickResults.originCode}
             destinationCode={quickResults.destinationCode}
+            travelClass={travelClass}
             onSelectFlight={onSelectFlight}
             title={t("resultsTable.flight_results")}
           />
@@ -174,6 +175,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
                 flight={results.bestDeal}
                 origin={origin}
                 destination={destination}
+                travelClass={travelClass}
                 status={status}
                 statusLoading={statusLoading}
                 onCheckStatus={checkStatus}
@@ -189,6 +191,7 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
                   destination={destination}
                   originCode={results.bestDeal.originCode}
                   destinationCode={results.bestDeal.destinationCode}
+                  travelClass={travelClass}
                   onSelectFlight={onSelectFlight}
                 />
               </div>
