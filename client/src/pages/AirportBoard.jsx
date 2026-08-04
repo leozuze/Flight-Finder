@@ -78,7 +78,7 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
         </div>
 
         <div className="mt-4">
-          {showLoading && <SearchProgressSteps active={loading} />}
+          {showLoading && <SearchProgressSteps active={loading} variant="airport" />}
 
           {!showLoading && error && (
             <div className="text-center text-red-500 bg-red-50 border border-red-100 rounded-xl py-4 px-4 text-sm">

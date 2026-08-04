@@ -218,25 +218,25 @@ export default function Navbar({ onSearch, onNavigate }) {
           >
             <Marquee items={marqueeMessages} />
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 shrink-0">
               <span
-                className="flex items-center gap-1.5 py-1"
+                className="flex items-center gap-1.5 py-1 shrink-0 whitespace-nowrap"
                 style={{ color: "var(--color-text-secondary)" }}
               >
                 {formattedTime}
               </span>
 
-              <div className="relative" ref={langRef}>
+              <div className="relative shrink-0" ref={langRef}>
                 <button
                   onClick={() => setLangOpen(!langOpen)}
-                  className="flex items-center gap-1.5 hover:text-white transition-colors py-1"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors py-1 shrink-0 whitespace-nowrap"
                 >
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1.5 shrink-0">
                     <FlagIcon country={selectedLang.country} label={selectedLang.label} />
                     <span>{selectedLang.label}</span>
                   </span>
                   <ChevronDown
-                    className="w-3 h-3 transition-transform duration-200"
+                    className="w-3 h-3 transition-transform duration-200 shrink-0"
                     style={{ transform: langOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                   />
                 </button>
@@ -310,16 +310,16 @@ export default function Navbar({ onSearch, onNavigate }) {
             </button>
 
             <div
-              className="flex-1 hidden md:flex items-stretch h-10 rounded-lg border overflow-visible"
+              className="flex-1 hidden md:flex items-stretch h-10 rounded-lg border overflow-visible min-w-0"
               style={{
                 background: "rgba(255,255,255,0.05)",
                 borderColor: "var(--color-border)",
               }}
             >
-              <div className="relative" ref={searchTypeRef}>
+              <div className="relative shrink-0" ref={searchTypeRef}>
                 <button
                   onClick={() => setSearchTypeOpen(!searchTypeOpen)}
-                  className="h-full flex items-center gap-1.5 px-3 border-r text-sm whitespace-nowrap"
+                  className="h-full flex items-center gap-1.5 px-3 border-r text-sm whitespace-nowrap shrink-0"
                   style={{
                     borderColor: "var(--color-border)",
                     color: "var(--color-text-primary)",
@@ -327,7 +327,7 @@ export default function Navbar({ onSearch, onNavigate }) {
                 >
                   {selectedSearchType.label}
                   <ChevronDown
-                    className="w-3.5 h-3.5 transition-transform duration-200"
+                    className="w-3.5 h-3.5 transition-transform duration-200 shrink-0"
                     style={{ transform: searchTypeOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                   />
                 </button>
@@ -365,7 +365,7 @@ export default function Navbar({ onSearch, onNavigate }) {
                 </AnimatePresence>
               </div>
 
-      
+
         {activeFields.map((field, i) => (
           <AirportAutocomplete
             key={field.id}
@@ -396,7 +396,7 @@ export default function Navbar({ onSearch, onNavigate }) {
               </button>
             </div>
 
-            <div className="flex items-center gap-3 ml-auto">
+            <div className="flex items-center gap-3 ml-auto shrink-0">
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className="md:hidden p-2"
@@ -488,7 +488,7 @@ function Marquee({ items }) {
   const loopItems = [...items, ...items]
 
   return (
-    <div className="relative overflow-hidden flex-1 h-full flex items-center">
+    <div className="relative overflow-hidden flex-1 min-w-0 h-full flex items-center">
       <motion.div
         className="flex items-center gap-8 whitespace-nowrap"
         animate={{ x: ["0%", "-50%"] }}

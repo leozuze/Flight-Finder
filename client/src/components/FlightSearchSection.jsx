@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import FlightSearchForm from "@/components/flight-search/FlightSearchForm"
 import FlightResultsTable from "@/components/flight-search/FlightResultsTable"
 import OtherFlightsSection from "@/components/flight-search/OtherFlightsSection"
 import SearchProgressSteps from "@/components/flight-search/SearchProgressSteps"
 import { useDelayedLoading } from "@/hooks/useDelayedLoading"
+import { useSearchContext } from "@/context/SearchContext"
 import { searchFlights, quickSearchFlights, checkFlightStatus } from "@/api/flightApi"
 
 const extractCode = (val) => {
@@ -12,34 +13,38 @@ const extractCode = (val) => {
   return match ? match[1] : (val || "").trim()
 }
 
-export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
+export default function FlightSearchSection({ onSelectFlight }) {
   const { t } = useTranslation()
-  const [origin, setOrigin] = useState("")
-  const [destination, setDestination] = useState("")
-  const [tripType, setTripType] = useState("round")
-  const [budget, setBudget] = useState("")
-  const [currency, setCurrency] = useState("GBP")
-  const [email, setEmail] = useState("")
-  const [advancedOpen, setAdvancedOpen] = useState(false)
-  const [adults, setAdults] = useState(1)
-  const [travelClass, setTravelClass] = useState("economy")
+  const {
+    origin, setOrigin,
+    destination, setDestination,
+    tripType, setTripType,
+    budget, setBudget,
+    currency, setCurrency,
+    email, setEmail,
+    advancedOpen, setAdvancedOpen,
+    adults, setAdults,
+    travelClass, setTravelClass,
+    loading, setLoading,
+    results, setResults,
+    error, setError,
+    status, setStatus,
+    statusLoading, setStatusLoading,
+    quickResults, setQuickResults,
+    quickLoading, setQuickLoading,
+    quickError, setQuickError,
+    quickSearchTrigger,
+  } = useSearchContext()
 
-  const [loading, setLoading] = useState(false)
-  const [results, setResults] = useState(null)
-  const [error, setError] = useState(null)
-
-  const [status, setStatus] = useState(null)
-  const [statusLoading, setStatusLoading] = useState(false)
-
-  const [quickResults, setQuickResults] = useState(null)
-  const [quickLoading, setQuickLoading] = useState(false)
-  const [quickError, setQuickError] = useState(null)
-
-  // These stay true a beat longer than the real loading flags, so the step
-  // checklist gets to finish reading instead of vanishing the instant data
-  // arrives — see useDelayedLoading for the reasoning.
   const showLoading = useDelayedLoading(loading)
   const showQuickLoading = useDelayedLoading(quickLoading)
+
+  // Tracks the last trigger value we've already acted on. Comparing values
+  // (rather than a one-shot "have we run yet" boolean) is what makes this
+  // safe against React StrictMode's double effect invocation in dev — a
+  // boolean flag gets flipped on the first run and no longer blocks the
+  // second, firing a search with empty origin/destination on initial load.
+  const lastTriggerRef = useRef(quickSearchTrigger)
 
   const swap = () => {
     setOrigin(destination)
@@ -95,14 +100,6 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
     }
   }
 
-  useEffect(() => {
-    if (!externalQuery) return
-    setOrigin(externalQuery.origin)
-    setDestination(externalQuery.destination)
-    runQuickSearch(externalQuery.origin, externalQuery.destination, travelClass)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [externalQuery])
-
   const runQuickSearch = async (o, d, tc = travelClass) => {
     setQuickLoading(true)
     setQuickResults(null)
@@ -120,6 +117,13 @@ export default function FlightSearchSection({ externalQuery, onSelectFlight }) {
       setQuickLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (quickSearchTrigger === lastTriggerRef.current) return
+    lastTriggerRef.current = quickSearchTrigger
+    runQuickSearch(origin, destination, travelClass)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quickSearchTrigger])
 
   return (
     <section id="search" className="py-20">

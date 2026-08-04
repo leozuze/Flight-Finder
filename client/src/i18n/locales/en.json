@@ -12,9 +12,9 @@
     "search_type_all": "All",
     "search_type_route": "Route",
     "search_type_airport": "Airport",
-    "placeholder_all": "Search for flight, tail, airport,city or country",
-    "placeholder_from": "From (e.g. KJFK or New York or India)",
-    "placeholder_to": "To (e.g. KLAX or Los Angeles or  Germany)",
+    "placeholder_all": "Search for city or airport",
+    "placeholder_from": "From (e.g. KJFK or New York)",
+    "placeholder_to": "To (e.g. KLAX or Los Angeles)",
     "placeholder_airport_code": "Airport Code (e.g. KJFK)",
     "placeholder_airport_city": "Airport City (e.g. New York)",
     "alert_route_missing": "Please enter both an origin and destination, e.g. 'Pune to Harare'.",
@@ -194,5 +194,11 @@
   "step_compare_prices": "Comparing prices across airlines...",
   "step_check_availability": "Checking real-time availability...",
   "step_finalizing": "Finalizing your results..."
+},
+
+"notFound": {
+  "title": "This route doesn't exist",
+  "subtitle": "The page you're looking for has taken off without you. Let's get you back on track.",
+  "back_home": "Back to search"
 }
 }

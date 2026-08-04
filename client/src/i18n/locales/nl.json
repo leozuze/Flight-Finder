@@ -11,9 +11,9 @@
     "search_type_all": "Alles",
     "search_type_route": "Route",
     "search_type_airport": "Luchthaven",
-    "placeholder_all": "Zoek op vlucht, staartnummer, luchthaven, stad of land",
-    "placeholder_from": "Van (bijv. KJFK of New York of India)",
-    "placeholder_to": "Naar (bijv. KLAX of Los Angeles of Duitsland)",
+    "placeholder_all": "Zoek op stad of luchthaven",
+    "placeholder_from": "Vanuit (bijv. KJFK of New York)",
+    "placeholder_to": "Naar (bijv. KLAX of Los Angeles)",
     "placeholder_airport_code": "Luchthavencode (bijv. KJFK)",
     "placeholder_airport_city": "Luchthavenstad (bijv. New York)",
     "alert_route_missing": "Voer zowel een vertrekplaats als een bestemming in, bijvoorbeeld 'Pune naar Harare'.",
@@ -58,7 +58,7 @@
     "section1_title": "1. Aanvaarding van de voorwaarden",
     "section1_body": "Door SkyScout te bezoeken of te gebruiken, gaat u akkoord met deze gebruiksvoorwaarden. Als u hiermee niet akkoord gaat, verzoeken wij u de dienst niet te gebruiken.",
     "section2_title": "2. Wat SkyScout doet",
-    "section2_body": "SkyScout doorzoekt openbaar beschikbare gegevens over vliegtarieven en stuurt je e-mailmeldingen wanneer er een tarief beschikbaar komt dat aan je opgeslagen criteria voldoet. Wij zijn geen reisbureau, luchtvaartmaatschappij of boekingsplatform — wij verwerken geen betalingen, geven geen tickets uit en garanderen niet dat de tarieven op het moment van boeken correct zijn.",
+    "section2_body": "SkyScout doorzoekt openbaar beschikbare gegevens over vliegtarieven en stuurt je een e-mailmelding zodra er een tarief beschikbaar komt dat aan je opgeslagen criteria voldoet. Wij zijn geen reisbureau, luchtvaartmaatschappij of boekingsplatform — wij verwerken geen betalingen, geven geen tickets uit en garanderen niet dat de tarieven op het moment van boeken correct zijn.",
     "section3_title": "3. Nauwkeurigheid van de tarieven",
     "section3_body": "Vluchtprijzen veranderen voortdurend en worden volledig bepaald door luchtvaartmaatschappijen en externe gegevensleveranciers. Hoewel we ernaar streven om nauwkeurige en actuele tarieven weer te geven, kan SkyScout niet garanderen dat een weergegeven prijs beschikbaar is wanneer u deze elders probeert te boeken.",
     "section4_title": "4. Verantwoordelijkheden van de gebruiker",
@@ -80,7 +80,7 @@
     "section3_title": "3. Externe gegevensleveranciers",
     "section3_body": "SkyScout haalt vluchtprijzen en luchthavengegevens op bij externe aanbieders om zoekresultaten en vertrek- en aankomstborden te genereren. Wij delen uw persoonlijke e-mailadres of zoekgeschiedenis niet met deze aanbieders, behalve voor zover dat nodig is om de zoekopdracht zelf uit te voeren.",
     "section4_title": "4. Gegevensopslag",
-    "section4_body": "Zoekgegevens en instellingen voor prijswaarschuwingen worden veilig opgeslagen en uitsluitend gebruikt voor het functioneren van de prijswaarschuwingsfunctie. Wij verkopen, verhuren of delen uw persoonsgegevens niet met adverteerders of niet-gerelateerde derde partijen.",
+    "section4_body": "Zoekgegevens en instellingen voor prijswaarschuwingen worden veilig opgeslagen en uitsluitend gebruikt voor het beheer van de prijswaarschuwingsfunctie. Wij verkopen, verhuren of delen uw persoonsgegevens niet met adverteerders of niet-gerelateerde derde partijen.",
     "section5_title": "5. Cookies en tracking",
     "section5_body": "SkyScout maakt geen gebruik van trackingcookies voor reclamedoeleinden. Eventuele verzamelde technische gegevens worden uitsluitend gebruikt om de dienst correct te laten functioneren.",
     "section6_title": "6. Jouw keuzes",
@@ -102,7 +102,7 @@
     "status_label": "Status:",
     "departure_label": "VERTREK",
     "arrival_label": "AANKOMST",
-    "aircraft_label": "VLIEGTUIGEN",
+    "aircraft_label": "VLIEGTUIG",
     "aircraft_unavailable": "Informatie over vliegtuigen is niet beschikbaar in het huidige data-abonnement.",
     "terminal": "Terminal",
     "gate": "Poort",
@@ -183,5 +183,10 @@
     "step_compare_prices": "Prijzen van verschillende luchtvaartmaatschappijen vergelijken...",
     "step_check_availability": "De beschikbaarheid wordt in realtime gecontroleerd...",
     "step_finalizing": "Je resultaten worden verwerkt..."
+  },
+  "notFound": {
+    "title": "Deze route bestaat niet",
+    "subtitle": "De pagina die je zoekt, is al verdwenen. Laten we je weer op het juiste spoor zetten.",
+    "back_home": "Terug naar de zoekresultaten"
   }
 }

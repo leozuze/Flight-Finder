@@ -11,9 +11,9 @@
     "search_type_all": "全部",
     "search_type_route": "路线",
     "search_type_airport": "机场",
-    "placeholder_all": "搜索航班、尾号、机场、城市或国家",
-    "placeholder_from": "从（例如 KJFK 或纽约或印度）",
-    "placeholder_to": "发往（例如：KLAX、洛杉矶或德国）",
+    "placeholder_all": "搜索城市或机场",
+    "placeholder_from": "从（例如 KJFK 或纽约）",
+    "placeholder_to": "发往（例如 KLAX 或洛杉矶）",
     "placeholder_airport_code": "机场代码（例如：KJFK）",
     "placeholder_airport_city": "机场城（例如纽约）",
     "alert_route_missing": "请同时输入出发地和目的地，例如“浦那至哈拉雷”。",
@@ -60,7 +60,7 @@
     "section2_title": "2. SkyScout 的功能",
     "section2_body": "SkyScout 会搜索公开的机票价格数据，并在出现符合您保存条件的机票时向您发送电子邮件通知。我们并非旅行社、航空公司或预订平台——我们不处理支付、不出票，也不保证预订时的票价准确性。",
     "section3_title": "3. 票价准确性",
-    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但 SkyScout 无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
+    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但SkyScout无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
     "section4_title": "4. 用户责任",
     "section4_body": "您同意在使用我们的提醒功能时提供准确的信息（例如您的电子邮件地址），且不得滥用该服务——包括试图使 SkyScout 的搜索基础设施过载、抓取数据或干扰其运行。",
     "section5_title": "5. 对预订结果不承担任何责任",
@@ -86,7 +86,7 @@
     "section6_title": "6. 您的选择",
     "section6_body": "您可以随时停止接收票价提醒，只需不再使用您的电子邮箱地址进行新的搜索即可。如果您希望删除现有数据，请通过我们主页上的联系方式与我们联系。",
     "section7_title": "7. 本政策的变更",
-    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每次进行修改时，我们都会在本页面顶部公布更新日期。"
+    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每当进行修改时，我们都会在本页顶部公布更新日期。"
   },
   "airportBoard": {
     "arrivals": "抵达",
@@ -183,5 +183,10 @@
     "step_compare_prices": "比较各家航空公司的票价……",
     "step_check_availability": "正在查询实时空房情况...",
     "step_finalizing": "正在处理您的结果……"
+  },
+  "notFound": {
+    "title": "该路线不存在",
+    "subtitle": "您要查找的页面已经“飞走”了。让我们帮您回到正轨。",
+    "back_home": "返回搜索"
   }
 }

@@ -1,19 +1,21 @@
-// App.jsx
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from "react-router-dom"
+import { SearchProvider, useSearchContext } from "@/context/SearchContext"
 import Home from "@/pages/Home"
 import AirportBoard from "@/pages/AirportBoard"
 import FlightDetail from "@/pages/FlightDetail"
 import HowItWorks from "@/pages/HowItWorks"
 import TermsOfService from "@/pages/TermsOfService"
 import PrivacyPolicy from "@/pages/PrivacyPolicy"
+import NotFound from "@/pages/NotFound"
 
 function AppRoutes() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const { triggerQuickSearch } = useSearchContext()
 
   const handleSearch = (result) => {
     if (result.type === "route") {
-      navigate("/", { state: { routeQuery: { origin: result.origin, destination: result.destination } } })
+      triggerQuickSearch(result.origin, result.destination)
+      navigate("/")
     } else if (result.type === "airport") {
       navigate("/airport-board", { state: { airportQuery: result } })
     }
@@ -40,18 +42,24 @@ function AppRoutes() {
         path="/"
         element={
           <Home
-            startingQuery={location.state?.routeQuery || null}
             onSearch={handleSearch}
             onNavigate={handleNavigate}
             onSelectFlight={handleSelectFlight}
           />
         }
       />
-      <Route path="/airport-board" element={<AirportBoardRoute onSearch={handleSearch} onNavigate={handleNavigate} onSelectFlight={handleSelectFlight} />} />
-      <Route path="/flight/:ident" element={<FlightDetailRoute onSearch={handleSearch} onNavigate={handleNavigate} />} />
+      <Route
+        path="/airport-board"
+        element={<AirportBoardRoute onSearch={handleSearch} onNavigate={handleNavigate} onSelectFlight={handleSelectFlight} />}
+      />
+      <Route
+        path="/flight/:ident"
+        element={<FlightDetailRoute onSearch={handleSearch} onNavigate={handleNavigate} />}
+      />
       <Route path="/how-it-works" element={<HowItWorks onSearch={handleSearch} onNavigate={handleNavigate} />} />
       <Route path="/terms" element={<TermsOfService onSearch={handleSearch} onNavigate={handleNavigate} />} />
       <Route path="/privacy" element={<PrivacyPolicy onSearch={handleSearch} onNavigate={handleNavigate} />} />
+      <Route path="*" element={<NotFound onSearch={handleSearch} onNavigate={handleNavigate} />} />
     </Routes>
   )
 }
@@ -85,8 +93,10 @@ function FlightDetailRoute({ onSearch, onNavigate }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <SearchProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </SearchProvider>
   )
 }
