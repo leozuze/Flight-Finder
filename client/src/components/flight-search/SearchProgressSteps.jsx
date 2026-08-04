@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { motion, AnimatePresence } from "framer-motion"
-import { Check, Loader2 } from "lucide-react"
 
 const STEP_KEYS = [
   "flightSearch.step_search_routes",
@@ -11,9 +10,7 @@ const STEP_KEYS = [
 ]
 
 const LAST_STEP = STEP_KEYS.length - 1
-
-const STEP_DURATION_MS = 1400 // how long each of the first steps spins before ticking
-const CHECK_HOLD_MS = 450 // how long a tick shows before the next step fades in
+const STEP_DURATION_MS = 1400 // how long each of the first steps shows before moving to the next
 
 // Column shapes for the skeleton rows, sized to roughly match the real
 // tables so the loading state doesn't jump when results replace it.
@@ -25,36 +22,20 @@ const SKELETON_VARIANTS = {
 export default function SearchProgressSteps({ active, variant = "flights" }) {
   const { t } = useTranslation()
   const [stepIndex, setStepIndex] = useState(0)
-  const [showCheck, setShowCheck] = useState(false)
 
   useEffect(() => {
-    if (!active) {
-      
-      setStepIndex(LAST_STEP)
-      setShowCheck(true)
-      return undefined
-    }
-
+    if (!active) return undefined
     setStepIndex(0)
-    setShowCheck(false)
 
     let cancelled = false
     let timeoutId
 
     const advance = (i) => {
-      // Once we reach the last step, stop scheduling anything — it waits
-      // indefinitely for `active` to go false instead of a fixed timeout.
-      if (i >= LAST_STEP) return
-
+      if (i >= LAST_STEP) return // last step waits on `active`, not a timer
       timeoutId = setTimeout(() => {
         if (cancelled) return
-        setShowCheck(true)
-        timeoutId = setTimeout(() => {
-          if (cancelled) return
-          setStepIndex(i + 1)
-          setShowCheck(false)
-          advance(i + 1)
-        }, CHECK_HOLD_MS)
+        setStepIndex(i + 1)
+        advance(i + 1)
       }, STEP_DURATION_MS)
     }
 
@@ -66,8 +47,6 @@ export default function SearchProgressSteps({ active, variant = "flights" }) {
     }
   }, [active])
 
-  const isLastStep = stepIndex === LAST_STEP
-  const waitingOnResults = isLastStep && !showCheck
   const { cols, hasLeadingIcon, trailingAlign } = SKELETON_VARIANTS[variant] || SKELETON_VARIANTS.flights
 
   return (
@@ -81,28 +60,15 @@ export default function SearchProgressSteps({ active, variant = "flights" }) {
           transition={{ duration: 0.25 }}
           className="flex items-center gap-2.5 text-sm"
         >
-          {showCheck ? (
-            <motion.span
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="w-5 h-5 rounded-full bg-cyan-500 flex items-center justify-center shrink-0"
-            >
-              <Check className="w-3 h-3 text-white" strokeWidth={3} />
-            </motion.span>
-          ) : waitingOnResults ? (
-            <span className="w-5 h-5 flex items-center justify-center gap-0.5 shrink-0">
-              {[0, 1, 2].map((d) => (
-                <span
-                  key={d}
-                  className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-bounce"
-                  style={{ animationDelay: `${d * 150}ms`, animationDuration: "900ms" }}
-                />
-              ))}
-            </span>
-          ) : (
-            <Loader2 className="w-5 h-5 text-cyan-500 animate-spin shrink-0" />
-          )}
+          <span className="w-5 h-5 flex items-center justify-center gap-0.5 shrink-0">
+            {[0, 1, 2].map((d) => (
+              <span
+                key={d}
+                className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-bounce"
+                style={{ animationDelay: `${d * 150}ms`, animationDuration: "900ms" }}
+              />
+            ))}
+          </span>
           <span className="text-slate-700 font-medium">{t(STEP_KEYS[stepIndex])}</span>
         </motion.div>
       </AnimatePresence>
