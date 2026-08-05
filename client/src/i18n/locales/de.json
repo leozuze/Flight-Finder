@@ -74,7 +74,7 @@
     "title": "Datenschutzerklärung",
     "last_updated": "Zuletzt aktualisiert: Juli 2026",
     "section1_title": "1. Welche Daten wir erheben",
-    "section1_body": "Wenn Sie die Such- und Preisbenachrichtigungsfunktionen von SkyScout nutzen, erfassen wir die Daten, die Sie uns freiwillig zur Verfügung stellen – wie beispielsweise Ihre E-Mail-Adresse, den Abfahrts- und Zielort, die Reisedaten sowie Ihre Budgetvorgaben.",
+    "section1_body": "Wenn Sie die Such- und Preisbenachrichtigungsfunktionen von SkyScout nutzen, erfassen wir die Daten, die Sie uns freiwillig zur Verfügung stellen – wie beispielsweise Ihre E-Mail-Adresse, den Abfahrts- und Zielort, die Reisedaten sowie Ihre Budgetvorstellungen.",
     "section2_title": "2. Wie wir Ihre Daten verwenden",
     "section2_body": "Ihre E-Mail-Adresse wird ausschließlich dazu verwendet, Ihnen Benachrichtigungen über Preissenkungen für die von Ihnen gesuchten Strecken zu senden. Ihre Suchkriterien werden gespeichert, damit wir zukünftige Tarife mit Ihrem Budget abgleichen und Sie benachrichtigen können, sobald ein günstiges Angebot erscheint.",
     "section3_title": "3. Externe Datenanbieter",
@@ -159,7 +159,9 @@
     "no_flights_match": "Es wurden keine Flüge gefunden, die den ausgewählten Filtern entsprechen.",
     "cheapest_results": "Ergebnisse für die günstigsten Flüge",
     "other_flights": "Weitere Flüge",
-    "flight_results": "Flugergebnisse"
+    "flight_results": "Flugergebnisse",
+    "date_adjusted_note": "Für {{requested}} liegen keine Tarife vor; stattdessen wird das nächstgelegene verfügbare Rückreisedatum angezeigt.",
+    "requested_return": "Sie haben nach folgendem Begriff gesucht:"
   },
   "filters": {
     "filter_flights": "Flüge filtern",

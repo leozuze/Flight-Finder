@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
-import { Play } from "lucide-react"
-import { formatDateTime } from "@/utils/flightFormatters"
+import { Play, Info } from "lucide-react"
+import { formatDateTime, formatDateOnly } from "@/utils/flightFormatters"
 
 export default function FlightResultsTable({ flight, origin, destination, travelClass, status, statusLoading, onCheckStatus, onSelectFlight }) {
   const { t } = useTranslation()
@@ -20,6 +20,15 @@ export default function FlightResultsTable({ flight, origin, destination, travel
         <Play className="w-4 h-4 shrink-0" fill="currentColor" />
         <span>{destinationLabel}</span>
       </div>
+
+      {flight.dateAdjusted && (
+        <div className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border-b border-amber-100 px-4 py-2.5">
+          <Info className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+          <span>
+            {t("resultsTable.date_adjusted_note", { requested: formatDateOnly(flight.requestedReturnDate) })}
+          </span>
+        </div>
+      )}
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

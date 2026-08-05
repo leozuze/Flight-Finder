@@ -17,7 +17,7 @@
     "placeholder_airport_code": "Código del aeropuerto (p. ej., KJFK)",
     "placeholder_airport_city": "Ciudad aeroportuaria (p. ej., Nueva York)",
     "alert_route_missing": "Introduce tanto el punto de partida como el de destino; por ejemplo, «de Pune a Harare».",
-    "alert_all_missing": "Introduce una ruta, un aeropuerto o una ciudad; por ejemplo, «de Pune a Harare» o «KJFK».",
+    "alert_all_missing": "Introduce una ruta, un aeropuerto o una ciudad, por ejemplo, «de Pune a Harare» o «KJFK».",
     "alert_airport_missing": "Introduce un código de aeropuerto o una ciudad, por ejemplo, «KJFK» o «Nueva York».",
     "alert_type_unavailable": "Este tipo de búsqueda aún no está disponible. Prueba con «Ruta», «Todas» o «Aeropuerto».",
     "marquee_1": "No te pierdas nunca una bajada de precios.",
@@ -159,7 +159,9 @@
     "no_flights_match": "No hay vuelos que se ajusten a los filtros seleccionados.",
     "cheapest_results": "Resultados de vuelos más baratos",
     "other_flights": "Otros vuelos",
-    "flight_results": "Resultados del vuelo"
+    "flight_results": "Resultados del vuelo",
+    "date_adjusted_note": "No hay tarifas para {{requested}}; en su lugar, se muestra la fecha de vuelta disponible más cercana.",
+    "requested_return": "Has buscado"
   },
   "filters": {
     "filter_flights": "Filtrar vuelos",

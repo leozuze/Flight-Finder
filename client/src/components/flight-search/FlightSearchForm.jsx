@@ -6,7 +6,17 @@ import AirportAutocomplete from "@/components/AirportAutocomplete"
 
 const currencies = ["GBP", "USD", "EUR", "INR", "AUD", "CAD"]
 
-const todayISO = () => new Date().toISOString().slice(0, 10)
+// Local-timezone-safe "today" string. Using new Date().toISOString() is
+// wrong here — it converts to UTC, which can be a day ahead or behind the
+// user's actual local calendar date depending on their timezone offset.
+// <input type="date"> always works in local time, so this must match.
+const todayISO = () => {
+  const d = new Date()
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${day}`
+}
 
 export default function FlightSearchForm({
   origin, setOrigin,

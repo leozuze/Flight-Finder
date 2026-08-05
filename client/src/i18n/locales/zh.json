@@ -60,7 +60,7 @@
     "section2_title": "2. SkyScout 的功能",
     "section2_body": "SkyScout 会搜索公开的机票价格数据，并在出现符合您保存条件的机票时向您发送电子邮件通知。我们并非旅行社、航空公司或预订平台——我们不处理支付、不出票，也不保证预订时的票价准确性。",
     "section3_title": "3. 票价准确性",
-    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但SkyScout无法保证当您尝试在其他平台预订时，显示的价格仍然有效。",
+    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但 SkyScout 无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
     "section4_title": "4. 用户责任",
     "section4_body": "您同意在使用我们的提醒功能时提供准确的信息（例如您的电子邮件地址），且不得滥用该服务——包括试图使 SkyScout 的搜索基础设施过载、抓取数据或干扰其运行。",
     "section5_title": "5. 对预订结果不承担任何责任",
@@ -78,7 +78,7 @@
     "section2_title": "2. 我们如何使用您的信息",
     "section2_body": "您的电子邮箱地址仅用于向您发送您曾搜索过的航线的机票价格下调通知。我们会保存您的搜索条件，以便将来根据您的预算匹配机票价格，并在出现优惠时通知您。",
     "section3_title": "3. 第三方数据提供商",
-    "section3_body": "SkyScout 从第三方供应商处获取机票价格和机场数据，以支持搜索结果及航班到发信息板的显示。除执行搜索本身所需的信息外，我们不会向这些供应商共享您的个人电子邮箱地址或搜索记录。",
+    "section3_body": "SkyScout 从第三方供应商处获取机票价格和机场数据，以支持搜索结果及航班到发信息板的显示。除执行搜索本身所需的信息外，我们不会向这些供应商分享您的个人电子邮箱地址或搜索记录。",
     "section4_title": "4. 数据存储",
     "section4_body": "搜索记录和价格提醒偏好设置均以安全方式存储，且仅用于运行价格提醒功能。我们不会向广告商或无关的第三方出售、出租或共享您的个人数据。",
     "section5_title": "5. Cookie 和跟踪",
@@ -98,7 +98,7 @@
   },
   "flightDetail": {
     "loading": "正在加载航班详情...",
-    "error_generic": "调用航班服务时出现错误。请重试。",
+    "error_generic": "连接航班服务时出现错误。请重试。",
     "status_label": "状态：",
     "departure_label": "出发",
     "arrival_label": "抵达",
@@ -156,10 +156,12 @@
     "showing": "显示 {{shown}} 条，共 {{total}} 条",
     "check_status": "查看状态",
     "checking": "正在检查...",
-    "no_flights_match": "没有航班符合所选筛选条件。",
+    "no_flights_match": "没有航班符合所选条件。",
     "cheapest_results": "最便宜的航班搜索结果",
     "other_flights": "其他航班",
-    "flight_results": "航班结果"
+    "flight_results": "航班结果",
+    "date_adjusted_note": "{{requested}} 没有票价，而是显示了最近的可用往返日期。",
+    "requested_return": "您搜索的是"
   },
   "filters": {
     "filter_flights": "筛选航班",
@@ -181,7 +183,7 @@
     "status_unavailable": "不可用",
     "step_search_routes": "正在搜索可用路线...",
     "step_compare_prices": "比较各家航空公司的票价……",
-    "step_check_availability": "正在查询实时房源情况...",
+    "step_check_availability": "正在查询实时空房情况...",
     "step_finalizing": "正在处理您的结果……"
   },
   "notFound": {

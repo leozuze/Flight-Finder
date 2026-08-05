@@ -60,7 +60,7 @@
     "section2_title": "2. O que o SkyScout faz",
     "section2_body": "O SkyScout pesquisa dados sobre tarifas aéreas disponíveis ao público e envia-lhe notificações por e-mail quando surge uma tarifa que corresponde aos critérios que guardou. Não somos uma agência de viagens, uma companhia aérea nem uma plataforma de reservas — não processamos pagamentos, não emitimos bilhetes nem garantimos a exatidão das tarifas no momento da reserva.",
     "section3_title": "3. Exatidão das tarifas",
-    "section3_body": "Os preços dos voos variam constantemente e são controlados inteiramente pelas companhias aéreas e por fornecedores de dados externos. Embora nos esforcemos por apresentar tarifas precisas e atualizadas, a SkyScout não pode garantir que um preço apresentado esteja disponível quando tentar efetuar a reserva noutro local.",
+    "section3_body": "Os preços dos voos variam constantemente e são controlados inteiramente pelas companhias aéreas e por fornecedores de dados externos. Embora nos esforcemos por apresentar tarifas precisas e atualizadas, o SkyScout não pode garantir que um preço apresentado esteja disponível quando tentar efetuar a reserva noutro local.",
     "section4_title": "4. Responsabilidades do utilizador",
     "section4_body": "Concorda em fornecer informações precisas (tais como o seu endereço de e-mail) ao utilizar as nossas funcionalidades de alertas e em não utilizar indevidamente o serviço — incluindo tentativas de sobrecarregar, extrair dados ou interferir com a infraestrutura de pesquisa do SkyScout.",
     "section5_title": "5. Isenção de responsabilidade quanto aos resultados das reservas",
@@ -80,7 +80,7 @@
     "section3_title": "3. Fornecedores de dados externos",
     "section3_body": "O SkyScout obtém dados sobre tarifas aéreas e aeroportos junto de fornecedores externos para alimentar os resultados de pesquisa e os painéis de chegadas e partidas. Não partilhamos o seu endereço de e-mail pessoal nem o seu histórico de pesquisa com esses fornecedores, para além do estritamente necessário para realizar a própria pesquisa.",
     "section4_title": "4. Armazenamento de dados",
-    "section4_body": "Os registos de pesquisa e as preferências de alertas são armazenados de forma segura e utilizados apenas para o funcionamento da funcionalidade de alertas de preços. Não vendemos, alugamos nem partilhamos os seus dados pessoais com anunciantes ou terceiros não relacionados.",
+    "section4_body": "Os registos de pesquisa e as preferências de alertas são armazenados de forma segura e utilizados exclusivamente para o funcionamento da funcionalidade de alertas de preços. Não vendemos, alugamos nem partilhamos os seus dados pessoais com anunciantes ou terceiros não relacionados.",
     "section5_title": "5. Cookies e rastreamento",
     "section5_body": "O SkyScout não utiliza cookies de rastreamento para fins publicitários. Quaisquer dados técnicos recolhidos são utilizados apenas para garantir o bom funcionamento do serviço.",
     "section6_title": "6. As tuas escolhas",
@@ -159,7 +159,9 @@
     "no_flights_match": "Não existem voos que correspondam aos filtros selecionados.",
     "cheapest_results": "Resultados dos voos mais baratos",
     "other_flights": "Outros voos",
-    "flight_results": "Resultados dos voos"
+    "flight_results": "Resultados dos voos",
+    "date_adjusted_note": "Não existem tarifas para {{requested}}; em vez disso, é apresentada a data de regresso disponível mais próxima.",
+    "requested_return": "Pesquisou por"
   },
   "filters": {
     "filter_flights": "Filtrar voos",

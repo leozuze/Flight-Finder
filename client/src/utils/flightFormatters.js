@@ -8,6 +8,15 @@ export function formatDateTime(value) {
   })
 }
 
+export function formatDateOnly(value) {
+  if (!value || value === "N/A") return ""
+  const d = new Date(value.replace(" ", "T"))
+  if (isNaN(d.getTime())) return value
+  return d.toLocaleDateString(undefined, {
+    weekday: "short", month: "short", day: "numeric", year: "numeric",
+  })
+}
+
 export function toDate(value) {
   if (!value || value === "N/A") return null
   const d = new Date(value.replace(" ", "T"))
