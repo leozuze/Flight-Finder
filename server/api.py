@@ -1,6 +1,6 @@
 import asyncio
 from contextlib import asynccontextmanager
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 import httpx
 from fastapi import BackgroundTasks, FastAPI
@@ -12,12 +12,11 @@ from src.cache import TTLCache
 from src.data_manager import DataManager
 from src.flight_data import find_all_flights_sorted, find_cheapest_flight
 from src.flight_search import FlightSearch
-from src.notification_manager import NotificationManager
 
 TRIP_TYPE_MAP = {"round": "1", "oneway": "2"}
 CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
 
-SEARCH_WINDOW_DAYS = 30  # always search the next month automatically — no longer user-configurable
+SEARCH_WINDOW_DAYS = 30  # only used by the /api/flights quick-search path
 FLIGHT_CACHE_TTL_SECONDS = 900  # 15 min — flight prices don't meaningfully change faster than this
 
 
@@ -28,7 +27,6 @@ async def lifespan(app: FastAPI):
     async with httpx.AsyncClient() as client:
         app.state.flight_search = FlightSearch(client)
         app.state.data_manager = DataManager(client)
-        app.state.notification_manager = NotificationManager(client)
         app.state.airport_board = AirportBoard(client)
         app.state.flight_cache = TTLCache(default_ttl_seconds=FLIGHT_CACHE_TTL_SECONDS)
         yield
@@ -47,18 +45,30 @@ app.add_middleware(
 )
 
 
-def build_cache_key(origin_code, destination_code, trip_type, travel_class, currency, is_direct):
-    return f"{origin_code}:{destination_code}:{trip_type}:{travel_class}:{currency}:{is_direct}"
+def parse_iso_date(value: str) -> date | None:
+    """Strictly parses a 'YYYY-MM-DD' string. Returns None for anything
+    malformed, so callers can turn it into a clean {"error": ...} response
+    instead of letting a bad string reach SerpApi."""
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return None
+
+
+def build_cache_key(origin_code, destination_code, trip_type, travel_class, currency, is_direct, depart, ret):
+    # depart/ret are part of the key — two searches for the same route but
+    # different dates must NOT collide on the same cache entry.
+    return f"{origin_code}:{destination_code}:{trip_type}:{travel_class}:{currency}:{is_direct}:{depart}:{ret}"
 
 
 async def _search_with_cache(flight_search, cache, origin_code, destination_code,
-                              tomorrow, end_date, trip_type, currency, adults,
+                              depart, ret, trip_type, currency, adults,
                               travel_class, is_direct):
-    """Wraps check_flights with a TTL cache keyed on the search parameters
-    (not the date window, since that's always 'tomorrow to +30 days').
-    Two users searching the same route within the TTL both hit the cache
-    instead of both paying for a fresh SerpAPI call."""
-    key = build_cache_key(origin_code, destination_code, trip_type, travel_class, currency, is_direct)
+    """Wraps check_flights with a TTL cache keyed on the search parameters,
+    including the actual depart/return dates. Two users searching the same
+    route for the same dates within the TTL hit the cache instead of both
+    paying for a fresh SerpAPI call; different dates never share a key."""
+    key = build_cache_key(origin_code, destination_code, trip_type, travel_class, currency, is_direct, depart, ret)
     cached = cache.get(key)
     if cached is not None:
         return cached
@@ -66,8 +76,8 @@ async def _search_with_cache(flight_search, cache, origin_code, destination_code
     result = await flight_search.check_flights(
         origin_city_code=origin_code,
         destination_city_code=destination_code,
-        from_time=tomorrow,
-        to_time=end_date if trip_type == "1" else None,
+        from_time=depart,
+        to_time=ret if trip_type == "1" else None,
         is_direct=is_direct,
         trip_type=trip_type,
         currency=currency,
@@ -92,10 +102,11 @@ async def get_status(req: StatusRequest):
 class SearchRequest(BaseModel):
     origin: str
     destination: str
-    tripType: str      # "round" | "oneway"
+    tripType: str
+    departDate: str                  # "YYYY-MM-DD"
+    returnDate: str | None = None    # required if tripType == "round"
     budget: float
     currency: str
-    email: str
     adults: int = 1
     travelClass: str = "economy"
 
@@ -104,17 +115,29 @@ class SearchRequest(BaseModel):
 async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
     flight_search = app.state.flight_search
     data_manager = app.state.data_manager
-    notification_manager = app.state.notification_manager
     cache = app.state.flight_cache
 
     trip_type = TRIP_TYPE_MAP[req.tripType]
     travel_class = CLASS_MAP[req.travelClass]
 
-    tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
-    end_date = (datetime.now() + timedelta(days=SEARCH_WINDOW_DAYS)).strftime("%Y-%m-%d")
+    depart_parsed = parse_iso_date(req.departDate)
+    if depart_parsed is None:
+        return {"error": "Depart date must be a valid date in YYYY-MM-DD format."}
+    if depart_parsed < date.today():
+        return {"error": "Depart date cannot be in the past — choose today or a later date."}
 
-    # Origin/destination resolution is independent work — run concurrently
-    # instead of two sequential blocking calls.
+    if trip_type == "1":
+        if not req.returnDate:
+            return {"error": "Return date is required for round-trip searches."}
+        return_parsed = parse_iso_date(req.returnDate)
+        if return_parsed is None:
+            return {"error": "Return date must be a valid date in YYYY-MM-DD format."}
+        if return_parsed < depart_parsed:
+            return {"error": "Return date cannot be before the depart date."}
+
+    depart = req.departDate
+    ret = req.returnDate if trip_type == "1" else None
+
     origin_code, destination_code = await asyncio.gather(
         flight_search.get_iata_code(req.origin),
         flight_search.get_iata_code(req.destination),
@@ -124,14 +147,14 @@ async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
         return {"error": "Could not find IATA codes for the given cities."}
 
     flights = await _search_with_cache(
-        flight_search, cache, origin_code, destination_code, tomorrow, end_date,
+        flight_search, cache, origin_code, destination_code, depart, ret,
         trip_type, req.currency, req.adults, travel_class, is_direct=True,
     )
     cheapest = find_cheapest_flight(flights, trip_type=trip_type)
 
     if cheapest.price == "N/A":
         flights = await _search_with_cache(
-            flight_search, cache, origin_code, destination_code, tomorrow, end_date,
+            flight_search, cache, origin_code, destination_code, depart, ret,
             trip_type, req.currency, req.adults, travel_class, is_direct=False,
         )
         cheapest = find_cheapest_flight(flights, trip_type=trip_type)
@@ -142,11 +165,10 @@ async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
     all_sorted = find_all_flights_sorted(flights, trip_type=trip_type)
     other_flights = all_sorted[1:] if len(all_sorted) > 1 else []
 
-    # Sheety write + email are side effects the user doesn't need to wait
-    # on — they run after the response has already gone out.
+    # Sheety write is a side effect the user doesn't need to wait on — runs
+    # after the response has already gone out. No longer tied to email/alerts.
     background_tasks.add_task(
         data_manager.post_search_result,
-        email=req.email,
         origin=req.origin,
         destination=req.destination,
         origin_code=origin_code,
@@ -157,20 +179,6 @@ async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
         stops=cheapest.stops,
         stop_airports=cheapest.stop_airports,
     )
-
-    if cheapest.price <= req.budget:
-        background_tasks.add_task(
-            notification_manager.send_emails,
-            customer_emails=[req.email],
-            price=cheapest.price,
-            departure_code=cheapest.origin_airport,
-            arrival_code=cheapest.destination_airport,
-            outbound_date=cheapest.out_date,
-            inbound_date=cheapest.return_date,
-            stops=cheapest.stops,
-            stop_airports=cheapest.stop_airports,
-            currency=req.currency,
-        )
 
     return {
         "bestDeal": {
@@ -274,7 +282,7 @@ async def get_flights_only(req: FlightsOnlyRequest):
 
 
 class AirportBoardRequest(BaseModel):
-    airport: str  # IATA code (e.g. "HRE") or city name (e.g. "Harare")
+    airport: str
 
 
 @app.post("/api/airport-board")
@@ -300,7 +308,7 @@ async def get_airport_board(req: AirportBoardRequest):
 
 
 class FlightLookupRequest(BaseModel):
-    ident: str  # flight number, e.g. "AI2017"
+    ident: str
 
 
 @app.post("/api/flight")
