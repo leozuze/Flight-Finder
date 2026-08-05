@@ -1,15 +1,13 @@
+import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeftRight, Search, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import AirportAutocomplete from "@/components/AirportAutocomplete"
+import DatePickerField from "@/components/flight-search/DatePickerField"
 
 const currencies = ["GBP", "USD", "EUR", "INR", "AUD", "CAD"]
 
-// Local-timezone-safe "today" string. Using new Date().toISOString() is
-// wrong here — it converts to UTC, which can be a day ahead or behind the
-// user's actual local calendar date depending on their timezone offset.
-// <input type="date"> always works in local time, so this must match.
 const todayISO = () => {
   const d = new Date()
   const y = d.getFullYear()
@@ -35,26 +33,34 @@ export default function FlightSearchForm({
 }) {
   const { t } = useTranslation()
 
+  // Tracks whether the return-date field has finished its expand animation.
+  // While expanding/collapsing we need overflow-hidden so the width
+  // transition looks clean, but once expanded we must drop it — otherwise
+  // it clips the calendar dropdown that DatePickerField renders below itself.
+  const [returnFieldExpanded, setReturnFieldExpanded] = useState(tripType === "round")
+
+  useEffect(() => {
+    if (tripType !== "round") setReturnFieldExpanded(false)
+  }, [tripType])
+
   const tripTypes = [
     { key: "round", label: t("searchForm.round_trip") },
     { key: "oneway", label: t("searchForm.one_way") },
   ]
 
-  const handleDepartChange = (e) => {
-    const raw = e.target.value
+  const handleDepartChange = (newDepart) => {
     const today = todayISO()
-    const newDepart = raw && raw < today ? today : raw
-    setDepartDate(newDepart)
-    if (returnDate && newDepart && returnDate < newDepart) {
+    const clamped = newDepart && newDepart < today ? today : newDepart
+    setDepartDate(clamped)
+    if (returnDate && clamped && returnDate < clamped) {
       setReturnDate("")
     }
   }
 
-  const handleReturnChange = (e) => {
-    const raw = e.target.value
+  const handleReturnChange = (newReturn) => {
     const floor = departDate || todayISO()
-    const newReturn = raw && raw < floor ? floor : raw
-    setReturnDate(newReturn)
+    const clamped = newReturn && newReturn < floor ? floor : newReturn
+    setReturnDate(clamped)
   }
 
   return (
@@ -114,13 +120,12 @@ export default function FlightSearchForm({
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.depart_label")}</label>
-          <input
-            type="date"
-            min={todayISO()}
+          <DatePickerField
+            label={t("searchForm.depart_label")}
             value={departDate}
             onChange={handleDepartChange}
-            className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
+            minDate={todayISO()}
+            placeholder={t("searchForm.depart_label")}
           />
         </div>
 
@@ -131,15 +136,21 @@ export default function FlightSearchForm({
               animate={{ opacity: 1, width: "100%" }}
               exit={{ opacity: 0, width: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex-1 overflow-hidden"
+              onAnimationComplete={(definition) => {
+                // only mark "expanded" once the *enter* animation finishes,
+                // not the exit animation
+                if (definition === "animate" || (typeof definition === "object" && definition.width === "100%")) {
+                  setReturnFieldExpanded(true)
+                }
+              }}
+              className={`flex-1 ${returnFieldExpanded ? "" : "overflow-hidden"}`}
             >
-              <label className="text-xs font-semibold text-slate-400 tracking-wide whitespace-nowrap">{t("searchForm.return_label")}</label>
-              <input
-                type="date"
-                min={departDate || todayISO()}
+              <DatePickerField
+                label={t("searchForm.return_label")}
                 value={returnDate}
                 onChange={handleReturnChange}
-                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
+                minDate={departDate || todayISO()}
+                placeholder={t("searchForm.return_label")}
               />
             </motion.div>
           )}
