@@ -6,9 +6,10 @@ export function SearchProvider({ children }) {
   const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
   const [tripType, setTripType] = useState("round")
+  const [departDate, setDepartDate] = useState("")
+  const [returnDate, setReturnDate] = useState("")
   const [budget, setBudget] = useState("")
   const [currency, setCurrency] = useState("GBP")
-  const [email, setEmail] = useState("")
   const [advancedOpen, setAdvancedOpen] = useState(false)
   const [adults, setAdults] = useState(1)
   const [travelClass, setTravelClass] = useState("economy")
@@ -24,10 +25,6 @@ export function SearchProvider({ children }) {
   const [quickLoading, setQuickLoading] = useState(false)
   const [quickError, setQuickError] = useState(null)
 
-  // Incremented whenever the navbar (or anything outside FlightSearchSection)
-  // wants to trigger a quick search. FlightSearchSection watches this value
-  // and runs the search when it changes — decouples the trigger from prop
-  // drilling / router state, so it survives navigation.
   const [quickSearchTrigger, setQuickSearchTrigger] = useState(0)
 
   const triggerQuickSearch = (newOrigin, newDestination) => {
@@ -40,9 +37,10 @@ export function SearchProvider({ children }) {
     origin, setOrigin,
     destination, setDestination,
     tripType, setTripType,
+    departDate, setDepartDate,
+    returnDate, setReturnDate,
     budget, setBudget,
     currency, setCurrency,
-    email, setEmail,
     advancedOpen, setAdvancedOpen,
     adults, setAdults,
     travelClass, setTravelClass,

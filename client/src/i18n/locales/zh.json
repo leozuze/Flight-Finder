@@ -60,7 +60,7 @@
     "section2_title": "2. SkyScout 的功能",
     "section2_body": "SkyScout 会搜索公开的机票价格数据，并在出现符合您保存条件的机票时向您发送电子邮件通知。我们并非旅行社、航空公司或预订平台——我们不处理支付、不出票，也不保证预订时的票价准确性。",
     "section3_title": "3. 票价准确性",
-    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但SkyScout无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
+    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但SkyScout无法保证当您尝试在其他平台预订时，显示的价格仍然有效。",
     "section4_title": "4. 用户责任",
     "section4_body": "您同意在使用我们的提醒功能时提供准确的信息（例如您的电子邮件地址），且不得滥用该服务——包括试图使 SkyScout 的搜索基础设施过载、抓取数据或干扰其运行。",
     "section5_title": "5. 对预订结果不承担任何责任",
@@ -86,7 +86,7 @@
     "section6_title": "6. 您的选择",
     "section6_body": "您可以随时停止接收票价提醒，只需不再使用您的电子邮箱地址进行新的搜索即可。如果您希望删除现有数据，请通过我们主页上的联系方式与我们联系。",
     "section7_title": "7. 本政策的变更",
-    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每当进行修改时，我们都会在本页顶部公布更新日期。"
+    "section7_body": "我们可能会定期更新本《隐私政策》，以反映 SkyScout 运营方式的变化。每次进行修改时，我们都会在本页面顶部公布更新日期。"
   },
   "airportBoard": {
     "arrivals": "抵达",
@@ -119,10 +119,10 @@
     "destination_label": "目的地",
     "origin_placeholder": "例如：KJFK 或 纽约",
     "destination_placeholder": "例如：KLAX 或 洛杉矶",
+    "depart_label": "出发",
+    "return_label": "返回",
     "budget_label": "预算",
     "budget_placeholder": "最高价格",
-    "email_label": "电子邮件",
-    "email_placeholder": "you@example.com",
     "advanced_options": "高级选项",
     "adults_label": "成人",
     "cabin_class_label": "客舱等级",
@@ -156,7 +156,7 @@
     "showing": "显示 {{shown}} 条，共 {{total}} 条",
     "check_status": "查看状态",
     "checking": "正在检查...",
-    "no_flights_match": "没有航班符合所选条件。",
+    "no_flights_match": "没有航班符合所选筛选条件。",
     "cheapest_results": "最便宜的航班搜索结果",
     "other_flights": "其他航班",
     "flight_results": "航班结果"
@@ -181,7 +181,7 @@
     "status_unavailable": "不可用",
     "step_search_routes": "正在搜索可用路线...",
     "step_compare_prices": "比较各家航空公司的票价……",
-    "step_check_availability": "正在查询实时空房情况...",
+    "step_check_availability": "正在查询实时房源情况...",
     "step_finalizing": "正在处理您的结果……"
   },
   "notFound": {

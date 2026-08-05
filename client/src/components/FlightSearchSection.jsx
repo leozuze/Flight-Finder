@@ -19,9 +19,10 @@ export default function FlightSearchSection({ onSelectFlight }) {
     origin, setOrigin,
     destination, setDestination,
     tripType, setTripType,
+    departDate, setDepartDate,
+    returnDate, setReturnDate,
     budget, setBudget,
     currency, setCurrency,
-    email, setEmail,
     advancedOpen, setAdvancedOpen,
     adults, setAdults,
     travelClass, setTravelClass,
@@ -39,11 +40,6 @@ export default function FlightSearchSection({ onSelectFlight }) {
   const showLoading = useDelayedLoading(loading)
   const showQuickLoading = useDelayedLoading(quickLoading)
 
-  // Tracks the last trigger value we've already acted on. Comparing values
-  // (rather than a one-shot "have we run yet" boolean) is what makes this
-  // safe against React StrictMode's double effect invocation in dev — a
-  // boolean flag gets flipped on the first run and no longer blocks the
-  // second, firing a search with empty origin/destination on initial load.
   const lastTriggerRef = useRef(quickSearchTrigger)
 
   const swap = () => {
@@ -53,7 +49,8 @@ export default function FlightSearchSection({ onSelectFlight }) {
 
   const handleSearch = async (e) => {
     e.preventDefault()
-    if (!origin || !destination || !budget || !email) return
+    if (!origin || !destination || !budget || !departDate) return
+    if (tripType === "round" && !returnDate) return
 
     const originCode = extractCode(origin)
     const destinationCode = extractCode(destination)
@@ -72,7 +69,8 @@ export default function FlightSearchSection({ onSelectFlight }) {
     try {
       const data = await searchFlights({
         origin: originCode, destination: destinationCode, tripType,
-        budget: Number(budget), currency, email,
+        departDate, returnDate: tripType === "round" ? returnDate : null,
+        budget: Number(budget), currency,
         adults: Number(adults), travelClass,
       })
 
@@ -131,9 +129,10 @@ export default function FlightSearchSection({ onSelectFlight }) {
         origin={origin} setOrigin={setOrigin}
         destination={destination} setDestination={setDestination}
         tripType={tripType} setTripType={setTripType}
+        departDate={departDate} setDepartDate={setDepartDate}
+        returnDate={returnDate} setReturnDate={setReturnDate}
         budget={budget} setBudget={setBudget}
         currency={currency} setCurrency={setCurrency}
-        email={email} setEmail={setEmail}
         advancedOpen={advancedOpen} setAdvancedOpen={setAdvancedOpen}
         adults={adults} setAdults={setAdults}
         travelClass={travelClass} setTravelClass={setTravelClass}

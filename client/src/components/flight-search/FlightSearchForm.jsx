@@ -6,13 +6,16 @@ import AirportAutocomplete from "@/components/AirportAutocomplete"
 
 const currencies = ["GBP", "USD", "EUR", "INR", "AUD", "CAD"]
 
+const todayISO = () => new Date().toISOString().slice(0, 10)
+
 export default function FlightSearchForm({
   origin, setOrigin,
   destination, setDestination,
   tripType, setTripType,
+  departDate, setDepartDate,
+  returnDate, setReturnDate,
   budget, setBudget,
   currency, setCurrency,
-  email, setEmail,
   advancedOpen, setAdvancedOpen,
   adults, setAdults,
   travelClass, setTravelClass,
@@ -26,6 +29,23 @@ export default function FlightSearchForm({
     { key: "round", label: t("searchForm.round_trip") },
     { key: "oneway", label: t("searchForm.one_way") },
   ]
+
+  const handleDepartChange = (e) => {
+    const raw = e.target.value
+    const today = todayISO()
+    const newDepart = raw && raw < today ? today : raw
+    setDepartDate(newDepart)
+    if (returnDate && newDepart && returnDate < newDepart) {
+      setReturnDate("")
+    }
+  }
+
+  const handleReturnChange = (e) => {
+    const raw = e.target.value
+    const floor = departDate || todayISO()
+    const newReturn = raw && raw < floor ? floor : raw
+    setReturnDate(newReturn)
+  }
 
   return (
     <form
@@ -84,36 +104,57 @@ export default function FlightSearchForm({
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.budget_label")}</label>
-          <div className="flex mt-1 rounded-lg border border-slate-200 overflow-hidden">
-            <select
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="bg-slate-100 text-sm px-2 outline-none border-r border-slate-200"
-            >
-              {currencies.map((c) => (
-                <option key={c} value={c} style={{ color: "#000" }}>{c}</option>
-              ))}
-            </select>
-            <input
-              type="number"
-              min="1"
-              placeholder={t("searchForm.budget_placeholder")}
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-              className="flex-1 bg-slate-50 px-3 py-2.5 text-sm outline-none"
-            />
-          </div>
+          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.depart_label")}</label>
+          <input
+            type="date"
+            min={todayISO()}
+            value={departDate}
+            onChange={handleDepartChange}
+            className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
+          />
         </div>
 
-        <div className="flex-1">
-          <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.email_label")}</label>
+        <AnimatePresence initial={false}>
+          {tripType === "round" && (
+            <motion.div
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: "100%" }}
+              exit={{ opacity: 0, width: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex-1 overflow-hidden"
+            >
+              <label className="text-xs font-semibold text-slate-400 tracking-wide whitespace-nowrap">{t("searchForm.return_label")}</label>
+              <input
+                type="date"
+                min={departDate || todayISO()}
+                value={returnDate}
+                onChange={handleReturnChange}
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div>
+        <label className="text-xs font-semibold text-slate-400 tracking-wide">{t("searchForm.budget_label")}</label>
+        <div className="flex mt-1 rounded-lg border border-slate-200 overflow-hidden">
+          <select
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+            className="bg-slate-100 text-sm px-2 outline-none border-r border-slate-200"
+          >
+            {currencies.map((c) => (
+              <option key={c} value={c} style={{ color: "#000" }}>{c}</option>
+            ))}
+          </select>
           <input
-            type="email"
-            placeholder={t("searchForm.email_placeholder")}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-cyan-500 transition-colors"
+            type="number"
+            min="1"
+            placeholder={t("searchForm.budget_placeholder")}
+            value={budget}
+            onChange={(e) => setBudget(e.target.value)}
+            className="flex-1 bg-slate-50 px-3 py-2.5 text-sm outline-none"
           />
         </div>
       </div>

@@ -36,7 +36,7 @@
     "powered_by": "Risultati dei voli forniti da Google Flights, tramite SerpApi."
   },
   "home": {
-    "hero_title": "Non pagare mai più il prezzo esorbitante per un volo",
+    "hero_title": "Non pagare mai più il prezzo esorbitante di un volo",
     "hero_subtitle": "Imposta il percorso e il budget, e ti invieremo un’e-mail quando il prezzo scenderà."
   },
   "howItWorks": {
@@ -76,11 +76,11 @@
     "section1_title": "1. Cosa raccogliamo",
     "section1_body": "Quando utilizzi le funzioni di ricerca e di avviso sui prezzi di SkyScout, raccogliamo le informazioni che ci fornisci volontariamente, quali il tuo indirizzo e-mail, le città di partenza e di destinazione, le date del viaggio e le tue preferenze in termini di budget.",
     "section2_title": "2. Come utilizziamo i tuoi dati",
-    "section2_body": "Il tuo indirizzo e-mail viene utilizzato esclusivamente per inviarti notifiche relative a eventuali riduzioni di prezzo sulle tratte che hai cercato. I tuoi criteri di ricerca vengono salvati in modo da poter confrontare le tariffe future con il tuo budget e avvisarti quando si presenta un'offerta vantaggiosa.",
+    "section2_body": "Il tuo indirizzo e-mail viene utilizzato esclusivamente per inviarti notifiche relative a riduzioni di prezzo sulle tratte che hai cercato. I tuoi criteri di ricerca vengono salvati in modo da poter confrontare le tariffe future con il tuo budget e avvisarti quando viene proposta un'offerta vantaggiosa.",
     "section3_title": "3. Fornitori di dati di terze parti",
-    "section3_body": "SkyScout recupera i dati relativi alle tariffe aeree e agli aeroporti da fornitori terzi per alimentare i risultati di ricerca e i tabelloni degli arrivi e delle partenze. Non condividiamo il tuo indirizzo e-mail personale né la cronologia delle ricerche con tali fornitori, se non nella misura necessaria all’esecuzione della ricerca stessa.",
+    "section3_body": "SkyScout recupera i dati relativi alle tariffe aeree e agli aeroporti da fornitori terzi per alimentare i risultati di ricerca e i tabelloni degli arrivi e delle partenze. Non condividiamo il tuo indirizzo e-mail personale né la cronologia delle ricerche con tali fornitori, se non nella misura necessaria all'esecuzione della ricerca stessa.",
     "section4_title": "4. Archiviazione dei dati",
-    "section4_body": "I dati relativi alle ricerche e alle preferenze di notifica vengono conservati in modo sicuro e utilizzati esclusivamente per il funzionamento della funzione di notifica dei prezzi. Non vendiamo, non cediamo né condividiamo i tuoi dati personali con inserzionisti o terze parti non correlate.",
+    "section4_body": "I dati relativi alle ricerche e alle preferenze di avviso vengono conservati in modo sicuro e utilizzati esclusivamente per il funzionamento della funzione di avviso sui prezzi. Non vendiamo, non cediamo né condividiamo i tuoi dati personali con inserzionisti o terze parti non correlate.",
     "section5_title": "5. Cookie e tracciamento",
     "section5_body": "SkyScout non utilizza cookie di tracciamento a fini pubblicitari. I dati tecnici raccolti vengono utilizzati esclusivamente per garantire il corretto funzionamento del servizio.",
     "section6_title": "6. Le tue scelte",
@@ -119,10 +119,10 @@
     "destination_label": "DESTINAZIONE",
     "origin_placeholder": "ad es. KJFK o New York",
     "destination_placeholder": "ad es. KLAX o Los Angeles",
+    "depart_label": "Partenza",
+    "return_label": "Torna indietro",
     "budget_label": "BILANCIO",
     "budget_placeholder": "Prezzo massimo",
-    "email_label": "EMAIL",
-    "email_placeholder": "you@example.com",
     "advanced_options": "Opzioni avanzate",
     "adults_label": "ADULTI",
     "cabin_class_label": "CLASSE DI VIAGGIO",
@@ -163,7 +163,7 @@
   },
   "filters": {
     "filter_flights": "Filtra i voli",
-    "refine_results": "Affina i risultati di ricerca dei voli",
+    "refine_results": "Affina i risultati della ricerca dei voli",
     "airline": "Compagnia aerea",
     "depart": "Partenza",
     "departure_time": "Orario di partenza",

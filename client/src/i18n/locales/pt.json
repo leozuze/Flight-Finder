@@ -36,7 +36,7 @@
     "powered_by": "Resultados de voos fornecidos pelo Google Flights, através do SerpApi."
   },
   "home": {
-    "hero_title": "Nunca mais pagues a mais por um voo",
+    "hero_title": "Nunca mais pague a mais por um voo",
     "hero_subtitle": "Defina o seu itinerário e o seu orçamento, e enviar-lhe-emos um e-mail assim que o preço baixar."
   },
   "howItWorks": {
@@ -68,7 +68,7 @@
     "section6_title": "6. Alterações aos presentes termos",
     "section6_body": "Podemos atualizar estes Termos de Serviço periodicamente. A utilização continuada do SkyScout após a publicação das alterações implica a aceitação dos termos revistos.",
     "section7_title": "7. Contacto",
-    "section7_body": "Tem dúvidas sobre estes termos? Contacte-nos através dos dados de contacto indicados na nossa página inicial."
+    "section7_body": "Tem alguma dúvida sobre estes termos? Contacte-nos através dos dados de contacto indicados na nossa página inicial."
   },
   "privacy": {
     "title": "Política de Privacidade",
@@ -119,10 +119,10 @@
     "destination_label": "DESTINO",
     "origin_placeholder": "por exemplo, KJFK ou Nova Iorque",
     "destination_placeholder": "por exemplo, KLAX ou Los Angeles",
+    "depart_label": "Partir",
+    "return_label": "Voltar",
     "budget_label": "ORÇAMENTO",
     "budget_placeholder": "Preço máximo",
-    "email_label": "E-MAIL",
-    "email_placeholder": "you@example.com",
     "advanced_options": "Opções avançadas",
     "adults_label": "ADULTOS",
     "cabin_class_label": "CLASSE DA CABINA",

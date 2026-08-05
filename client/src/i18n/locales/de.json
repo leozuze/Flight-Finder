@@ -27,7 +27,7 @@
     "marquee_5": "Fahrpreise vergleichen. Cleverer buchen."
   },
   "footer": {
-    "brand_blurb": "SkyScout verfolgt die Flugpreise rund um die Uhr und zeigt Ihnen die günstigsten Flüge auf Ihrer Strecke an, sodass Sie nicht ständig selbst nachsehen müssen.",
+    "brand_blurb": "SkyScout verfolgt die Flugpreise rund um die Uhr und zeigt dir die günstigsten Flüge auf deiner Strecke an, sodass du nicht ständig selbst nachschauen musst.",
     "quick_links": "SCHNELLLINKS",
     "how_it_works": "So funktioniert es",
     "legal_trust": "RECHTS- UND TREUHANDSACHEN",
@@ -68,7 +68,7 @@
     "section6_title": "6. Änderungen dieser Bedingungen",
     "section6_body": "Wir behalten uns vor, diese Nutzungsbedingungen von Zeit zu Zeit zu aktualisieren. Die fortgesetzte Nutzung von SkyScout nach Veröffentlichung der Änderungen gilt als Zustimmung zu den geänderten Bedingungen.",
     "section7_title": "7. Kontakt",
-    "section7_body": "Haben Sie Fragen zu diesen Bedingungen? Dann kontaktieren Sie uns bitte über die auf unserer Homepage angegebenen Kontaktdaten."
+    "section7_body": "Haben Sie Fragen zu diesen Bedingungen? Kontaktieren Sie uns über die auf unserer Homepage angegebenen Kontaktdaten."
   },
   "privacy": {
     "title": "Datenschutzerklärung",
@@ -76,13 +76,13 @@
     "section1_title": "1. Welche Daten wir erheben",
     "section1_body": "Wenn Sie die Such- und Preisbenachrichtigungsfunktionen von SkyScout nutzen, erfassen wir die Daten, die Sie uns freiwillig zur Verfügung stellen – wie beispielsweise Ihre E-Mail-Adresse, den Abfahrts- und Zielort, die Reisedaten sowie Ihre Budgetvorgaben.",
     "section2_title": "2. Wie wir Ihre Daten verwenden",
-    "section2_body": "Ihre E-Mail-Adresse wird ausschließlich dazu verwendet, Ihnen Benachrichtigungen über Preissenkungen für die von Ihnen gesuchten Strecken zu senden. Ihre Suchkriterien werden gespeichert, damit wir zukünftige Tarife mit Ihrem Budget abgleichen und Sie benachrichtigen können, sobald ein passendes Angebot erscheint.",
+    "section2_body": "Ihre E-Mail-Adresse wird ausschließlich dazu verwendet, Ihnen Benachrichtigungen über Preissenkungen für die von Ihnen gesuchten Strecken zu senden. Ihre Suchkriterien werden gespeichert, damit wir zukünftige Tarife mit Ihrem Budget abgleichen und Sie benachrichtigen können, sobald ein günstiges Angebot erscheint.",
     "section3_title": "3. Externe Datenanbieter",
-    "section3_body": "SkyScout ruft Flugpreis- und Flughafendaten von Drittanbietern ab, um Suchergebnisse und Ankunfts- bzw. Abfluganzeigen zu erstellen. Wir geben Ihre persönliche E-Mail-Adresse oder Ihren Suchverlauf nicht an diese Anbieter weiter, außer in dem Umfang, der für die Durchführung der Suche selbst erforderlich ist.",
+    "section3_body": "SkyScout ruft Flugpreis- und Flughafendaten von Drittanbietern ab, um Suchergebnisse und Ankunfts- und Abfluganzeigen bereitzustellen. Wir geben Ihre persönliche E-Mail-Adresse oder Ihren Suchverlauf nicht an diese Anbieter weiter, außer in dem Umfang, der für die Durchführung der Suche selbst erforderlich ist.",
     "section4_title": "4. Datenspeicherung",
     "section4_body": "Suchdaten und Benachrichtigungseinstellungen werden sicher gespeichert und ausschließlich zum Betrieb der Preisbenachrichtigungsfunktion verwendet. Wir verkaufen, vermieten oder geben Ihre personenbezogenen Daten nicht an Werbetreibende oder unabhängige Dritte weiter.",
     "section5_title": "5. Cookies und Tracking",
-    "section5_body": "SkyScout verwendet keine Tracking-Cookies zu Werbezwecken. Alle erfassten technischen Daten werden ausschließlich dazu verwendet, den ordnungsgemäßen Betrieb des Dienstes sicherzustellen.",
+    "section5_body": "SkyScout verwendet keine Tracking-Cookies zu Werbezwecken. Alle erfassten technischen Daten werden ausschließlich dazu verwendet, den ordnungsgemäßen Betrieb des Dienstes zu gewährleisten.",
     "section6_title": "6. Ihre Auswahlmöglichkeiten",
     "section6_body": "Sie können den Erhalt von Preisbenachrichtigungen jederzeit beenden, indem Sie keine neuen Suchanfragen mehr mit Ihrer E-Mail-Adresse durchführen. Wenn Sie möchten, dass bereits gespeicherte Daten gelöscht werden, kontaktieren Sie uns bitte über die Kontaktdaten auf unserer Homepage.",
     "section7_title": "7. Änderungen an dieser Richtlinie",
@@ -119,10 +119,10 @@
     "destination_label": "REISEZIEL",
     "origin_placeholder": "z. B. KJFK oder New York",
     "destination_placeholder": "z. B. KLAX oder Los Angeles",
+    "depart_label": "Abfahrt",
+    "return_label": "Zurück",
     "budget_label": "HAUSHALT",
     "budget_placeholder": "Höchstpreis",
-    "email_label": "E-MAIL",
-    "email_placeholder": "you@example.com",
     "advanced_options": "Erweiterte Optionen",
     "adults_label": "ERWACHSENE",
     "cabin_class_label": "KABINENKLASSE",
@@ -163,7 +163,7 @@
   },
   "filters": {
     "filter_flights": "Flüge filtern",
-    "refine_results": "Flug-Ergebnisse verfeinern",
+    "refine_results": "Flugergebnisse verfeinern",
     "airline": "Fluggesellschaft",
     "depart": "Abfahrt",
     "departure_time": "Abfahrtszeit",
