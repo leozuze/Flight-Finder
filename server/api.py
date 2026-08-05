@@ -19,6 +19,18 @@ CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
 SEARCH_WINDOW_DAYS = 30  # only used by the /api/flights quick-search path
 FLIGHT_CACHE_TTL_SECONDS = 900  # 15 min — flight prices don't meaningfully change faster than this
 
+# Return-date fallback offsets, closest to the user's chosen date first.
+# Only the return date flexes — depart date is never changed here.
+DATE_FALLBACK_OFFSETS = [0, 1, -1, 2, -2, 3, -3]
+
+# Grace window for the "depart date can't be in the past" check. date.today()
+# runs in the server's timezone, so a user in a timezone behind the server's
+# can pick a date that's genuinely "today" for them but already looks like
+# "yesterday" once the server has rolled into its next day. A 1-day grace
+# window absorbs that skew without a full client-timezone handshake, while
+# still rejecting dates that are clearly in the past.
+DEPART_DATE_GRACE_DAYS = 1
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -88,6 +100,38 @@ async def _search_with_cache(flight_search, cache, origin_code, destination_code
     return result
 
 
+async def _search_round_trip_flexible(flight_search, cache, origin_code, destination_code,
+                                       depart, ret, trip_type, currency, adults,
+                                       travel_class, is_direct):
+    """Round-trip only. Tries the user's exact return date first. If that
+    comes back empty, nudges the return date by a few days (never before
+    depart) and stops at the first date that actually has fares. The depart
+    date is never changed — only the return date flexes.
+
+    Returns (flights, actual_return_date_used).
+    """
+    depart_obj = datetime.strptime(depart, "%Y-%m-%d").date()
+    ret_obj = datetime.strptime(ret, "%Y-%m-%d").date()
+
+    last_flights = None
+    for offset in DATE_FALLBACK_OFFSETS:
+        candidate = ret_obj + timedelta(days=offset)
+        if candidate < depart_obj:
+            continue
+        candidate_str = candidate.strftime("%Y-%m-%d")
+        flights = await _search_with_cache(
+            flight_search, cache, origin_code, destination_code, depart, candidate_str,
+            trip_type, currency, adults, travel_class, is_direct,
+        )
+        last_flights = flights
+        if find_cheapest_flight(flights, trip_type=trip_type).price != "N/A":
+            return flights, candidate_str
+
+    # Nothing found across any offset — return the last attempt (will be
+    # treated as "no flights found" by the caller) and the original date.
+    return last_flights, ret
+
+
 class StatusRequest(BaseModel):
     flightNumber: str
     date: str
@@ -123,7 +167,10 @@ async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
     depart_parsed = parse_iso_date(req.departDate)
     if depart_parsed is None:
         return {"error": "Depart date must be a valid date in YYYY-MM-DD format."}
-    if depart_parsed < date.today():
+    # Grace window absorbs client/server timezone skew — see
+    # DEPART_DATE_GRACE_DAYS comment above for why this isn't a hard
+    # date.today() boundary.
+    if depart_parsed < date.today() - timedelta(days=DEPART_DATE_GRACE_DAYS):
         return {"error": "Depart date cannot be in the past — choose today or a later date."}
 
     if trip_type == "1":
@@ -146,24 +193,42 @@ async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
     if origin_code == "N/A" or destination_code == "N/A":
         return {"error": "Could not find IATA codes for the given cities."}
 
-    flights = await _search_with_cache(
-        flight_search, cache, origin_code, destination_code, depart, ret,
-        trip_type, req.currency, req.adults, travel_class, is_direct=True,
-    )
-    cheapest = find_cheapest_flight(flights, trip_type=trip_type)
+    actual_return = ret
 
-    if cheapest.price == "N/A":
-        flights = await _search_with_cache(
+    if trip_type == "1":
+        flights, actual_return = await _search_round_trip_flexible(
             flight_search, cache, origin_code, destination_code, depart, ret,
-            trip_type, req.currency, req.adults, travel_class, is_direct=False,
+            trip_type, req.currency, req.adults, travel_class, is_direct=True,
         )
         cheapest = find_cheapest_flight(flights, trip_type=trip_type)
+
+        if cheapest.price == "N/A":
+            flights, actual_return = await _search_round_trip_flexible(
+                flight_search, cache, origin_code, destination_code, depart, ret,
+                trip_type, req.currency, req.adults, travel_class, is_direct=False,
+            )
+            cheapest = find_cheapest_flight(flights, trip_type=trip_type)
+    else:
+        flights = await _search_with_cache(
+            flight_search, cache, origin_code, destination_code, depart, ret,
+            trip_type, req.currency, req.adults, travel_class, is_direct=True,
+        )
+        cheapest = find_cheapest_flight(flights, trip_type=trip_type)
+
+        if cheapest.price == "N/A":
+            flights = await _search_with_cache(
+                flight_search, cache, origin_code, destination_code, depart, ret,
+                trip_type, req.currency, req.adults, travel_class, is_direct=False,
+            )
+            cheapest = find_cheapest_flight(flights, trip_type=trip_type)
 
     if cheapest.price == "N/A":
         return {"error": "No flights found within your criteria."}
 
     all_sorted = find_all_flights_sorted(flights, trip_type=trip_type)
     other_flights = all_sorted[1:] if len(all_sorted) > 1 else []
+
+    date_adjusted = trip_type == "1" and actual_return != req.returnDate
 
     # Sheety write is a side effect the user doesn't need to wait on — runs
     # after the response has already gone out. No longer tied to email/alerts.
@@ -193,6 +258,8 @@ async def search_flights(req: SearchRequest, background_tasks: BackgroundTasks):
             "currency": req.currency,
             "departDate": cheapest.out_date,
             "returnDate": cheapest.return_date,
+            "requestedReturnDate": req.returnDate,
+            "dateAdjusted": date_adjusted,
             "stops": cheapest.stops,
             "stopAirports": cheapest.stop_airports,
         },
