@@ -6,9 +6,9 @@ import { Plane, ArrowRight } from "lucide-react"
 // ── Media ──────────────────────────────────────────────────────────────
 import earthVideo from "@/assets/earth.mp4"
 import airportVideo from "@/assets/airport.mp4"
-import natureVideo from "@/assets/nature.mp4"
+
 import planeflyVideo from "@/assets/planefly.mp4"
-import waterfallVideo from "@/assets/waterfall.mp4"
+
 import ballonImg from "@/assets/ballon.jpg"
 import cityImg from "@/assets/city.jpg"
 import hotairImg from "@/assets/hotair.jpg"
@@ -35,9 +35,9 @@ const MEDIA_POOL = [
   { type: "image", src: roomsImg, alt: "Hotel room" },
   { type: "image", src: hotairImg, alt: "Hot air balloons at sunrise" },
   { type: "image", src: tallbuildingsImg, alt: "City skyline" },
-  { type: "video", src: waterfallVideo, alt: "Waterfall" },
+
   { type: "image", src: restaurantsImg, alt: "Restaurant interior" },
-  { type: "video", src: natureVideo, alt: "Nature landscape" },
+
   { type: "image", src: parkImg, alt: "City park" },
   { type: "image", src: rooms1Img, alt: "Hotel suite" },
   { type: "image", src: restaurentImg, alt: "Restaurant table" },
