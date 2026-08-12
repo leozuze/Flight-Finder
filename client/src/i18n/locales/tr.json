@@ -8,11 +8,15 @@
     "copyright": "© 2026 SkyScout. Tüm hakları saklıdır."
   },
   "navbar": {
+    "nav_flights": "Uçuşlar",
+    "nav_places": "Yerler",
+    "nav_explore": "Keşfet",
+    "nav_stays": "Konaklamalar",
     "search_type_all": "Tümü",
     "search_type_route": "Güzergâh",
     "search_type_airport": "Havaalanı",
     "placeholder_all": "Şehir veya havaalanı araması",
-    "placeholder_from": "(örneğin KJFK veya New York'tan)",
+    "placeholder_from": "(örneğin KJFK veya New York’tan)",
     "placeholder_to": "(örneğin KLAX veya Los Angeles’a)",
     "placeholder_airport_code": "Havaalanı Kodu (örn. KJFK)",
     "placeholder_airport_city": "Havaalanı Şehri (örn. New York)",
@@ -27,7 +31,7 @@
     "marquee_5": "Ücretleri takip edin. Daha akıllı rezervasyon yapın."
   },
   "footer": {
-    "brand_blurb": "SkyScout, uçak bilet fiyatlarını 24 saat boyunca takip eder ve rotanızdaki en ucuz uçuşları size sunar; böylece sürekli kontrol etmek zorunda kalmazsınız.",
+    "brand_blurb": "SkyScout, uçak bilet fiyatlarını 24 saat boyunca takip eder ve seçtiğiniz güzergâhtaki en ucuz uçuşları size sunar; böylece sürekli kontrol etmek zorunda kalmazsınız.",
     "quick_links": "HIZLI BAĞLANTILAR",
     "how_it_works": "Nasıl Çalışır?",
     "legal_trust": "HUKUK VE VAKIF",
@@ -38,6 +42,31 @@
   "home": {
     "hero_title": "Bir daha asla uçak bileti için fazla ödeme yapmayın",
     "hero_subtitle": "Güzergâhınızı ve bütçenizi belirleyin; fiyat düştüğünde size e-posta ile haber vereceğiz."
+  },
+  "languages": {
+    "en-US": "İngilizce (ABD)",
+    "en-GB": "İngilizce (Birleşik Krallık)",
+    "fr": "Fransızca",
+    "es": "İspanyolca",
+    "pt": "Portekizce",
+    "ar": "Arapça",
+    "zh": "Çince",
+    "de": "Almanca",
+    "ja": "Japonca",
+    "ru": "Rusça",
+    "it": "İtalyanca",
+    "ko": "Korece",
+    "nl": "Hollandaca",
+    "tr": "Türkçe"
+  },
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "Her yerde,",
+    "title_line2": "hepsi birden.",
+    "subtitle_1": "Bir vadinin üzerinde bir balon. Başka bir şehirde bir masa.",
+    "subtitle_2": "Ufuk çizgisinin üzerinde bir oda. Bin yıldır durmaksızın akan bir şelale.",
+    "subtitle_3": "Her an, bir yerlerde bir uçak kalkmak üzeredir. Bir pencere seçin.",
+    "cta": "Keşfetmeye başlayın"
   },
   "howItWorks": {
     "title": "SkyScout nasıl çalışır?",
@@ -62,7 +91,7 @@
     "section3_title": "3. Ücret doğruluğu",
     "section3_body": "Uçak bileti fiyatları sürekli değişmektedir ve tamamen havayolları ile üçüncü taraf veri sağlayıcıları tarafından belirlenmektedir. Doğru ve güncel fiyatları sunmak için elimizden geleni yapsak da, SkyScout, başka bir yerden rezervasyon yapmaya çalıştığınızda görüntülenen fiyatın geçerli olacağını garanti edemez.",
     "section4_title": "4. Kullanıcıların sorumlulukları",
-    "section4_body": "Uyarı özelliklerimizi kullanırken doğru bilgiler (örneğin e-posta adresiniz) sağlamayı ve hizmeti kötüye kullanmamayı — SkyScout’un arama altyapısını aşırı yükleme, veri kazıma veya bu altyapıya müdahale etme girişimleri dahil olmak üzere — kabul edersiniz.",
+    "section4_body": "Uyarı özelliklerimizi kullanırken doğru bilgiler (örneğin e-posta adresiniz) sağlamayı ve hizmeti kötüye kullanmamayı — SkyScout’un arama altyapısını aşırı yükleme, veri kazıma veya müdahale etme girişimleri dahil olmak üzere — kabul edersiniz.",
     "section5_title": "5. Rezervasyon sonuçları konusunda herhangi bir sorumluluk kabul edilmez",
     "section5_body": "SkyScout, üçüncü taraf havayolu veya seyahat sitelerinde meydana gelen herhangi bir kayıp, kaçırılan bilet fırsatı veya rezervasyon sorunundan sorumlu değildir. Satın alma işlemini tamamlamadan önce nihai fiyatı ve koşulları her zaman doğrudan havayolu şirketiyle teyit ediniz.",
     "section6_title": "6. Bu şartlarda yapılan değişiklikler",
@@ -78,7 +107,7 @@
     "section2_title": "2. Bilgilerinizi nasıl kullanıyoruz?",
     "section2_body": "E-posta adresiniz, yalnızca aradığınız güzergâhlar için fiyat düşüşü bildirimleri göndermek amacıyla kullanılır. Arama kriterleriniz kaydedilir; böylece gelecekteki fiyatları bütçenizle karşılaştırabilir ve uygun bir fırsat ortaya çıktığında sizi bilgilendirebiliriz.",
     "section3_title": "3. Üçüncü taraf veri sağlayıcıları",
-    "section3_body": "SkyScout, arama sonuçlarını ve varış/kalkış panolarını beslemek amacıyla üçüncü taraf sağlayıcılardan uçuş fiyatları ve havalimanı verilerini alır. Kişisel e-posta adresinizi veya arama geçmişinizi, aramanın gerçekleştirilmesi için gerekli olanın ötesinde bu sağlayıcılarla paylaşmayız.",
+    "section3_body": "SkyScout, arama sonuçlarını ve varış/kalkış panolarını beslemek amacıyla üçüncü taraf sağlayıcılardan uçuş fiyatları ve havalimanı verilerini alır. Arama işleminin gerçekleştirilmesi için gerekli olanın ötesinde, kişisel e-posta adresinizi veya arama geçmişinizi bu sağlayıcılarla paylaşmayız.",
     "section4_title": "4. Veri depolama",
     "section4_body": "Arama kayıtları ve uyarı tercihleri güvenli bir şekilde saklanır ve yalnızca fiyat uyarısı özelliğinin çalışması için kullanılır. Kişisel verilerinizi reklamverenlere veya konuyla ilgisi olmayan üçüncü taraflara satmaz, kiralamaz veya paylaşmayız.",
     "section5_title": "5. Çerezler ve izleme",
@@ -109,7 +138,7 @@
     "scheduled": "Planlanmış",
     "estimated": "Tahmini",
     "actual": "Gerçek",
-    "unknown_airline": "Adı Bilinmeyen Havayolu Şirketi",
+    "unknown_airline": "Adı Bilinmeyen Havayolu",
     "unknown_airport": "Bilinmeyen havaalanı"
   },
   "searchForm": {

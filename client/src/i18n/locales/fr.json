@@ -8,6 +8,10 @@
     "copyright": "© 2026 SkyScout. Tous droits réservés."
   },
   "navbar": {
+    "nav_flights": "Vols",
+    "nav_places": "Lieux",
+    "nav_explore": "Découvrir",
+    "nav_stays": "Séjours",
     "search_type_all": "Tout",
     "search_type_route": "Itinéraire",
     "search_type_airport": "Aéroport",
@@ -16,9 +20,9 @@
     "placeholder_to": "Vers (par exemple, KLAX ou Los Angeles)",
     "placeholder_airport_code": "Code aéroport (par ex. KJFK)",
     "placeholder_airport_city": "Ville aéroportuaire (par exemple, New York)",
-    "alert_route_missing": "Veuillez indiquer à la fois un point de départ et une destination, par exemple « de Pune à Harare ».",
+    "alert_route_missing": "Veuillez indiquer à la fois un lieu de départ et une destination, par exemple « de Pune à Harare ».",
     "alert_all_missing": "Veuillez saisir un itinéraire, un aéroport ou une ville, par exemple « Pune à Harare » ou « KJFK ».",
-    "alert_airport_missing": "Veuillez saisir un code d'aéroport ou une ville, par exemple « KJFK » ou « New York ».",
+    "alert_airport_missing": "Veuillez saisir un code d'aéroport ou le nom d'une ville, par exemple « KJFK » ou « New York ».",
     "alert_type_unavailable": "Ce type de recherche n'est pas encore disponible — essayez « Itinéraire », « Tout » ou « Aéroport ».",
     "marquee_1": "Ne manquez jamais une baisse de prix.",
     "marquee_2": "Des vols pas chers, sélectionnés spécialement pour vous.",
@@ -27,25 +31,50 @@
     "marquee_5": "Suivez les tarifs. Réservez plus malin."
   },
   "footer": {
-    "brand_blurb": "SkyScout surveille les tarifs 24 heures sur 24 et vous propose les vols les moins chers sur votre itinéraire, pour que vous n'ayez pas à vérifier sans cesse.",
+    "brand_blurb": "Nuvex vous propose des vols et des destinations à découvrir, en exploitant en temps réel les tarifs et les données de localisation provenant de plusieurs sources, afin que vous puissiez effectuer une seule recherche qui couvre à la fois ces deux aspects.",
     "quick_links": "LIENS RAPIDES",
     "how_it_works": "Comment ça marche ?",
     "legal_trust": "JURIDIQUE ET FIDUCIAIRE",
-    "terms_of_service": "Conditions d'utilisation",
+    "terms_of_service": "Conditions générales d'utilisation",
     "privacy_policy": "Politique de confidentialité",
-    "powered_by": "Résultats de recherche de vols fournis par Google Flights, via SerpApi."
+    "powered_by": "Données relatives aux vols et aux lieux fournies par SerpApi, AviationStack, Geoapify et OpenStreetMap."
   },
   "home": {
     "hero_title": "Ne payez plus jamais trop cher pour un billet d'avion",
     "hero_subtitle": "Définissez votre itinéraire et votre budget, et nous vous enverrons un e-mail dès que le prix baissera."
   },
+  "languages": {
+    "en-US": "Anglais (États-Unis)",
+    "en-GB": "Anglais (Royaume-Uni)",
+    "fr": "Français",
+    "es": "Espagnol",
+    "pt": "portugais",
+    "ar": "Arabe",
+    "zh": "Chinois",
+    "de": "Allemand",
+    "ja": "Japonais",
+    "ru": "Russe",
+    "it": "italien",
+    "ko": "coréen",
+    "nl": "néerlandais",
+    "tr": "Turc"
+  },
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "Partout,",
+    "title_line2": "tout d'un coup.",
+    "subtitle_1": "Un ballon au-dessus d'une vallée. Une table dans une autre ville.",
+    "subtitle_2": "Une chambre au-dessus de la ligne d'horizon. Une cascade qui coule sans discontinuer depuis mille ans.",
+    "subtitle_3": "Quelque part, un avion est toujours sur le point de décoller. Choisis un créneau horaire.",
+    "cta": "Commencez à explorer"
+  },
   "howItWorks": {
     "title": "Comment fonctionne SkyScout ?",
     "subtitle": "Trouver le meilleur tarif ne devrait pas vous obliger à passer des heures à actualiser vos onglets. Voici comment nous nous chargeons de cette recherche à votre place.",
     "step1_title": "Rechercher votre itinéraire",
-    "step1_description": "Indiquez-nous vos aéroports de départ et d'arrivée, ainsi que votre budget et vos dates de voyage. Nous analysons instantanément les tarifs en temps réel proposés par toutes les compagnies aériennes.",
+    "step1_description": "Indiquez-nous vos aéroports de départ et d'arrivée, ainsi que votre budget et vos dates de voyage. Nous analysons instantanément les tarifs en temps réel de toutes les compagnies aériennes.",
     "step2_title": "Nous surveillons les tarifs pour vous",
-    "step2_description": "Une fois votre recherche enregistrée, SkyScout surveille cet itinéraire. Dès qu'un tarif descend en dessous de votre budget, vous êtes le premier à en être informé.",
+    "step2_description": "Une fois votre recherche enregistrée, SkyScout surveille cet itinéraire. Dès qu'un tarif baisse et correspond à votre budget, vous êtes le premier à en être informé.",
     "step3_title": "Réservez en toute confiance",
     "step3_description": "Recevez une alerte par e-mail dès qu'une offre correspondant à vos critères apparaît, afin de pouvoir réserver avant que le prix ne change.",
     "cta_title": "Prêt à trouver votre prochain billet ?",
@@ -66,7 +95,7 @@
     "section5_title": "5. Exclusion de toute responsabilité quant au résultat de la réservation",
     "section5_body": "SkyScout décline toute responsabilité en cas de pertes, de tarifs manqués ou de problèmes de réservation survenant sur les sites de compagnies aériennes ou d'agences de voyage tierces. Vérifiez toujours le prix définitif et les conditions directement auprès de la compagnie aérienne avant de finaliser votre achat.",
     "section6_title": "6. Modifications apportées aux présentes conditions",
-    "section6_body": "Nous pouvons être amenés à mettre à jour les présentes Conditions générales d'utilisation de temps à autre. La poursuite de l'utilisation de SkyScout après la publication des modifications vaut acceptation des conditions révisées.",
+    "section6_body": "Nous pouvons être amenés à mettre à jour les présentes Conditions générales d'utilisation de temps à autre. Le fait de continuer à utiliser SkyScout après la publication des modifications vaut acceptation des conditions révisées.",
     "section7_title": "7. Contact",
     "section7_body": "Vous avez des questions concernant ces conditions ? N'hésitez pas à nous contacter via les coordonnées indiquées sur notre page d'accueil."
   },
@@ -84,7 +113,7 @@
     "section5_title": "5. Cookies et suivi",
     "section5_body": "SkyScout n'utilise pas de cookies de suivi à des fins publicitaires. Les données techniques collectées servent uniquement à assurer le bon fonctionnement du service.",
     "section6_title": "6. Vos choix",
-    "section6_body": "Vous pouvez à tout moment cesser de recevoir des alertes sur les tarifs en ne effectuant plus de nouvelles recherches avec votre adresse e-mail. Si vous souhaitez que vos données existantes soient supprimées, contactez-nous en utilisant les coordonnées indiquées sur notre page d'accueil.",
+    "section6_body": "Vous pouvez à tout moment cesser de recevoir des alertes sur les tarifs en ne lançant plus de nouvelles recherches avec votre adresse e-mail. Si vous souhaitez que vos données existantes soient supprimées, contactez-nous en utilisant les coordonnées indiquées sur notre page d'accueil.",
     "section7_title": "7. Modifications apportées à la présente politique",
     "section7_body": "Nous pouvons être amenés à mettre à jour la présente Politique de confidentialité de temps à autre afin de refléter les changements apportés au fonctionnement de SkyScout. Chaque fois que des modifications seront apportées, nous afficherons la date de mise à jour en haut de cette page."
   },

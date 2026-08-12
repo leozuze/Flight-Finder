@@ -8,6 +8,10 @@
     "copyright": "© 2026 SkyScout. Todos los derechos reservados."
   },
   "navbar": {
+    "nav_flights": "Vuelos",
+    "nav_places": "Lugares",
+    "nav_explore": "Explora",
+    "nav_stays": "Estancias",
     "search_type_all": "Todos",
     "search_type_route": "Ruta",
     "search_type_airport": "Aeropuerto",
@@ -17,7 +21,7 @@
     "placeholder_airport_code": "Código del aeropuerto (p. ej., KJFK)",
     "placeholder_airport_city": "Ciudad aeroportuaria (p. ej., Nueva York)",
     "alert_route_missing": "Introduce tanto el punto de partida como el de destino; por ejemplo, «de Pune a Harare».",
-    "alert_all_missing": "Introduce una ruta, un aeropuerto o una ciudad, por ejemplo, «de Pune a Harare» o «KJFK».",
+    "alert_all_missing": "Introduce una ruta, un aeropuerto o una ciudad; por ejemplo, «de Pune a Harare» o «KJFK».",
     "alert_airport_missing": "Introduce un código de aeropuerto o una ciudad, por ejemplo, «KJFK» o «Nueva York».",
     "alert_type_unavailable": "Este tipo de búsqueda aún no está disponible. Prueba con «Ruta», «Todas» o «Aeropuerto».",
     "marquee_1": "No te pierdas nunca una bajada de precios.",
@@ -27,17 +31,42 @@
     "marquee_5": "Compara tarifas. Reserva de forma más inteligente."
   },
   "footer": {
-    "brand_blurb": "SkyScout supervisa las tarifas las 24 horas del día y te muestra los vuelos más baratos para tu ruta, para que no tengas que estar comprobándolo constantemente.",
+    "brand_blurb": "Nuvex busca vuelos y destinos que merecen la pena, recopilando tarifas en tiempo real y datos sobre ubicaciones de múltiples fuentes para que, con una sola búsqueda, puedas encontrar ambos.",
     "quick_links": "ENLACES RÁPIDOS",
     "how_it_works": "Cómo funciona",
     "legal_trust": "ASUNTOS JURÍDICOS Y FIDUCIARIOS",
     "terms_of_service": "Condiciones de uso",
     "privacy_policy": "Política de privacidad",
-    "powered_by": "Resultados de vuelos proporcionados por Google Flights, a través de SerpApi."
+    "powered_by": "Datos sobre vuelos y lugares proporcionados por SerpApi, AviationStack, Geoapify y OpenStreetMap."
   },
   "home": {
     "hero_title": "No vuelvas a pagar de más por un vuelo",
     "hero_subtitle": "Establece tu ruta y tu presupuesto, y te enviaremos un correo electrónico cuando baje el precio."
+  },
+  "languages": {
+    "en-US": "Inglés (EE. UU.)",
+    "en-GB": "Inglés (Reino Unido)",
+    "fr": "Francés",
+    "es": "Español",
+    "pt": "Portugués",
+    "ar": "Árabe",
+    "zh": "Chino",
+    "de": "Alemán",
+    "ja": "Japonés",
+    "ru": "Ruso",
+    "it": "Italiano",
+    "ko": "Coreano",
+    "nl": "holandés",
+    "tr": "Turco"
+  },
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "En todas partes,",
+    "title_line2": "todo de una vez.",
+    "subtitle_1": "Un globo sobre un valle. Una mesa en otra ciudad.",
+    "subtitle_2": "Una habitación por encima del horizonte. Una cascada que lleva mil años cayendo sin cesar.",
+    "subtitle_3": "En algún lugar, siempre hay un vuelo a punto de despegar. Elige una ventana.",
+    "cta": "Empieza a explorar"
   },
   "howItWorks": {
     "title": "Cómo funciona SkyScout",
@@ -76,15 +105,15 @@
     "section1_title": "1. Qué datos recopilamos",
     "section1_body": "Cuando utilizas las funciones de búsqueda y de alertas de precios de SkyScout, recopilamos la información que nos facilitas voluntariamente, como tu dirección de correo electrónico, las ciudades de origen y destino, las fechas del viaje y tus preferencias presupuestarias.",
     "section2_title": "2. Cómo utilizamos tus datos",
-    "section2_body": "Tu dirección de correo electrónico se utiliza exclusivamente para enviarte notificaciones de bajadas de precios en las rutas que has buscado. Tus criterios de búsqueda se guardan para que podamos comparar futuras tarifas con tu presupuesto y avisarte cuando aparezca una oferta.",
+    "section2_body": "Tu dirección de correo electrónico se utiliza exclusivamente para enviarte notificaciones de bajadas de precios en las rutas que has buscado. Guardamos tus criterios de búsqueda para poder comparar futuras tarifas con tu presupuesto y avisarte cuando aparezca una oferta.",
     "section3_title": "3. Proveedores de datos externos",
-    "section3_body": "SkyScout obtiene datos sobre tarifas aéreas y aeropuertos de proveedores externos para generar los resultados de búsqueda y los paneles de llegadas y salidas. No compartimos tu dirección de correo electrónico personal ni tu historial de búsqueda con estos proveedores más allá de lo necesario para realizar la propia búsqueda.",
+    "section3_body": "SkyScout obtiene datos sobre tarifas aéreas y aeropuertos de proveedores externos para generar los resultados de búsqueda y los paneles de llegadas y salidas. No compartimos tu dirección de correo electrónico personal ni tu historial de búsqueda con estos proveedores más allá de lo estrictamente necesario para realizar la búsqueda en sí.",
     "section4_title": "4. Almacenamiento de datos",
     "section4_body": "Los registros de búsqueda y las preferencias de alertas se almacenan de forma segura y solo se utilizan para el funcionamiento de la función de alertas de precios. No vendemos, alquilamos ni compartimos tus datos personales con anunciantes ni con terceros ajenos a nuestra empresa.",
     "section5_title": "5. Cookies y seguimiento",
     "section5_body": "SkyScout no utiliza cookies de seguimiento con fines publicitarios. Los datos técnicos que se recopilan se utilizan únicamente para garantizar el correcto funcionamiento del servicio.",
     "section6_title": "6. Tus opciones",
-    "section6_body": "Puedes dejar de recibir alertas de tarifas en cualquier momento dejando de realizar nuevas búsquedas con tu dirección de correo electrónico. Si deseas que se eliminen los datos que ya tenemos, ponte en contacto con nosotros utilizando los datos de contacto que figuran en nuestra página de inicio.",
+    "section6_body": "Puedes dejar de recibir alertas de tarifas en cualquier momento dejando de realizar nuevas búsquedas con tu dirección de correo electrónico. Si deseas que se eliminen los datos existentes, ponte en contacto con nosotros utilizando los datos de contacto que figuran en nuestra página de inicio.",
     "section7_title": "7. Modificaciones de esta política",
     "section7_body": "Es posible que actualicemos periódicamente esta Política de privacidad para reflejar los cambios en el funcionamiento de SkyScout. Cada vez que se realicen cambios, publicaremos la fecha de actualización en la parte superior de esta página."
   },

@@ -16,9 +16,11 @@ export default function Home({ startingQuery, onSearch, onNavigate, onSelectFlig
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <Navbar onSearch={onSearch} onNavigate={onNavigate} />
+      <div className={`mt-6 ${CONTAINER}`}>
+        <Navbar onSearch={onSearch} />
+      </div>
 
-      <div className={`pt-28 text-center ${CONTAINER}`}>
+      <div className={`pt-10 text-center ${CONTAINER}`}>
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
             {t("home.hero_title")}

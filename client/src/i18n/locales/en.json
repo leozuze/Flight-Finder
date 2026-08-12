@@ -5,10 +5,14 @@
     "back_to_search": "Back to search",
     "loading": "Loading...",
     "unknown": "Unknown",
-    "copyright": "© 2026 SkyScout. All rights reserved."
+    "copyright": "© 2026 NuveX. All rights reserved."
   },
 
   "navbar": {
+    "nav_flights": "Flights",
+    "nav_places": "Places",
+    "nav_explore": "Explore",
+    "nav_stays": "Stays",
     "search_type_all": "All",
     "search_type_route": "Route",
     "search_type_airport": "Airport",
@@ -29,71 +33,98 @@
   },
 
   "footer": {
-    "brand_blurb": "SkyScout tracks fares around the clock and surfaces the cheapest flights on your route, so you don't have to keep checking.",
-    "quick_links": "QUICK LINKS",
-    "how_it_works": "How It Works",
-    "legal_trust": "LEGAL & TRUST",
-    "terms_of_service": "Terms of Service",
-    "privacy_policy": "Privacy Policy",
-    "powered_by": "Flight results powered by Google Flights, via SerpApi."
-  },
+  "brand_blurb": "Nuvex finds flights and places worth going, pulling live fares and location data from multiple sources so you get one search that actually covers both.",
+  "quick_links": "QUICK LINKS",
+  "how_it_works": "How It Works",
+  "legal_trust": "LEGAL & TRUST",
+  "terms_of_service": "Terms of Service",
+  "privacy_policy": "Privacy Policy",
+  "powered_by": "Flight and place data powered by SerpApi, AviationStack, Geoapify, and OpenStreetMap."
+},
 
   "home": {
     "hero_title": "Never overpay for a flight again",
     "hero_subtitle": "Set your route and budget, and we'll email you when the price drops."
   },
 
-  "howItWorks": {
-    "title": "How SkyScout works",
-    "subtitle": "Finding the right fare shouldn't take hours of refreshing tabs. Here's how we do the watching for you.",
-    "step1_title": "Search your route",
-    "step1_description": "Tell us where you're flying from and to, along with your budget and travel dates. We scan live fares across airlines instantly.",
-    "step2_title": "We watch the fares for you",
-    "step2_description": "Once your search is saved, SkyScout keeps an eye on that route. The moment a fare drops within your budget, you're the first to know.",
-    "step3_title": "Book with confidence",
-    "step3_description": "Get notified by email the instant a matching deal appears, so you can book before the price disappears.",
-    "cta_title": "Ready to find your next fare?",
-    "cta_subtitle": "Head back to search and set up your first price alert in under a minute.",
-    "cta_button": "Start searching"
+  "languages": {
+    "en-US": "English (US)",
+    "en-GB": "English (UK)",
+    "fr": "French",
+    "es": "Spanish",
+    "pt": "Portuguese",
+    "ar": "Arabic",
+    "zh": "Chinese",
+    "de": "German",
+    "ja": "Japanese",
+    "ru": "Russian",
+    "it": "Italian",
+    "ko": "Korean",
+    "nl": "Dutch",
+    "tr": "Turkish"
   },
+
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "Everywhere,",
+    "title_line2": "all at once.",
+    "subtitle_1": "A balloon over one valley. A table in another city.",
+    "subtitle_2": "A room above the skyline. A waterfall that hasn't stopped for a thousand years.",
+    "subtitle_3": "Somewhere, a flight is always about to leave. Pick a window.",
+    "cta": "Start exploring"
+  },
+
+  "howItWorks": {
+  "title": "How Nuvex works",
+  "subtitle": "Finding the right fare or the right place shouldn't take hours of refreshing tabs. Here's how we do the watching for you.",
+  "step1_title": "Search your route or a place",
+  "step1_description": "Tell us where you're flying from and to, or what kind of place you're after, along with your budget and dates. We scan live fares and locations instantly.",
+  "step2_title": "We watch it for you",
+  "step2_description": "Once your search is saved, Nuvex keeps an eye on it. The moment a fare drops within your budget, you're the first to know.",
+  "step3_title": "Go with confidence",
+  "step3_description": "Get notified by email the instant a matching deal or place appears, so you can book or plan before it's gone.",
+  "cta_title": "Ready to find your next trip?",
+  "cta_subtitle": "Head back to search and set up your first price alert in under a minute.",
+  "cta_button": "Start searching"
+},
 
   "terms": {
-    "title": "Terms of Service",
-    "last_updated": "Last updated: July 2026",
-    "section1_title": "1. Acceptance of terms",
-    "section1_body": "By accessing or using SkyScout, you agree to be bound by these Terms of Service. If you don't agree, please don't use the service.",
-    "section2_title": "2. What SkyScout does",
-    "section2_body": "SkyScout searches publicly available flight fare data and sends you email notifications when a fare matching your saved criteria becomes available. We are not a travel agency, airline, or booking platform — we do not process payments, issue tickets, or guarantee fare accuracy at the time of booking.",
-    "section3_title": "3. Fare accuracy",
-    "section3_body": "Flight prices change constantly and are controlled entirely by airlines and third-party data providers. While we strive to surface accurate, up-to-date fares, SkyScout cannot guarantee that a displayed price will be available when you attempt to book it elsewhere.",
-    "section4_title": "4. User responsibilities",
-    "section4_body": "You agree to provide accurate information (such as your email address) when using our alert features, and not to misuse the service — including attempts to overload, scrape, or interfere with SkyScout's search infrastructure.",
-    "section5_title": "5. No liability for booking outcomes",
-    "section5_body": "SkyScout is not responsible for any losses, missed fares, or booking issues that occur on third-party airline or travel sites. Always verify final pricing and terms directly with the airline before completing a purchase.",
-    "section6_title": "6. Changes to these terms",
-    "section6_body": "We may update these Terms of Service from time to time. Continued use of SkyScout after changes are posted constitutes acceptance of the revised terms.",
-    "section7_title": "7. Contact",
-    "section7_body": "Questions about these terms? Reach out to us through the contact details listed on our homepage."
-  },
+  "title": "Terms of Service",
+  "last_updated": "Last updated: August 2026",
+  "section1_title": "1. Acceptance of terms",
+  "section1_body": "By accessing or using Nuvex, you agree to be bound by these Terms of Service. If you don't agree, please don't use the service.",
+  "section2_title": "2. What Nuvex does",
+  "section2_body": "Nuvex searches publicly available flight fare data and place/location data, and sends you email notifications when a fare matching your saved criteria becomes available. We are not a travel agency, airline, or booking platform — we do not process payments, issue tickets, or guarantee fare or listing accuracy at the time of booking.",
+  "section3_title": "3. Data accuracy",
+  "section3_body": "Flight prices and place information change constantly and are controlled by airlines and third-party data providers. While we strive to surface accurate, up-to-date results, Nuvex cannot guarantee that a displayed price or listing will be available when you attempt to act on it elsewhere.",
+  "section4_title": "4. User responsibilities",
+  "section4_body": "You agree to provide accurate information (such as your email address) when using our alert features, and not to misuse the service — including attempts to overload, scrape, or interfere with Nuvex's search infrastructure.",
+  "section5_title": "5. No liability for booking outcomes",
+  "section5_body": "Nuvex is not responsible for any losses, missed fares, or booking issues that occur on third-party airline, place, or travel sites. Always verify final pricing and details directly with the provider before completing a purchase.",
+  "section6_title": "6. Changes to these terms",
+  "section6_body": "We may update these Terms of Service from time to time. Continued use of Nuvex after changes are posted constitutes acceptance of the revised terms.",
+  "section7_title": "7. Contact",
+  "section7_body": "Questions about these terms? Reach out to us through the contact details listed on our homepage."
+},
 
   "privacy": {
-    "title": "Privacy Policy",
-    "last_updated": "Last updated: July 2026",
-    "section1_title": "1. What we collect",
-    "section1_body": "When you use SkyScout's search and price-alert features, we collect the information you voluntarily provide — such as your email address, origin and destination cities, travel dates, and budget preferences.",
-    "section2_title": "2. How we use your information",
-    "section2_body": "Your email address is used solely to send you fare-drop notifications for the routes you've searched. Your search criteria is stored so we can match future fares against your budget and alert you when a deal appears.",
-    "section3_title": "3. Third-party data providers",
-    "section3_body": "SkyScout retrieves flight fare and airport data from third-party providers to power search results and arrivals/departures boards. We do not share your personal email address or search history with these providers beyond what's needed to perform the search itself.",
-    "section4_title": "4. Data storage",
-    "section4_body": "Search records and alert preferences are stored securely and used only to operate the price-alert feature. We do not sell, rent, or share your personal data with advertisers or unrelated third parties.",
-    "section5_title": "5. Cookies and tracking",
-    "section5_body": "SkyScout does not use tracking cookies for advertising purposes. Any technical data collected is used only to keep the service functioning correctly.",
-    "section6_title": "6. Your choices",
-    "section6_body": "You can stop receiving fare alerts at any time by no longer submitting new searches with your email address. If you'd like existing data removed, contact us using the details on our homepage.",
-    "section7_title": "7. Changes to this policy",
-    "section7_body": "We may update this Privacy Policy periodically to reflect changes in how SkyScout operates. We'll post the updated date at the top of this page whenever changes are made."
-  },
+  "title": "Privacy Policy",
+  "last_updated": "Last updated: August 2026",
+  "section1_title": "1. What we collect",
+  "section1_body": "When you use Nuvex's search and price-alert features, we collect the information you voluntarily provide — such as your email address, origin and destination cities, travel dates, place preferences, and budget.",
+  "section2_title": "2. How we use your information",
+  "section2_body": "Your email address is used solely to send you fare-drop notifications for the routes you've searched. Your search criteria is stored so we can match future fares and places against your preferences and alert you when a match appears.",
+  "section3_title": "3. Third-party data providers",
+  "section3_body": "Nuvex retrieves flight fare data, airport data, and place/location data from providers including SerpApi, AviationStack, Geoapify, and OpenStreetMap to power search results, arrivals/departures boards, and place discovery. We do not share your personal email address or search history with these providers beyond what's needed to perform the search itself.",
+  "section4_title": "4. Data storage",
+  "section4_body": "Search records and alert preferences are stored securely and used only to operate the price-alert feature. We do not sell, rent, or share your personal data with advertisers or unrelated third parties.",
+  "section5_title": "5. Cookies and tracking",
+  "section5_body": "Nuvex does not use tracking cookies for advertising purposes. Any technical data collected is used only to keep the service functioning correctly.",
+  "section6_title": "6. Your choices",
+  "section6_body": "You can stop receiving fare alerts at any time by no longer submitting new searches with your email address. If you'd like existing data removed, contact us using the details on our homepage.",
+  "section7_title": "7. Changes to this policy",
+  "section7_body": "We may update this Privacy Policy periodically to reflect changes in how Nuvex operates. We'll post the updated date at the top of this page whenever changes are made."
+},
 
   "airportBoard": {
     "arrivals": "Arrivals",
@@ -143,36 +174,37 @@
     "searching": "Searching..."
   },
 
-"resultsTable": {
-  "airline": "Airline",
-  "ident": "Ident",
-  "aircraft": "Aircraft",
-  "connections": "Connections",
-  "status": "Status",
-  "departure": "Departure",
-  "arrival": "Arrival",
-  "price": "Price",
-  "origin": "Origin",
-  "destination": "Destination",
-  "terminal_gate": "Terminal / Gate",
-  "scheduled": "Scheduled",
-  "estimated_actual": "Estimated / Actual",
-  "direct": "Direct",
-  "stop": "stop",
-  "stops": "stops",
-  "via": "via",
-  "flight": "flight",
-  "flights": "flights",
-  "showing": "Showing {{shown}} of {{total}}",
-  "check_status": "Check status",
-  "checking": "Checking...",
-  "no_flights_match": "No flights match the selected filters.",
-  "cheapest_results": "Cheapest Flight Results",
-  "other_flights": "Other Flights",
-  "flight_results": "Flight Results",
-   "date_adjusted_note": "No fares for {{requested}} showing the closest available return date instead.",
-  "requested_return": "You searched for"
-},
+  "resultsTable": {
+    "airline": "Airline",
+    "ident": "Ident",
+    "aircraft": "Aircraft",
+    "connections": "Connections",
+    "status": "Status",
+    "departure": "Departure",
+    "arrival": "Arrival",
+    "price": "Price",
+    "origin": "Origin",
+    "destination": "Destination",
+    "terminal_gate": "Terminal / Gate",
+    "scheduled": "Scheduled",
+    "estimated_actual": "Estimated / Actual",
+    "direct": "Direct",
+    "stop": "stop",
+    "stops": "stops",
+    "via": "via",
+    "flight": "flight",
+    "flights": "flights",
+    "showing": "Showing {{shown}} of {{total}}",
+    "check_status": "Check status",
+    "checking": "Checking...",
+    "no_flights_match": "No flights match the selected filters.",
+    "cheapest_results": "Cheapest Flight Results",
+    "other_flights": "Other Flights",
+    "flight_results": "Flight Results",
+    "date_adjusted_note": "No fares for {{requested}} showing the closest available return date instead.",
+    "requested_return": "You searched for"
+  },
+
   "filters": {
     "filter_flights": "Filter Flights",
     "refine_results": "Refine Flight Results",
@@ -187,20 +219,25 @@
     "only": "only"
   },
 
-"flightSearch": {
-  "invalid_origin_destination": "Please select a valid origin and destination.",
-  "error_generic": "Something went wrong reaching the search service. Please try again.",
-  "scanning": "Scanning routes for the cheapest fares...",
-  "status_unavailable": "Unavailable",
-  "step_search_routes": "Searching available routes...",
-  "step_compare_prices": "Comparing prices across airlines...",
-  "step_check_availability": "Checking real-time availability...",
-  "step_finalizing": "Finalizing your results..."
-},
-
-"notFound": {
-  "title": "This route doesn't exist",
-  "subtitle": "The page you're looking for has taken off without you. Let's get you back on track.",
-  "back_home": "Back to search"
+  "flightSearch": {
+    "invalid_origin_destination": "Please select a valid origin and destination.",
+    "error_generic": "Something went wrong reaching the search service. Please try again.",
+    "scanning": "Scanning routes for the cheapest fares...",
+    "status_unavailable": "Unavailable",
+    "step_search_routes": "Searching available routes...",
+    "step_compare_prices": "Comparing prices across airlines...",
+    "step_check_availability": "Checking real-time availability...",
+    "step_finalizing": "Finalizing your results..."
+  },
+  "placesSearch": {
+    "step_locating_area": "Locating your area...",
+    "step_scanning_categories": "Scanning nearby categories...",
+    "step_gathering_details": "Gathering place details...",
+    "step_finalizing": "Finalizing your results..."
+  },
+  "notFound": {
+  "title": "This destination doesn't exist",
+  "subtitle": "The page you're looking for wandered off the map. Let's get you back on track.",
+  "back_home": "Back to exploring"
 }
 }

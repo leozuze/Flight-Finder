@@ -8,6 +8,10 @@
     "copyright": "© 2026 SkyScout. Todos os direitos reservados."
   },
   "navbar": {
+    "nav_flights": "Voos",
+    "nav_places": "Locais",
+    "nav_explore": "Explorar",
+    "nav_stays": "Estadias",
     "search_type_all": "Todos",
     "search_type_route": "Percurso",
     "search_type_airport": "Aeroporto",
@@ -27,17 +31,42 @@
     "marquee_5": "Acompanhe as tarifas. Faça reservas de forma mais inteligente."
   },
   "footer": {
-    "brand_blurb": "O SkyScout acompanha as tarifas 24 horas por dia e apresenta os voos mais baratos para o teu percurso, para que não tenhas de estar sempre a verificar.",
+    "brand_blurb": "A Nuvex encontra voos e destinos que vale a pena visitar, recolhendo tarifas em tempo real e dados de localização de várias fontes, para que obtenha uma pesquisa que abranja efetivamente ambos os aspetos.",
     "quick_links": "LINKS RÁPIDOS",
     "how_it_works": "Como funciona",
     "legal_trust": "ASSUNTOS JURÍDICOS E FIDUCIÁRIOS",
     "terms_of_service": "Termos de Serviço",
     "privacy_policy": "Política de Privacidade",
-    "powered_by": "Resultados de voos fornecidos pelo Google Flights, através do SerpApi."
+    "powered_by": "Dados sobre voos e locais fornecidos pela SerpApi, AviationStack, Geoapify e OpenStreetMap."
   },
   "home": {
-    "hero_title": "Nunca mais pague a mais por um voo",
+    "hero_title": "Nunca mais pagues a mais por um voo",
     "hero_subtitle": "Defina o seu itinerário e o seu orçamento, e enviar-lhe-emos um e-mail assim que o preço baixar."
+  },
+  "languages": {
+    "en-US": "Inglês (EUA)",
+    "en-GB": "Inglês (Reino Unido)",
+    "fr": "Francês",
+    "es": "Espanhol",
+    "pt": "Português",
+    "ar": "Árabe",
+    "zh": "Chinês",
+    "de": "Alemão",
+    "ja": "Japonês",
+    "ru": "Russo",
+    "it": "Italiano",
+    "ko": "Coreano",
+    "nl": "holandês",
+    "tr": "Turco"
+  },
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "Em todo o lado,",
+    "title_line2": "tudo de uma vez.",
+    "subtitle_1": "Um balão sobre um vale. Uma mesa noutra cidade.",
+    "subtitle_2": "Um quarto acima da linha do horizonte. Uma cascata que não pára há mil anos.",
+    "subtitle_3": "Em algum lugar, há sempre um voo prestes a partir. Escolhe uma janela.",
+    "cta": "Começa a explorar"
   },
   "howItWorks": {
     "title": "Como funciona o SkyScout",
@@ -60,7 +89,7 @@
     "section2_title": "2. O que o SkyScout faz",
     "section2_body": "O SkyScout pesquisa dados sobre tarifas aéreas disponíveis ao público e envia-lhe notificações por e-mail quando surge uma tarifa que corresponde aos critérios que guardou. Não somos uma agência de viagens, uma companhia aérea nem uma plataforma de reservas — não processamos pagamentos, não emitimos bilhetes nem garantimos a exatidão das tarifas no momento da reserva.",
     "section3_title": "3. Exatidão das tarifas",
-    "section3_body": "Os preços dos voos variam constantemente e são controlados inteiramente pelas companhias aéreas e por fornecedores de dados externos. Embora nos esforcemos por apresentar tarifas precisas e atualizadas, o SkyScout não pode garantir que um preço apresentado esteja disponível quando tentar efetuar a reserva noutro local.",
+    "section3_body": "Os preços dos voos variam constantemente e são controlados inteiramente pelas companhias aéreas e por fornecedores de dados externos. Embora nos esforcemos por apresentar tarifas precisas e atualizadas, a SkyScout não pode garantir que um preço apresentado esteja disponível quando tentar efetuar a reserva noutro local.",
     "section4_title": "4. Responsabilidades do utilizador",
     "section4_body": "Concorda em fornecer informações precisas (tais como o seu endereço de e-mail) ao utilizar as nossas funcionalidades de alertas e em não utilizar indevidamente o serviço — incluindo tentativas de sobrecarregar, extrair dados ou interferir com a infraestrutura de pesquisa do SkyScout.",
     "section5_title": "5. Isenção de responsabilidade quanto aos resultados das reservas",
@@ -74,7 +103,7 @@
     "title": "Política de Privacidade",
     "last_updated": "Última atualização: julho de 2026",
     "section1_title": "1. O que recolhemos",
-    "section1_body": "Quando utiliza as funcionalidades de pesquisa e de alertas de preços do SkyScout, recolhemos as informações que nos fornece voluntariamente — tais como o seu endereço de e-mail, as cidades de origem e de destino, as datas da viagem e as suas preferências orçamentais.",
+    "section1_body": "Quando utiliza as funcionalidades de pesquisa e de alertas de preços do SkyScout, recolhemos as informações que nos fornece voluntariamente — tais como o seu endereço de e-mail, as cidades de origem e de destino, as datas da viagem e as suas preferências em termos de orçamento.",
     "section2_title": "2. Como utilizamos as suas informações",
     "section2_body": "O seu endereço de e-mail é utilizado exclusivamente para lhe enviar notificações sobre reduções de tarifas nas rotas que pesquisou. Os seus critérios de pesquisa são guardados para que possamos comparar tarifas futuras com o seu orçamento e alertá-lo quando surgir uma oferta.",
     "section3_title": "3. Fornecedores de dados externos",

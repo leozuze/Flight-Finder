@@ -8,6 +8,10 @@
     "copyright": "© 2026 SkyScout. Tutti i diritti riservati."
   },
   "navbar": {
+    "nav_flights": "Voli",
+    "nav_places": "Luoghi",
+    "nav_explore": "Esplora",
+    "nav_stays": "Soggiorni",
     "search_type_all": "Tutto",
     "search_type_route": "Percorso",
     "search_type_airport": "Aeroporto",
@@ -30,7 +34,7 @@
     "brand_blurb": "SkyScout monitora le tariffe 24 ore su 24 e ti segnala i voli più economici sulla tua tratta, così non devi continuare a controllare.",
     "quick_links": "LINK RAPIDI",
     "how_it_works": "Come funziona",
-    "legal_trust": "ASPIRE & TRUST",
+    "legal_trust": "ASPETTI LEGALI E FIDUCIARI",
     "terms_of_service": "Condizioni di servizio",
     "privacy_policy": "Informativa sulla privacy",
     "powered_by": "Risultati dei voli forniti da Google Flights, tramite SerpApi."
@@ -38,6 +42,31 @@
   "home": {
     "hero_title": "Non pagare mai più il prezzo esorbitante per un volo",
     "hero_subtitle": "Imposta il percorso e il budget, e ti invieremo un’e-mail quando il prezzo scenderà."
+  },
+  "languages": {
+    "en-US": "Inglese (Stati Uniti)",
+    "en-GB": "Inglese (Regno Unito)",
+    "fr": "Francese",
+    "es": "Spagnolo",
+    "pt": "Portoghese",
+    "ar": "Arabo",
+    "zh": "Cinese",
+    "de": "Tedesco",
+    "ja": "giapponese",
+    "ru": "Russo",
+    "it": "italiano",
+    "ko": "coreano",
+    "nl": "olandese",
+    "tr": "Turco"
+  },
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "Ovunque,",
+    "title_line2": "tutto in una volta.",
+    "subtitle_1": "Un palloncino sopra una valle. Un tavolo in un’altra città.",
+    "subtitle_2": "Una stanza che sovrasta lo skyline. Una cascata che scorre ininterrottamente da mille anni.",
+    "subtitle_3": "Da qualche parte, c’è sempre un volo in procinto di partire. Scegli un finestrino.",
+    "cta": "Inizia a esplorare"
   },
   "howItWorks": {
     "title": "Come funziona SkyScout",
@@ -62,9 +91,9 @@
     "section3_title": "3. Accuratezza delle tariffe",
     "section3_body": "I prezzi dei voli variano continuamente e sono determinati esclusivamente dalle compagnie aeree e dai fornitori di dati di terze parti. Sebbene ci impegniamo a mostrare tariffe accurate e aggiornate, SkyScout non può garantire che il prezzo visualizzato sia disponibile al momento della prenotazione su altri siti.",
     "section4_title": "4. Responsabilità dell'utente",
-    "section4_body": "L'utente si impegna a fornire informazioni accurate (come il proprio indirizzo e-mail) quando utilizza le nostre funzioni di avviso e a non fare un uso improprio del servizio, inclusi tentativi di sovraccaricare, estrarre dati o interferire con l'infrastruttura di ricerca di SkyScout.",
+    "section4_body": "L'utente si impegna a fornire informazioni accurate (come il proprio indirizzo e-mail) quando utilizza le nostre funzioni di avviso e a non fare un uso improprio del servizio, inclusi i tentativi di sovraccaricare, estrarre dati o interferire con l'infrastruttura di ricerca di SkyScout.",
     "section5_title": "5. Nessuna responsabilità per l'esito delle prenotazioni",
-    "section5_body": "SkyScout non è responsabile per eventuali perdite, tariffe non ottenute o problemi di prenotazione che si verifichino su siti di compagnie aeree o agenzie di viaggio di terze parti. Verifica sempre il prezzo finale e le condizioni direttamente con la compagnia aerea prima di completare l'acquisto.",
+    "section5_body": "SkyScout non è responsabile per eventuali perdite, tariffe non ottenute o problemi di prenotazione che dovessero verificarsi su siti di compagnie aeree o agenzie di viaggio di terze parti. Verifica sempre il prezzo finale e le condizioni direttamente con la compagnia aerea prima di completare l'acquisto.",
     "section6_title": "6. Modifiche alle presenti condizioni",
     "section6_body": "Ci riserviamo il diritto di aggiornare periodicamente i presenti Termini di servizio. L'uso continuato di SkyScout dopo la pubblicazione delle modifiche implica l'accettazione dei termini modificati.",
     "section7_title": "7. Contatti",
@@ -73,12 +102,12 @@
   "privacy": {
     "title": "Informativa sulla privacy",
     "last_updated": "Ultimo aggiornamento: luglio 2026",
-    "section1_title": "1. Cosa raccogliamo",
+    "section1_title": "1. Quali dati raccogliamo",
     "section1_body": "Quando utilizzi le funzioni di ricerca e di avviso sui prezzi di SkyScout, raccogliamo le informazioni che ci fornisci volontariamente, quali il tuo indirizzo e-mail, le città di partenza e di destinazione, le date del viaggio e le preferenze relative al budget.",
     "section2_title": "2. Come utilizziamo i tuoi dati",
-    "section2_body": "Il tuo indirizzo e-mail viene utilizzato esclusivamente per inviarti notifiche relative a riduzioni di prezzo sulle tratte che hai cercato. I tuoi criteri di ricerca vengono salvati in modo da poter confrontare le tariffe future con il tuo budget e avvisarti quando viene proposta un'offerta vantaggiosa.",
+    "section2_body": "Il tuo indirizzo e-mail viene utilizzato esclusivamente per inviarti notifiche relative a eventuali riduzioni di prezzo sulle tratte che hai cercato. I tuoi criteri di ricerca vengono salvati in modo da poter confrontare le tariffe future con il tuo budget e avvisarti quando si presenta un'offerta vantaggiosa.",
     "section3_title": "3. Fornitori di dati di terze parti",
-    "section3_body": "SkyScout recupera i dati relativi alle tariffe aeree e agli aeroporti da fornitori terzi per alimentare i risultati di ricerca e i tabelloni degli arrivi e delle partenze. Non condividiamo il tuo indirizzo e-mail personale né la cronologia delle ricerche con tali fornitori, se non nella misura necessaria per effettuare la ricerca stessa.",
+    "section3_body": "SkyScout recupera i dati relativi alle tariffe aeree e agli aeroporti da fornitori terzi per alimentare i risultati di ricerca e i tabelloni degli arrivi e delle partenze. Non condividiamo il tuo indirizzo e-mail personale né la cronologia delle ricerche con tali fornitori, se non nella misura necessaria all'esecuzione della ricerca stessa.",
     "section4_title": "4. Archiviazione dei dati",
     "section4_body": "I dati relativi alle ricerche e alle preferenze di notifica vengono conservati in modo sicuro e utilizzati esclusivamente per il funzionamento della funzione di notifica dei prezzi. Non vendiamo, non cediamo né condividiamo i tuoi dati personali con inserzionisti o terze parti non correlate.",
     "section5_title": "5. Cookie e tracciamento",
@@ -165,7 +194,7 @@
   },
   "filters": {
     "filter_flights": "Filtra i voli",
-    "refine_results": "Affina i risultati della ricerca dei voli",
+    "refine_results": "Affina i risultati dei voli",
     "airline": "Compagnia aerea",
     "depart": "Partenza",
     "departure_time": "Orario di partenza",
@@ -188,7 +217,7 @@
   },
   "notFound": {
     "title": "Questo percorso non esiste",
-    "subtitle": "La pagina che stai cercando è sparita senza di te. Ti aiutiamo a ritrovare la strada.",
+    "subtitle": "La pagina che stai cercando è sparita senza di te. Ti aiutiamo a ritrovarla.",
     "back_home": "Torna alla ricerca"
   }
 }

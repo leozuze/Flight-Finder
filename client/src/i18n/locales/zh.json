@@ -8,6 +8,10 @@
     "copyright": "© 2026 SkyScout。保留所有权利。"
   },
   "navbar": {
+    "nav_flights": "航班",
+    "nav_places": "地点",
+    "nav_explore": "探索",
+    "nav_stays": "住宿",
     "search_type_all": "全部",
     "search_type_route": "路线",
     "search_type_airport": "机场",
@@ -27,17 +31,42 @@
     "marquee_5": "掌握票价动态。更明智地预订。"
   },
   "footer": {
-    "brand_blurb": "SkyScout 全天候追踪机票价格，并为您筛选出该航线上的最便宜航班，这样您就不必反复查询了。",
+    "brand_blurb": "Nuvex 为您搜寻值得前往的航班和目的地，从多个来源实时获取票价和位置数据，让您只需一次搜索，即可同时覆盖这两方面。",
     "quick_links": "快速链接",
     "how_it_works": "工作原理",
     "legal_trust": "法律与信托",
     "terms_of_service": "服务条款",
     "privacy_policy": "隐私政策",
-    "powered_by": "航班搜索结果由 Google Flights 提供，通过 SerpApi 呈现。"
+    "powered_by": "航班和地点数据由 SerpApi、AviationStack、Geoapify 和 OpenStreetMap 提供。"
   },
   "home": {
     "hero_title": "再也不用为机票多花冤枉钱了",
     "hero_subtitle": "设定您的行程和预算，一旦价格下降，我们会通过电子邮件通知您。"
+  },
+  "languages": {
+    "en-US": "英语（美国）",
+    "en-GB": "英语（英国）",
+    "fr": "法语",
+    "es": "西班牙语",
+    "pt": "葡萄牙语",
+    "ar": "阿拉伯语",
+    "zh": "中文",
+    "de": "德语",
+    "ja": "日语",
+    "ru": "俄语",
+    "it": "意大利语",
+    "ko": "韩语",
+    "nl": "荷兰语",
+    "tr": "土耳其语"
+  },
+  "landingHero": {
+    "kicker": "Nuvex",
+    "title_line1": "到处，",
+    "title_line2": "一举完成。",
+    "subtitle_1": "一个山谷上空的热气球。另一座城市里的一张桌子。",
+    "subtitle_2": "一间高踞天际线之上的房间。一道流淌了千年未曾停歇的瀑布。",
+    "subtitle_3": "在世界的某个角落，总有一班航班即将起飞。选一扇窗吧。",
+    "cta": "开始探索"
   },
   "howItWorks": {
     "title": "SkyScout 的工作原理",
@@ -60,7 +89,7 @@
     "section2_title": "2. SkyScout 的功能",
     "section2_body": "SkyScout 会搜索公开的机票价格数据，并在出现符合您保存条件的机票时向您发送电子邮件通知。我们并非旅行社、航空公司或预订平台——我们不处理支付、不出票，也不保证预订时的票价准确性。",
     "section3_title": "3. 票价准确性",
-    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但 SkyScout 无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
+    "section3_body": "机票价格随时都在变动，完全由航空公司和第三方数据提供商控制。尽管我们致力于提供准确、最新的票价信息，但SkyScout无法保证当您尝试在其他平台预订时，显示的价格仍可预订。",
     "section4_title": "4. 用户责任",
     "section4_body": "您同意在使用我们的提醒功能时提供准确的信息（例如您的电子邮件地址），且不得滥用该服务——包括试图使 SkyScout 的搜索基础设施过载、抓取数据或干扰其运行。",
     "section5_title": "5. 对预订结果不承担任何责任",
@@ -98,7 +127,7 @@
   },
   "flightDetail": {
     "loading": "正在加载航班详情...",
-    "error_generic": "连接航班服务时出现错误。请重试。",
+    "error_generic": "调用航班服务时出现错误。请重试。",
     "status_label": "状态：",
     "departure_label": "出发",
     "arrival_label": "抵达",
@@ -183,7 +212,7 @@
     "status_unavailable": "不可用",
     "step_search_routes": "正在搜索可用路线...",
     "step_compare_prices": "比较各家航空公司的票价……",
-    "step_check_availability": "正在查询实时空房情况...",
+    "step_check_availability": "正在查询实时房源情况...",
     "step_finalizing": "正在处理您的结果……"
   },
   "notFound": {
