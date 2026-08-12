@@ -7,11 +7,15 @@ from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from src.airport_board import AirportBoard
-from src.cache import TTLCache
-from src.data_manager import DataManager
-from src.flight_data import find_all_flights_sorted, find_cheapest_flight
-from src.flight_search import FlightSearch
+from src.flights.airport_board import AirportBoard
+from src.flights.cache import TTLCache
+from src.flights.data_manager import DataManager
+from src.flights.flight_data import find_all_flights_sorted, find_cheapest_flight
+from src.flights.flight_search import FlightSearch
+from src.places.places_search import search_places
+from src.places.default_places import search_default_places
+from src.places.geocoding import geocode_text, reverse_geocode
+from src.places.osm_data import MAX_RADIUS_METERS as PLACES_MAX_RADIUS_METERS
 
 TRIP_TYPE_MAP = {"round": "1", "oneway": "2"}
 CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
@@ -386,4 +390,171 @@ async def get_flight_detail(req: FlightLookupRequest):
     if not result:
         return {"error": "No flight found for that identifier."}
 
+    return result
+
+
+# --- Places ---
+
+class PlacesRequest(BaseModel):
+    query: str                        # category text, e.g. "restaurants", "mobile phone", "shop"
+    lat: float | None = None          # "near me" flow — sent straight from browser geolocation
+    lon: float | None = None
+    location: str | None = None       # "search by place/city" flow — free text, geocoded below
+    radius: int | None = None         # falls back to places_search.py's DEFAULT_RADIUS_METERS when omitted
+    userLat: float | None = None      # NEW — user's real coordinates, always sent by the frontend.
+    userLon: float | None = None      # Used to override each place's distance so "cafes in NIBM"
+                                       # still shows distance from where the user actually is, not
+                                       # from NIBM (the search center).
+
+
+async def _reverse_geocode_safe(lat: float, lon: float) -> str | None:
+    """Best-effort reverse geocode for display only ("You searched near:
+    <address>"). Never allowed to fail the request — any Geoapify error here
+    just means the response falls back to raw coordinates."""
+    try:
+        return await asyncio.to_thread(reverse_geocode, lat, lon)
+    except Exception as e:
+        print(f"[api] reverse_geocode failed for ({lat}, {lon}): {e}")
+        return None
+
+
+def _validate_latlon(lat: float, lon: float) -> str | None:
+    """Returns an error string if out of range, else None."""
+    if not (-90 <= lat <= 90) or not (-180 <= lon <= 180):
+        return "lat/lon are out of valid range."
+    return None
+
+
+def _clamp_radius(radius: int | None, search_kwargs: dict, endpoint_label: str) -> str | None:
+    """Validates and clamps radius into search_kwargs in place.
+    Returns an error string if radius is invalid, else None."""
+    if radius is None:
+        return None
+    if radius <= 0:
+        return "radius must be a positive number of meters."
+    if radius > PLACES_MAX_RADIUS_METERS:
+        print(f"[api] {endpoint_label} radius {radius}m exceeds cap, clamping to {PLACES_MAX_RADIUS_METERS}m")
+    search_kwargs["radius"] = min(radius, PLACES_MAX_RADIUS_METERS)
+    return None
+
+
+@app.post("/api/places")
+async def get_places(req: PlacesRequest):
+    resolved_location = None
+    do_reverse_geocode = False
+
+    if req.lat is not None and req.lon is not None:
+        # Direct coordinates win when both lat/lon and a location string are
+        # sent — this is the live GPS signal and is more precise than
+        # re-geocoding a typed place name.
+        latlon_error = _validate_latlon(req.lat, req.lon)
+        if latlon_error:
+            return {"error": latlon_error}
+        lat, lon = req.lat, req.lon
+        do_reverse_geocode = True
+    elif req.location:
+        try:
+            geo = await asyncio.to_thread(geocode_text, req.location)
+        except Exception as e:
+            return {"error": f"Could not resolve location '{req.location}': {e}"}
+
+        if geo is None:
+            return {"error": f"Could not find a location matching '{req.location}'."}
+
+        lat, lon = geo["lat"], geo["lon"]
+        resolved_location = geo["formatted"]
+    else:
+        return {"error": "Provide either lat/lon (near me) or a location name to search."}
+
+    search_kwargs = {"lat": lat, "lon": lon, "query": req.query}
+
+    # Real-distance override — only meaningful when we know where the user
+    # actually is. Applied regardless of whether this request came in via
+    # lat/lon or a typed location string.
+    if req.userLat is not None and req.userLon is not None:
+        latlon_error = _validate_latlon(req.userLat, req.userLon)
+        if latlon_error:
+            return {"error": f"userLat/userLon: {latlon_error}"}
+        search_kwargs["user_lat"] = req.userLat
+        search_kwargs["user_lon"] = req.userLon
+
+    radius_error = _clamp_radius(req.radius, search_kwargs, "/api/places")
+    if radius_error:
+        return {"error": radius_error}
+
+    if do_reverse_geocode:
+        # search_places and reverse_geocode are independent of each other —
+        # run concurrently instead of paying for reverse-geocode latency on
+        # top of the places search.
+        result, resolved_location = await asyncio.gather(
+            asyncio.to_thread(search_places, **search_kwargs),
+            _reverse_geocode_safe(lat, lon),
+        )
+    else:
+        result = await asyncio.to_thread(search_places, **search_kwargs)
+
+    if result.get("error"):
+        return {"error": result["error"]}
+
+    result["searchedLocation"] = {"lat": lat, "lon": lon, "formatted": resolved_location}
+    return result
+
+
+class DefaultPlacesRequest(BaseModel):
+    lat: float | None = None          # "near me" flow — sent straight from browser geolocation
+    lon: float | None = None
+    location: str | None = None       # IP-based city guess or hardcoded fallback, geocoded below
+    radius: int | None = None
+
+
+@app.post("/api/places/default")
+async def get_default_places(req: DefaultPlacesRequest):
+    """Same location-resolution flow as /api/places, but always searches
+    default_places.DEFAULT_CATEGORIES instead of resolving free text.
+    Used to populate the Places page (and later Explore) with content
+    before the user has typed anything — see default_places.py.
+
+    No userLat/userLon here: the search center IS the user's own location
+    in this flow (there's no typed "in <place>" text to diverge from), so
+    the distance Geoapify/OSM already return is already correct."""
+    resolved_location = None
+    do_reverse_geocode = False
+
+    if req.lat is not None and req.lon is not None:
+        latlon_error = _validate_latlon(req.lat, req.lon)
+        if latlon_error:
+            return {"error": latlon_error}
+        lat, lon = req.lat, req.lon
+        do_reverse_geocode = True
+    elif req.location:
+        try:
+            geo = await asyncio.to_thread(geocode_text, req.location)
+        except Exception as e:
+            return {"error": f"Could not resolve location '{req.location}': {e}"}
+
+        if geo is None:
+            return {"error": f"Could not find a location matching '{req.location}'."}
+
+        lat, lon = geo["lat"], geo["lon"]
+        resolved_location = geo["formatted"]
+    else:
+        return {"error": "Provide either lat/lon (near me) or a location name to search."}
+
+    search_kwargs = {"lat": lat, "lon": lon}
+    radius_error = _clamp_radius(req.radius, search_kwargs, "/api/places/default")
+    if radius_error:
+        return {"error": radius_error}
+
+    if do_reverse_geocode:
+        result, resolved_location = await asyncio.gather(
+            asyncio.to_thread(search_default_places, **search_kwargs),
+            _reverse_geocode_safe(lat, lon),
+        )
+    else:
+        result = await asyncio.to_thread(search_default_places, **search_kwargs)
+
+    if result.get("error"):
+        return {"error": result["error"]}
+
+    result["searchedLocation"] = {"lat": lat, "lon": lon, "formatted": resolved_location}
     return result
