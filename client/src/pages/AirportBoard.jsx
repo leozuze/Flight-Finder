@@ -88,8 +88,13 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
   }, [])
 
   return (
+    // TABLE-OVERFLOW FIX: overflow-x-hidden here stops the wide arrivals/
+    // departures table from ever stretching the whole page past the
+    // viewport width. Without this, the document itself became wider than
+    // the screen, which is what made the fixed search bar look like it was
+    // sized to the table instead of the screen.
     <div
-      className="min-h-screen flex flex-col"
+      className="min-h-screen flex flex-col overflow-x-hidden"
       style={{ ...NUVEX_THEME, background: "var(--nuvex-bg)", color: "var(--nuvex-ink)", fontFamily: "var(--nuvex-body)" }}
     >
       <div
@@ -156,12 +161,17 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
             </div>
           )}
 
+          {/* TABLE-OVERFLOW FIX: this overflow-x-auto wrapper is new. It's
+              what actually contains the table's horizontal scroll to just
+              the table itself, instead of the whole page/document. */}
           {!showLoading && !error && board && (
-            <ArrivalsDeparturesTable
-              flights={tab === "arrivals" ? board.arrivals : board.departures}
-              mode={tab}
-              onSelectFlight={onSelectFlight}
-            />
+            <div className="overflow-x-auto">
+              <ArrivalsDeparturesTable
+                flights={tab === "arrivals" ? board.arrivals : board.departures}
+                mode={tab}
+                onSelectFlight={onSelectFlight}
+              />
+            </div>
           )}
         </div>
       </div>
