@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -66,18 +66,39 @@ export default function FlightDetail({ ident, onSearch, onNavigate, onBack }) {
 
   const val = (v) => (v && v !== "N/A" ? v : null)
 
+  // STICKY-SEARCHBAR ADDITION: pins the flights search bar directly below
+  // MainNav (which publishes its own height as --nuvex-main-nav-height)
+  // so it stays visible while the rest of the page scrolls underneath it.
+  // Same measure-own-height + spacer trick MainNav uses on itself, so
+  // nothing below ever gets covered.
+  const searchBarWrapRef = useRef(null)
+  const [searchBarHeight, setSearchBarHeight] = useState(0)
+
+  useEffect(() => {
+    if (!searchBarWrapRef.current) return
+    const el = searchBarWrapRef.current
+    const ro = new ResizeObserver((entries) => {
+      setSearchBarHeight(entries[0].contentRect.height)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   return (
     <div
       className="min-h-screen flex flex-col"
       style={{ ...NUVEX_THEME, background: "var(--nuvex-bg)", color: "var(--nuvex-ink)", fontFamily: "var(--nuvex-body)" }}
     >
-      {/* Search bar in its own mt-6 wrapper, same as Home.jsx. Widened to
-          NAV_CONTAINER (7xl) here since the page content below it uses a
-          narrower 4xl column — the search bar itself should still span
-          the same width it does everywhere else in the app. */}
-      <div className={`mt-6 ${NAV_CONTAINER}`}>
-        <Navbar onSearch={onSearch} />
+      <div
+        ref={searchBarWrapRef}
+        className="fixed left-0 right-0 z-50"
+        style={{ top: "var(--nuvex-main-nav-height, 0px)", background: "var(--nuvex-bg)", borderBottom: "1px solid var(--nuvex-border)" }}
+      >
+        <div className={`py-3 ${NAV_CONTAINER}`}>
+          <Navbar onSearch={onSearch} />
+        </div>
       </div>
+      <div style={{ height: searchBarHeight }} aria-hidden="true" />
 
       <div className={`flex-1 pt-10 pb-16 ${CONTAINER}`}>
         <button

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import Navbar from "@/components/Navbar"
 import FlightSearchSection from "@/components/FlightSearchSection"
@@ -14,11 +14,32 @@ export default function Home({ startingQuery, onSearch, onNavigate, onSelectFlig
     if (startingQuery) setNavQuery(startingQuery)
   }, [startingQuery])
 
+
+  const searchBarWrapRef = useRef(null)
+  const [searchBarHeight, setSearchBarHeight] = useState(0)
+
+  useEffect(() => {
+    if (!searchBarWrapRef.current) return
+    const el = searchBarWrapRef.current
+    const ro = new ResizeObserver((entries) => {
+      setSearchBarHeight(entries[0].contentRect.height)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <div className={`mt-6 ${CONTAINER}`}>
-        <Navbar onSearch={onSearch} />
+      <div
+        ref={searchBarWrapRef}
+        className="fixed left-0 right-0 z-50 bg-white border-b border-slate-100"
+        style={{ top: "var(--nuvex-main-nav-height, 0px)" }}
+      >
+        <div className={`py-3 ${CONTAINER}`}>
+          <Navbar onSearch={onSearch} />
+        </div>
       </div>
+      <div style={{ height: searchBarHeight }} aria-hidden="true" />
 
       <div className={`pt-10 text-center ${CONTAINER}`}>
         <div className="max-w-2xl mx-auto">

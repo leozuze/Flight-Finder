@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -69,18 +69,39 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
     return () => { cancelled = true }
   }, [query, t])
 
+  // STICKY-SEARCHBAR ADDITION: pins the flights search bar directly below
+  // MainNav (which publishes its own height as --nuvex-main-nav-height)
+  // so it stays visible while the rest of the page scrolls underneath it.
+  // Same measure-own-height + spacer trick MainNav uses on itself, so
+  // nothing below ever gets covered.
+  const searchBarWrapRef = useRef(null)
+  const [searchBarHeight, setSearchBarHeight] = useState(0)
+
+  useEffect(() => {
+    if (!searchBarWrapRef.current) return
+    const el = searchBarWrapRef.current
+    const ro = new ResizeObserver((entries) => {
+      setSearchBarHeight(entries[0].contentRect.height)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
   return (
     <div
       className="min-h-screen flex flex-col"
       style={{ ...NUVEX_THEME, background: "var(--nuvex-bg)", color: "var(--nuvex-ink)", fontFamily: "var(--nuvex-body)" }}
     >
-      {/* PERF/UX: search bar moved into its own mt-6 wrapper, same as
-          Home.jsx, instead of sharing the pt-28 block with page content.
-          Purely layout — onSearch wiring and everything below is
-          untouched. */}
-      <div className={`mt-6 ${CONTAINER}`}>
-        <Navbar onSearch={onSearch} />
+      <div
+        ref={searchBarWrapRef}
+        className="fixed left-0 right-0 z-50"
+        style={{ top: "var(--nuvex-main-nav-height, 0px)", background: "var(--nuvex-bg)", borderBottom: "1px solid var(--nuvex-border)" }}
+      >
+        <div className={`py-3 ${CONTAINER}`}>
+          <Navbar onSearch={onSearch} />
+        </div>
       </div>
+      <div style={{ height: searchBarHeight }} aria-hidden="true" />
 
       <div className={`flex-1 pt-10 pb-16 ${CONTAINER}`}>
         <button

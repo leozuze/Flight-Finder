@@ -109,15 +109,18 @@ export default function MainNav() {
   const headerRef = useRef(null)
   const [headerHeight, setHeaderHeight] = useState(0)
 
-  useEffect(() => {
-    if (!headerRef.current) return
-    const el = headerRef.current
-    const ro = new ResizeObserver((entries) => {
-      setHeaderHeight(entries[0].contentRect.height)
-    })
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
+useEffect(() => {
+  if (!headerRef.current) return
+  const el = headerRef.current
+  const ro = new ResizeObserver((entries) => {
+    const height = entries[0].contentRect.height
+    setHeaderHeight(height)
+   
+    document.documentElement.style.setProperty("--nuvex-main-nav-height", `${height}px`)
+  })
+  ro.observe(el)
+  return () => ro.disconnect()
+}, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4)
