@@ -108,7 +108,7 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
       </div>
       <div style={{ height: searchBarHeight }} aria-hidden="true" />
 
-      <div className={`flex-1 pt-10 pb-16 ${CONTAINER}`}>
+      <div className={`flex-1 min-w-0 pt-10 pb-16 ${CONTAINER}`}>
         <button
           type="button"
           onClick={onBack}
