@@ -3,21 +3,8 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { useTranslation } from "react-i18next"
 import { Plane, ArrowRight } from "lucide-react"
 
-// ── Media ──────────────────────────────────────────────────────────────
-import earthVideo from "@/assets/earth.mp4"
-import airportVideo from "@/assets/airport.mp4"
-
-import planeflyVideo from "@/assets/planefly.mp4"
-
-import ballonImg from "@/assets/ballon.jpg"
-import cityImg from "@/assets/city.jpg"
-import hotairImg from "@/assets/hotair.jpg"
-import parkImg from "@/assets/park.jpg"
-import restaurentImg from "@/assets/restaurent.jpg"
-import restaurantsImg from "@/assets/rest.jpg"
-import roomsImg from "@/assets/rooms.jpg"
-import rooms1Img from "@/assets/rooms1.jpg"
-import tallbuildingsImg from "@/assets/tallbuildings.jpg"
+// ── Media (now Cloudinary-hosted, see src/data/heroMedia.js) ────────────
+import { MEDIA_POOL, EARTH } from "@/data/heroMedia"
 
 const HERO_THEME = {
   "--hero-bg": "#070B12",
@@ -29,22 +16,6 @@ const HERO_THEME = {
   "--hero-display": "'Bricolage Grotesque', 'Segoe UI', sans-serif",
   "--hero-body": "'IBM Plex Sans', 'Segoe UI', sans-serif",
 }
-
-const MEDIA_POOL = [
-  { type: "video", src: planeflyVideo, alt: "Aircraft in flight" },
-  { type: "image", src: roomsImg, alt: "Hotel room" },
-  { type: "image", src: hotairImg, alt: "Hot air balloons at sunrise" },
-  { type: "image", src: tallbuildingsImg, alt: "City skyline" },
-
-  { type: "image", src: restaurantsImg, alt: "Restaurant interior" },
-
-  { type: "image", src: parkImg, alt: "City park" },
-  { type: "image", src: rooms1Img, alt: "Hotel suite" },
-  { type: "image", src: restaurentImg, alt: "Restaurant table" },
-  { type: "video", src: airportVideo, alt: "Airport terminal" },
-  { type: "image", src: ballonImg, alt: "Hot air balloon over a valley" },
-  { type: "image", src: cityImg, alt: "City street at dusk" },
-]
 
 const BENTO_AREAS = `"a a b" "a a c" "d e c" "d f f"`
 
@@ -72,24 +43,28 @@ const EXIT_TO = {
   sink: { x: 0, y: 18, scale: 0.6, opacity: 0 },
 }
 
+// ── CLOUDINARY ADDITION: module-scope cache ──────────────────────────────
+// Lives OUTSIDE the component, so it survives Hero unmounting/remounting
+// when the user navigates to /flights and back. Without this, every
+// remount reset `loaded` to false and replayed the placeholder + fade-in,
+// even though the browser's HTTP cache already had the bytes. It only
+// resets on a hard page reload, which is exactly what you want.
+const loadedCache = new Set()
+
 // ── MediaAsset ─────────────────────────────────────────────────────────
-// PERF FIX: video elements stay mounted (so no remount-decode stutter),
-// but now only the ACTIVE tile's video is actually playing/decoding.
-// Every other video in the pool is paused via ref — same visual result,
-// a fraction of the CPU/GPU cost. This was the #1 source of slowness:
-// previously every video in MEDIA_POOL decoded continuously forever,
-// even while invisible at opacity 0.
 function MediaAsset({ item, isActive }) {
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(() => loadedCache.has(item.src))
   const videoRef = useRef(null)
+
+  const markLoaded = () => {
+    loadedCache.add(item.src)
+    setLoaded(true)
+  }
 
   useEffect(() => {
     const v = videoRef.current
     if (!v) return
     if (isActive) {
-      // play() can reject if the browser hasn't finished loading yet or
-      // due to autoplay policy races — safe to swallow, it'll retry next
-      // time isActive flips true.
       v.play().catch(() => {})
     } else {
       v.pause()
@@ -111,13 +86,14 @@ function MediaAsset({ item, isActive }) {
           ref={videoRef}
           key={item.src}
           src={item.src}
+          poster={item.poster}
           muted
           loop
           playsInline
           preload={isActive ? "auto" : "metadata"}
-          onLoadedData={() => setLoaded(true)}
-          className="w-full h-full object-cover transition-opacity duration-700 ease-out"
-          style={{ opacity: loaded ? 1 : 0 }}
+          onLoadedData={markLoaded}
+          onError={() => console.error("[Hero] video failed to load:", item.src)}
+          className="w-full h-full object-cover"
         />
       ) : (
         <img
@@ -125,7 +101,7 @@ function MediaAsset({ item, isActive }) {
           src={item.src}
           alt={item.alt}
           decoding="async"
-          onLoad={() => setLoaded(true)}
+          onLoad={markLoaded}
           className="w-full h-full object-cover transition-opacity duration-700 ease-out"
           style={{ opacity: loaded ? 1 : 0 }}
         />
@@ -133,7 +109,6 @@ function MediaAsset({ item, isActive }) {
     </div>
   )
 }
-
 function BentoTile({ slot, pool, activeIndex, reduceMotion }) {
   const enter = ENTER_FROM[slot.from]
   return (
@@ -173,17 +148,16 @@ function BentoTile({ slot, pool, activeIndex, reduceMotion }) {
     </div>
   )
 }
-
-// ── Globe phase (original styling, restored) ─────────────────────────────
-function OrbitRing({ radius, duration, direction, dashed, children }) {
+function OrbitRing({ size, duration, direction, dashed, children }) {
   return (
     <motion.div
       className="absolute left-1/2 top-1/2 rounded-full"
       style={{
-        width: radius * 2,
-        height: radius * 2,
-        marginLeft: -radius,
-        marginTop: -radius,
+        width: size,
+        height: size,
+
+        marginLeft: `calc(${size} / -2)`,
+        marginTop: `calc(${size} / -2)`,
         border: dashed ? "1px dashed rgba(244,246,248,0.18)" : "1px solid rgba(244,246,248,0.1)",
       }}
       animate={{ rotate: direction === "cw" ? 360 : -360 }}
@@ -194,12 +168,6 @@ function OrbitRing({ radius, duration, direction, dashed, children }) {
   )
 }
 
-// PERF FIX: this used to fully unmount/remount on every phase toggle
-// (every 7–14s, forever) via AnimatePresence, which forces the browser
-// to rebuild the video decode pipeline from scratch each time — the
-// exact stutter the BentoTile comment warns about, just repeated
-// endlessly here. Now the earth video is mounted once by the parent and
-// only play/paused; this component just renders the fade wrapper.
 function EarthPhase({ reduceMotion, visible, videoRef }) {
   return (
     <motion.div
@@ -221,30 +189,30 @@ function EarthPhase({ reduceMotion, visible, videoRef }) {
         ))}
 
       {!reduceMotion && (
-        <>
-          <OrbitRing radius={210} duration={42} direction="cw" dashed>
-            <div
-              className="absolute rounded-full flex items-center justify-center"
-              style={{
-                top: -14,
-                left: "50%",
-                marginLeft: -14,
-                width: 28,
-                height: 28,
-                background: "var(--hero-signal)",
-              }}
-            >
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
-              >
-                <Plane className="w-4 h-4" style={{ color: "var(--hero-bg)" }} />
-              </motion.div>
-            </div>
-          </OrbitRing>
-          <OrbitRing radius={260} duration={58} direction="ccw" />
-        </>
-      )}
+  <>
+    <OrbitRing size="420px" duration={42} direction="cw" dashed>
+      <div
+        className="absolute rounded-full flex items-center justify-center"
+        style={{
+          top: -14,
+          left: "50%",
+          marginLeft: -14,
+          width: 28,
+          height: 28,
+          background: "var(--hero-signal)",
+        }}
+      >
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
+        >
+          <Plane className="w-4 h-4" style={{ color: "var(--hero-bg)" }} />
+        </motion.div>
+      </div>
+    </OrbitRing>
+    <OrbitRing size="520px" duration={58} direction="ccw" />
+  </>
+)}
 
       <motion.div
         className="relative rounded-full overflow-hidden"
@@ -254,7 +222,8 @@ function EarthPhase({ reduceMotion, visible, videoRef }) {
       >
         <video
           ref={videoRef}
-          src={earthVideo}
+          src={EARTH.src}
+          poster={EARTH.poster}
           muted
           loop
           playsInline
@@ -266,13 +235,6 @@ function EarthPhase({ reduceMotion, visible, videoRef }) {
   )
 }
 
-// PERF NOTE: kept the exact same animated blobs/positions/opacity so the
-// visual is identical. Added `willChange` + `translateZ(0)` so the
-// browser is hinted to keep these on their own compositor layer rather
-// than re-evaluating layout each frame — a free scheduling win with zero
-// visual change. The real cost here (blur filter repaint) is inherent to
-// the design as-is; if you ever want it cheaper, it requires an actual
-// visual tradeoff, which we're deliberately not doing here.
 function AmbientBackground({ reduceMotion }) {
   const blobs = [
     { color: "var(--hero-accent)", size: 520, start: { x: "10%", y: "15%" } },
@@ -321,27 +283,36 @@ function useHeroFonts() {
   }, [])
 }
 
-// PERF FIX: was preload="auto" for EVERY item (forces full-file download
-// of every video up front). Now images still warm the cache (cheap),
-// but videos only warm metadata — the active one gets bumped to "auto"
-// by MediaAsset itself once it becomes active, so its full data streams
-// in right when it's needed instead of all-at-once on mount.
+// ── CLOUDINARY ADDITION: preconnect so the very first request to
+// res.cloudinary.com doesn't pay DNS + TLS handshake cost on top of the
+// asset fetch itself. Runs once, guarded the same way as the fonts hook.
+function useCloudinaryPreconnect() {
+  useEffect(() => {
+    if (document.getElementById("cloudinary-preconnect")) return
+    const link = document.createElement("link")
+    link.id = "cloudinary-preconnect"
+    link.rel = "preconnect"
+    link.href = "https://res.cloudinary.com"
+    link.crossOrigin = "anonymous"
+    document.head.appendChild(link)
+  }, [])
+}
+
+// ── CLOUDINARY ADDITION: preload is now cheap. Images warm the real
+// asset (they're already small thanks to c_fill/w_ in cldImage). Videos
+// only warm their POSTER jpg — the actual video streams on demand when a
+// tile becomes active, instead of downloading all 3 videos' full data on
+// every page load like before.
 function usePreloadMedia() {
   useEffect(() => {
-    const videos = []
     MEDIA_POOL.forEach((item) => {
-      if (item.type === "image") {
-        const img = new Image()
-        img.src = item.src
-      } else {
-        const video = document.createElement("video")
-        video.preload = "metadata"
-        video.muted = true
-        video.src = item.src
-        videos.push(video)
-      }
+      const img = new Image()
+      img.decoding = "async"
+      img.onload = () => loadedCache.add(item.type === "image" ? item.src : item.poster)
+      img.src = item.type === "image" ? item.src : item.poster
     })
-    return () => videos.forEach((v) => { v.src = "" })
+    const earthPoster = new Image()
+    earthPoster.src = EARTH.poster
   }, [])
 }
 
@@ -361,10 +332,11 @@ const itemVariants = {
 
 export default function Hero({ onExplore }) {
   useHeroFonts()
+  useCloudinaryPreconnect()
   usePreloadMedia()
   const { t } = useTranslation()
   const reduceMotion = useReducedMotion()
-  const [phase, setPhase] = useState("collage") // 'collage' | 'earth'
+  const [phase, setPhase] = useState("collage")
   const [slotIndices, setSlotIndices] = useState(SLOTS.map(() => 0))
   const [subtitleIndex, setSubtitleIndex] = useState(0)
   const timers = useRef([])
@@ -399,8 +371,6 @@ export default function Hero({ onExplore }) {
     return () => clearInterval(id)
   }, [phase, reduceMotion])
 
-  // PERF FIX: earth video now play/pauses in sync with phase instead of
-  // being torn down and rebuilt every cycle.
   useEffect(() => {
     const v = earthVideoRef.current
     if (!v) return
@@ -471,10 +441,6 @@ export default function Hero({ onExplore }) {
           </motion.button>
         </motion.div>
 
-        {/* ── Visual column ── */}
-        {/* PERF FIX: both phases are now mounted together and cross-faded
-            via opacity instead of AnimatePresence mount/unmount. Visually
-            identical fade; no more remount-triggered decode rebuild. */}
         <div className="relative w-full h-[62vh] min-h-[420px]">
           <motion.div
             className="absolute inset-0 grid gap-3"
