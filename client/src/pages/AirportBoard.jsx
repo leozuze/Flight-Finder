@@ -165,13 +165,11 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
               what actually contains the table's horizontal scroll to just
               the table itself, instead of the whole page/document. */}
           {!showLoading && !error && board && (
-            <div className="overflow-x-auto">
-              <ArrivalsDeparturesTable
-                flights={tab === "arrivals" ? board.arrivals : board.departures}
-                mode={tab}
-                onSelectFlight={onSelectFlight}
-              />
-            </div>
+            <ArrivalsDeparturesTable
+              flights={tab === "arrivals" ? board.arrivals : board.departures}
+              mode={tab}
+              onSelectFlight={onSelectFlight}
+            />
           )}
         </div>
       </div>

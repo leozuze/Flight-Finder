@@ -10,7 +10,7 @@ export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", on
   return (
     <div className="border border-slate-300 rounded-lg overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[880px] text-sm">
           <thead>
             <tr className="text-left text-orange-500 border-b border-slate-200 bg-white">
               <th className="px-4 py-2.5 font-medium">{t("resultsTable.ident")}</th>
