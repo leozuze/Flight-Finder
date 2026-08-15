@@ -93,10 +93,15 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
     // viewport width. Without this, the document itself became wider than
     // the screen, which is what made the fixed search bar look like it was
     // sized to the table instead of the screen.
-    <div
-      className="min-h-screen flex flex-col overflow-x-hidden"
-      style={{ ...NUVEX_THEME, background: "var(--nuvex-bg)", color: "var(--nuvex-ink)", fontFamily: "var(--nuvex-body)" }}
-    >
+      <div
+        className="min-h-screen flex flex-col"
+        style={{
+          ...NUVEX_THEME,
+          background: "var(--nuvex-bg)",
+          color: "var(--nuvex-ink)",
+          fontFamily: "var(--nuvex-body)",
+        }}
+      >
       <div
         ref={searchBarWrapRef}
         className="fixed left-0 right-0 z-50"
@@ -108,7 +113,7 @@ export default function AirportBoard({ query, onSearch, onBack, onNavigate, onSe
       </div>
       <div style={{ height: searchBarHeight }} aria-hidden="true" />
 
-      <div className={`flex-1 min-w-0 pt-10 pb-16 ${CONTAINER}`}>
+      <div className={`flex-1 min-w-0 w-full pt-10 pb-16 ${CONTAINER}`}>
         <button
           type="button"
           onClick={onBack}
