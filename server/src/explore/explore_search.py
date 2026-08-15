@@ -1,75 +1,105 @@
-"""Orchestrates Explore: prices every curated destination from a given
-origin, filters by budget/category, sorts cheapest-first, and attaches a
-"top places" teaser to only the top few results.
+"""Orchestrates Explore: single Google Travel Explore call per origin for
+the bulk of pricing, topped up with a small, capped number of direct
+google_flights calls for curated destinations the Explore call didn't
+happen to cover. Cross-referenced against the curated list for category
+tagging, then filtered by budget, capped to a handful of results, and
+enriched with a "top places" teaser.
+
+Why the top-up exists: google_travel_explore's arrival_id does NOT accept
+a comma-separated list (confirmed against the API — it validates the whole
+string as one code and rejects it), so there's no single-call way to force
+pricing for all 14 curated destinations. The suggested-destinations call
+usually covers most of them anyway; this just fills the gaps instead of
+falling back to pricing all 14 individually every time.
 """
 
 import asyncio
-from datetime import datetime, timedelta
+import os
+import httpx
 
 from src.explore.destinations import get_destinations, Destination
 from src.explore.explore_cache import build_explore_cache_key
 from src.flights.flight_data import find_cheapest_flight
 from src.places.places_search import search_places
 
-# Explore isn't date-specific like a real search — one fixed near-term date
-# keeps the query shape (and therefore the cache key) identical regardless
-# of when a user happens to open the page.
-EXPLORE_DEPART_OFFSET_DAYS = 21
+SERPAPI_KEY = os.environ["SERPAPI_KEY"]
+SERPAPI_ENDPOINT = os.environ["SERPAPI_ENDPOINT"]
 
-# Only the cheapest N destinations get a places lookup — enriching all 14
-# on every request would cost 14x the Geoapify/Overpass budget for results
-# most users scroll past.
-TOP_N_WITH_PLACES = 6
+# Only ever show this many destinations on the Explore page.
+MAX_RESULTS = 5
+TOP_N_WITH_PLACES = 5  # matches MAX_RESULTS — every shown result gets a places teaser
 PLACES_CATEGORY_FOR_EXPLORE = "attractions"
 PLACES_RADIUS_METERS = 20000
 
+# Cost guard on the top-up path — worst case (Explore misses everything)
+# this is 1 + MAX_TOPUP_CALLS SerpAPI calls instead of 1 + 14.
+MAX_TOPUP_CALLS = 5
 
-async def _price_destination(flight_search, cache, origin_code: str,
-                              destination: Destination, currency: str, depart: str):
-    key = build_explore_cache_key(origin_code, destination.code, currency)
-    cached = cache.get(key)
-    if cached is not None:
-        return destination, cached
 
+def _airline_logo_url(airline_code: str | None) -> str | None:
+    if not airline_code:
+        return None
+    return f"https://www.gstatic.com/flights/airline_logos/70px/{airline_code}.png"
+
+
+async def _fetch_explore(origin_code: str, currency: str) -> list[dict]:
+    """One call to Google Travel Explore's 'suggest destinations' mode —
+    departure_id only, no arrival_id. Returns Google's suggested basket."""
+    params = {
+        "engine": "google_travel_explore",
+        "departure_id": origin_code,
+        "currency": currency,
+        "type": "2",
+        "api_key": SERPAPI_KEY,
+    }
+    async with httpx.AsyncClient(timeout=15) as client:
+        resp = await client.get(SERPAPI_ENDPOINT, params=params)
+        resp.raise_for_status()
+        return resp.json().get("destinations", [])
+
+
+async def _fetch_single_route(flight_search, origin_code: str, destination: Destination,
+                               currency: str, depart: str) -> dict | None:
+    """Top-up path: prices one curated destination directly via google_flights,
+    only called for destinations the Explore call didn't already cover."""
     result = await flight_search.check_flights(
         origin_city_code=origin_code,
         destination_city_code=destination.code,
         from_time=depart,
-        trip_type="2",     # one-way — Explore shows "from ₹X", not round-trip
-        is_direct=False,   # widen the search; long-haul Explore routes often connect
+        trip_type="2",
+        is_direct=False,
         currency=currency,
     )
     cheapest = find_cheapest_flight(result, trip_type="2")
+    if cheapest.price in ("N/A", float("inf")):
+        return None
+    return {
+        "code": destination.code,
+        "city": destination.city,
+        "country": destination.country,
+        "category": destination.category,
+        "lat": destination.lat,
+        "lon": destination.lon,
+        "price": cheapest.price,
+        "airline": cheapest.airline,
+        "airlineLogo": cheapest.airline_logo,
+        "departDate": cheapest.out_date,
+        "stops": cheapest.stops,
+    }
 
-    price_data = None
-    if cheapest.price not in ("N/A", float("inf")):
-        price_data = {
-            "price": cheapest.price,
-            "airline": cheapest.airline,
-            "airlineLogo": cheapest.airline_logo,
-            "departDate": cheapest.out_date,
-            "stops": cheapest.stops,
-        }
 
-    cache.set(key, price_data)
-    return destination, price_data
-
-
-async def _attach_places(destination: Destination):
+async def _attach_places(lat: float, lon: float):
     try:
         result = await asyncio.to_thread(
-            search_places,
-            lat=destination.lat,
-            lon=destination.lon,
-            query=PLACES_CATEGORY_FOR_EXPLORE,
-            radius=PLACES_RADIUS_METERS,
+            search_places, lat=lat, lon=lon,
+            query=PLACES_CATEGORY_FOR_EXPLORE, radius=PLACES_RADIUS_METERS,
         )
         return [
             {"name": p.get("name"), "category": p.get("category")}
             for p in result.get("places", [])[:3]
         ]
     except Exception as e:
-        print(f"[explore] places lookup failed for {destination.city}: {e}")
+        print(f"[explore] places lookup failed for {lat},{lon}: {e}")
         return []
 
 
@@ -77,38 +107,69 @@ async def search_explore_destinations(flight_search, cache, origin_code: str,
                                        currency: str = "GBP",
                                        budget_max: float | None = None,
                                        category: str | None = None):
-    candidates = get_destinations(category)
-    by_code = {d.code: d for d in candidates}
-    depart = (datetime.now() + timedelta(days=EXPLORE_DEPART_OFFSET_DAYS)).strftime("%Y-%m-%d")
+    key = build_explore_cache_key(origin_code, "*", currency)
+    destinations = cache.get(key)
+    if destinations is None:
+        destinations = await _fetch_explore(origin_code, currency)
+        cache.set(key, destinations)
 
-    priced = await asyncio.gather(*[
-        _price_destination(flight_search, cache, origin_code, dest, currency, depart)
-        for dest in candidates
-    ])
+    curated_list = get_destinations(category)
+    curated_by_code = {d.code: d for d in curated_list}
 
     results = []
-    for destination, price_data in priced:
-        if price_data is None:
+    covered_codes = set()
+    for d in destinations:
+        code = (d.get("destination_airport") or {}).get("code")
+        curated = curated_by_code.get(code)
+        if curated is None:
             continue
-        if budget_max is not None and price_data["price"] > budget_max:
+        price = d.get("flight_price")
+        if price is None:
             continue
+        covered_codes.add(code)
         results.append({
-            "code": destination.code,
-            "city": destination.city,
-            "country": destination.country,
-            "category": destination.category,
-            "lat": destination.lat,
-            "lon": destination.lon,
-            **price_data,
+            "code": code,
+            "city": curated.city,
+            "country": curated.country,
+            "category": curated.category,
+            "lat": curated.lat,
+            "lon": curated.lon,
+            "price": price,
+            "airline": d.get("airline"),
+            "airlineLogo": _airline_logo_url(d.get("airline_code")),
+            "departDate": d.get("start_date"),
+            "stops": d.get("number_of_stops"),
         })
 
-    results.sort(key=lambda r: r["price"])
+    if budget_max is not None:
+        results = [r for r in results if r["price"] <= budget_max]
 
-    top = results[:TOP_N_WITH_PLACES]
-    places_lists = await asyncio.gather(*[_attach_places(by_code[r["code"]]) for r in top])
-    for r, places in zip(top, places_lists):
+    # Only top up if we don't already have enough to show — no point pricing
+    # a 6th, 7th, 8th destination when MAX_RESULTS caps the page at 5 anyway.
+    needed = MAX_RESULTS - len(results)
+    if needed > 0:
+        missing = [d for d in curated_list if d.code not in covered_codes][:min(needed, MAX_TOPUP_CALLS)]
+        if missing:
+            depart = _default_depart_date()
+            topup = await asyncio.gather(*[
+                _fetch_single_route(flight_search, origin_code, d, currency, depart)
+                for d in missing
+            ])
+            topup_results = [r for r in topup if r is not None]
+            if budget_max is not None:
+                topup_results = [r for r in topup_results if r["price"] <= budget_max]
+            results.extend(topup_results)
+
+    results.sort(key=lambda r: r["price"])
+    results = results[:MAX_RESULTS]
+
+    places_lists = await asyncio.gather(*[_attach_places(r["lat"], r["lon"]) for r in results])
+    for r, places in zip(results, places_lists):
         r["topPlaces"] = places
-    for r in results[TOP_N_WITH_PLACES:]:
-        r["topPlaces"] = []
 
     return results
+
+
+def _default_depart_date() -> str:
+    from datetime import datetime, timedelta
+    return (datetime.now() + timedelta(days=21)).strftime("%Y-%m-%d")

@@ -1,0 +1,3 @@
+{
+  "error": "`arrival_id` (\"DXB,BKK,SIN,KUL,CMB,MLE,DPS,KTM,LEH,IST,CAI,AUH,HKT,REP\") should either be an uppercase 3-letter code or start with \"/m\" or \"/g\"."
+}
