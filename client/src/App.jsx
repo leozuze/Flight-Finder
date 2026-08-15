@@ -12,6 +12,8 @@ import MainNav from "@/components/MainNav"
 const Home = lazy(() => import("@/pages/Home"))
 const Landing = lazy(() => import("@/pages/Landing"))
 const Places = lazy(() => import("@/pages/Places"))
+const Explore = lazy(() => import("@/pages/Explore"))
+const ExplorePlacesPage = lazy(() => import("@/pages/ExplorePlacesPage"))
 const AirportBoard = lazy(() => import("@/pages/AirportBoard"))
 const FlightDetail = lazy(() => import("@/pages/FlightDetail"))
 const HowItWorks = lazy(() => import("@/pages/HowItWorks"))
@@ -36,17 +38,25 @@ function AppRoutes() {
     navigate(`/flight/${encodeURIComponent(ident)}`)
   }
 
-  const handleNavigate = (dest) => {
+  // params is optional — pages that don't need extra data (the vast
+  // majority of onNavigate call sites) keep calling this with just a
+  // string, exactly as before. When present, params travels via router
+  // state (same pattern already used for airportQuery below) rather than
+  // a URL query string, since some of it (destinations arrays) isn't
+  // cleanly serializable to a URL.
+  const handleNavigate = (dest, params) => {
     const routes = {
       welcome: "/",
       home: "/flights",
       places: "/places",
+      explore: "/explore",
+      "explore-places": "/explore/places",
       "airport-board": "/airport-board",
       "how-it-works": "/how-it-works",
       terms: "/terms",
       privacy: "/privacy",
     }
-    navigate(routes[dest] || "/")
+    navigate(routes[dest] || "/", params ? { state: params } : undefined)
   }
 
   return (
@@ -66,6 +76,14 @@ function AppRoutes() {
         <Route
           path="/places"
           element={<Places onNavigate={handleNavigate} />}
+        />
+        <Route
+          path="/explore"
+          element={<Explore onSearch={handleSearch} onNavigate={handleNavigate} />}
+        />
+        <Route
+          path="/explore/places"
+          element={<ExplorePlacesRoute onNavigate={handleNavigate} />}
         />
         <Route
           path="/airport-board"
@@ -109,6 +127,23 @@ function FlightDetailRoute({ onSearch, onNavigate }) {
       onBack={() => navigate(-1)}
     />
   )
+}
+
+function ExplorePlacesRoute({ onNavigate }) {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const params = location.state
+
+  // Router state doesn't survive a hard refresh or a pasted/shared link —
+  // unlike AirportBoard (which degrades fine to an empty query), this page
+  // has nothing useful to show without origin/destinations, so bounce back
+  // to /explore rather than render a broken empty page.
+  if (!params) {
+    navigate("/explore", { replace: true })
+    return null
+  }
+
+  return <ExplorePlacesPage {...params} onNavigate={onNavigate} />
 }
 
 export default function App() {

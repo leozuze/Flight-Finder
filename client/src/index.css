@@ -1,3 +1,12 @@
+/* index.css or wherever your global styles live */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+#root {
+  overflow-x: hidden;
+}
 /* ── Shadcn (keep these — auto-generated) ──── */
 @import "tailwindcss";
 @import "tw-animate-css";

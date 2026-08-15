@@ -8,7 +8,7 @@ import logo from "@/assets/nuvexblacklogo.webp"
 const NAV_ITEMS = [
   { key: "flights", labelKey: "navbar.nav_flights", label: "Flights", path: "/flights", icon: Plane, enabled: true },
   { key: "places", labelKey: "navbar.nav_places", label: "Places", path: "/places", icon: MapPin, enabled: true },
-  { key: "explore", labelKey: "navbar.nav_explore", label: "Explore", path: "/explore", icon: Compass, enabled: false },
+  { key: "explore", labelKey: "navbar.nav_explore", label: "Explore", path: "/explore", icon: Compass, enabled: true },
   { key: "stays", labelKey: "navbar.nav_stays", label: "Stays", path: "/stays", icon: BedDouble, enabled: false },
 ]
 
