@@ -9,7 +9,10 @@ export default function ArrivalsDeparturesTable({ flights, mode = "arrivals", on
 
 return (
   <div className="w-full max-w-full border border-slate-300 rounded-lg">
-    <div className="w-full max-w-full overflow-x-auto touch-pan-x">
+    <div
+        className="w-full max-w-full overflow-x-auto"
+        style={{ touchAction: "pan-x pan-y" }}
+      >
       <table className="min-w-[880px] text-sm">
           <thead>
             <tr className="text-left text-orange-500 border-b border-slate-200 bg-white">
