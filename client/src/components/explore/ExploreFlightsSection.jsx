@@ -21,40 +21,57 @@ export default function ExploreFlightsSection({ destinations, currency, onSelect
   if (expanded) {
     return (
       <section className="min-w-0">
-        <div className="flex items-center gap-3 mb-4">
+        {/* Header row — back button + title, its own line, nothing competing for space */}
+        <div className="flex items-center gap-3 mb-5">
           <button
             onClick={() => onExpandedChange(false)}
-            className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-full border"
+            className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-full border shrink-0"
             style={{ borderColor: "var(--nuvex-border, #E4E7EC)", color: "var(--nuvex-slate, #64707D)" }}
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             Back to Explore
           </button>
           <h2 className="text-lg font-semibold" style={{ color: "var(--nuvex-ink, #10131A)" }}>All flights</h2>
+          <span className="text-xs ml-auto" style={{ color: "var(--nuvex-slate, #64707D)" }}>
+            {filtered.length} destination{filtered.length !== 1 ? "s" : ""}
+          </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 mb-5">
-          <button
-            onClick={() => setActiveCategory(null)}
-            className="text-xs font-medium px-3 py-1.5 rounded-full"
-            style={!activeCategory ? { background: "var(--nuvex-accent, #17B8C4)", color: "#FFF" } : { background: "var(--nuvex-border, #E4E7EC)", color: "var(--nuvex-slate, #64707D)" }}
-          >
-            All
-          </button>
-          {categories.map((cat) => (
+        {/* Filter toolbar — its own full-width row, category chips left,
+            budget stepper right, stacks on narrow screens instead of wrapping
+            mid-row like flex-wrap was doing before. */}
+        <div
+          className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 pb-4 border-b"
+          style={{ borderColor: "var(--nuvex-border, #E4E7EC)" }}
+        >
+          <div className="flex flex-wrap items-center gap-2">
             <button
-              key={cat}
-              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-              className="text-xs font-medium px-3 py-1.5 rounded-full"
-              style={activeCategory === cat ? { background: "var(--nuvex-accent, #17B8C4)", color: "#FFF" } : { background: "var(--nuvex-border, #E4E7EC)", color: "var(--nuvex-slate, #64707D)" }}
+              onClick={() => setActiveCategory(null)}
+              className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+              style={!activeCategory
+                ? { background: "var(--nuvex-accent, #17B8C4)", color: "#FFF" }
+                : { background: "var(--nuvex-border, #E4E7EC)", color: "var(--nuvex-slate, #64707D)" }}
             >
-              {CATEGORY_LABELS[cat] || cat}
+              All
             </button>
-          ))}
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+                style={activeCategory === cat
+                  ? { background: "var(--nuvex-accent, #17B8C4)", color: "#FFF" }
+                  : { background: "var(--nuvex-border, #E4E7EC)", color: "var(--nuvex-slate, #64707D)" }}
+              >
+                {CATEGORY_LABELS[cat] || cat}
+              </button>
+            ))}
+          </div>
+
           {maxBudget != null && (
-            <div className="flex items-center gap-2 ml-auto text-xs" style={{ color: "var(--nuvex-slate, #64707D)" }}>
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>Under {budgetFilter ?? maxBudget}</span>
+            <div className="flex items-center gap-2 sm:ml-auto text-xs shrink-0" style={{ color: "var(--nuvex-slate, #64707D)" }}>
+              <SlidersHorizontal className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Under {currency} {budgetFilter ?? maxBudget}</span>
               <input
                 type="range"
                 min={0}
@@ -62,19 +79,29 @@ export default function ExploreFlightsSection({ destinations, currency, onSelect
                 step={Math.max(1, Math.round(maxBudget / 50))}
                 value={budgetFilter ?? maxBudget}
                 onChange={(e) => setBudgetFilter(Number(e.target.value))}
-                className="w-32"
+                className="w-28 sm:w-32"
               />
             </div>
           )}
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <AnimatePresence>
-            {filtered.map((d) => (
-              <ExploreFlightCard key={d.code} destination={d} currency={currency} onSelect={onSelect} compact={false} />
-            ))}
-          </AnimatePresence>
-        </div>
+        {/* Results grid or empty state */}
+        {filtered.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((d) => (
+                <ExploreFlightCard key={d.code} destination={d} currency={currency} onSelect={onSelect} compact={false} />
+              ))}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <div
+            className="text-center py-16 rounded-2xl border text-sm"
+            style={{ borderColor: "var(--nuvex-border, #E4E7EC)", color: "var(--nuvex-slate, #64707D)" }}
+          >
+            No destinations match that filter — try widening the budget or category.
+          </div>
+        )}
       </section>
     )
   }
@@ -92,16 +119,13 @@ export default function ExploreFlightsSection({ destinations, currency, onSelect
         </button>
       </div>
 
-      {/* overscrollBehaviorX: contain stops a horizontal swipe here from
-          bleeding into the browser's back/forward gesture, which is what
-          was reading as "page overlapping" while scrolling. */}
-        <div
+      <div
         className="flex w-full max-w-full gap-4 overflow-x-auto pb-2 min-w-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{
-            overscrollBehaviorX: "contain",
-            touchAction: "pan-x pan-y",
+          overscrollBehaviorX: "contain",
+          touchAction: "pan-x pan-y",
         }}
-        >
+      >
         {destinations.map((d) => (
           <ExploreFlightCard key={d.code} destination={d} currency={currency} onSelect={onSelect} compact />
         ))}
