@@ -17,6 +17,13 @@ from src.places.default_places import search_default_places
 from src.places.geocoding import geocode_text, reverse_geocode
 from src.places.osm_data import MAX_RADIUS_METERS as PLACES_MAX_RADIUS_METERS
 
+
+from src.explore.destinations import get_destinations
+from src.explore.explore_cache import explore_cache
+from src.explore.explore_search import search_explore_destinations
+from src.explore.nearest_airport import find_nearest_airports
+from src.explore.explore_places import get_explore_places
+
 TRIP_TYPE_MAP = {"round": "1", "oneway": "2"}
 CLASS_MAP = {"economy": "1", "premium": "2", "business": "3", "first": "4"}
 
@@ -558,3 +565,106 @@ async def get_default_places(req: DefaultPlacesRequest):
 
     result["searchedLocation"] = {"lat": lat, "lon": lon, "formatted": resolved_location}
     return result
+
+class ExploreRequest(BaseModel):
+    lat: float | None = None
+    lon: float | None = None
+    originCode: str | None = None     # optional override — bypasses geolocation entirely
+    originCity: str | None = None     # optional override — free-text city, geocoded below
+    budgetMax: float | None = None
+    category: str | None = None
+    currency: str = "GBP"
+
+
+@app.post("/api/explore")
+async def get_explore(req: ExploreRequest):
+    flight_search = app.state.flight_search
+
+    if req.originCode:
+        candidate_codes = [req.originCode.strip().upper()]
+        origin_label = candidate_codes[0]
+        origin_lat, origin_lon = None, None
+    elif req.originCity:
+        try:
+            geo = await asyncio.to_thread(geocode_text, req.originCity.strip())
+        except Exception as e:
+            return {"error": f"Could not resolve location '{req.originCity}': {e}"}
+
+        if geo is None:
+            return {"error": f"Could not find a location matching '{req.originCity}'."}
+
+        origin_lat, origin_lon = geo["lat"], geo["lon"]
+        nearest = find_nearest_airports(origin_lat, origin_lon, limit=3)
+        if not nearest:
+            return {"error": f"Could not find an airport near '{req.originCity}'."}
+        candidate_codes = [a.iata for a in nearest]
+        origin_label = req.originCity.strip()
+    elif req.lat is not None and req.lon is not None:
+        latlon_error = _validate_latlon(req.lat, req.lon)
+        if latlon_error:
+            return {"error": latlon_error}
+
+        nearest = find_nearest_airports(req.lat, req.lon, limit=3)
+        if not nearest:
+            return {"error": "Could not find an airport near your location."}
+        candidate_codes = [a.iata for a in nearest]
+        origin_label = nearest[0].city
+        origin_lat, origin_lon = req.lat, req.lon
+    else:
+        return {"error": "Provide lat/lon, an originCity, or an originCode."}
+
+    # Try nearest first; fall back to the next-nearest only if the closest
+    # candidate returns zero priced destinations (see nearest_airport.py's
+    # known-limitation note — small airfields sometimes have no fares).
+    results = []
+    origin_code = candidate_codes[0]
+    for code in candidate_codes:
+        results = await search_explore_destinations(
+            flight_search=flight_search,
+            cache=explore_cache,
+            origin_code=code,
+            currency=req.currency,
+            budget_max=req.budgetMax,
+            category=req.category,
+        )
+        if results:
+            origin_code = code
+            break
+
+    if not results:
+        return {"error": f"No flights found from airports near {origin_label}."}
+
+    return {
+        "originCode": origin_code,
+        "originLabel": origin_label,
+        "originLat": origin_lat,
+        "originLon": origin_lon,
+        "destinations": results,
+    }
+
+class ExplorePlacesLocation(BaseModel):
+    code: str
+    city: str
+    country: str | None = None
+    lat: float
+    lon: float
+
+class ExplorePlacesRequest(BaseModel):
+    locations: list[ExplorePlacesLocation]
+
+MAX_EXPLORE_PLACES_LOCATIONS = 12  # cost guard — origin + up to 11 destinations
+
+@app.post("/api/explore/places")
+async def get_explore_places_endpoint(req: ExplorePlacesRequest):
+    if not req.locations:
+        return {"error": "Provide at least one location."}
+    if len(req.locations) > MAX_EXPLORE_PLACES_LOCATIONS:
+        return {"error": f"Too many locations requested at once (max {MAX_EXPLORE_PLACES_LOCATIONS})."}
+
+    for loc in req.locations:
+        latlon_error = _validate_latlon(loc.lat, loc.lon)
+        if latlon_error:
+            return {"error": f"{loc.code}: {latlon_error}"}
+
+    results = await get_explore_places([loc.model_dump() for loc in req.locations])
+    return {"locations": results}
