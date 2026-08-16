@@ -52,7 +52,7 @@ const NUVEX_THEME = {
 const FOOTER_NAV_ITEMS = [
   { key: "flights", labelKey: "navbar.nav_flights", label: "Flights", dest: "home", icon: Plane, enabled: true },
   { key: "places", labelKey: "navbar.nav_places", label: "Places", dest: "places", icon: MapPin, enabled: true },
-  { key: "explore", labelKey: "navbar.nav_explore", label: "Explore", dest: "explore", icon: Compass, enabled: false },
+  { key: "explore", labelKey: "navbar.nav_explore", label: "Explore", dest: "explore", icon: Compass, enabled: true },
   { key: "stays", labelKey: "navbar.nav_stays", label: "Stays", dest: "stays", icon: BedDouble, enabled: false },
 ]
 
